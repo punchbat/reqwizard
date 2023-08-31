@@ -36,7 +36,7 @@ func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mail
 	authJobScheduler.Start(c)
 
 	// Create the middleware instance
-	m := NewMiddleware(uc)
+	authMiddleware := NewMiddleware(uc)
 
 	// Create the handler
 	h := NewHandler(uc)
@@ -50,8 +50,8 @@ func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mail
 		endpoints.POST("/sign-in", h.SignIn)
 
 		// * проверяем на наличие аутентификации
-		endpoints.GET("/get-profile", m, h.GetProfile)
+		endpoints.GET("/get-profile", authMiddleware, h.GetProfile)
 	}
 
-	return m
+	return authMiddleware
 }

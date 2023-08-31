@@ -108,7 +108,7 @@ func (uc *UseCase) MakeClearUser(ctx context.Context, user *domain.User) (*domai
 func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
 	if err == nil {
-		return auth.ErrUserIsExist
+		return nil
 	}
 
 	hashPassword, err := HashPassword(inp.Password)
@@ -121,13 +121,7 @@ func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		return err
 	}
 
-	// Находим роль обычного юзера
-	role, err := uc.roleRepo.GetRoleByName(ctx, string(inp.Role))
-	if err != nil {
-		return err
-	}
-
-	// подумать
+	// * Создаем Аккаунт
 	userID := uuid.New()
 	user = &domain.User{
 		ID:              userID.String(),
@@ -140,17 +134,37 @@ func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		return err
 	}
 
-	// Создаем юзер.роль
-	userRoleID := uuid.New()
-	userRole := domain.UserRole{
-		ID:     userRoleID.String(),
-		UserID: userID.String(),
-		RoleID: role.ID,
-		Status: domain.UserRoleStatusApproved,
-	}
-	err = uc.userRoleRepo.CreateUserRole(ctx, &userRole)
+	defaultRoleEntity, err := uc.roleRepo.GetRoleByName(ctx, "user")
 	if err != nil {
 		return err
+	}
+	defaultUserRoleEntity := domain.UserRole{
+		ID:     uuid.New().String(),
+		UserID: userID.String(),
+		RoleID: defaultRoleEntity.ID,
+		Status: domain.UserRoleStatusApproved,
+	}
+	err = uc.userRoleRepo.CreateUserRole(ctx, &defaultUserRoleEntity)
+	if err != nil {
+		return err
+	}
+
+	if inp.Role != "user" {
+		// Находим роль
+		selectedRoleEntity, err := uc.roleRepo.GetRoleByName(ctx, string(inp.Role))
+		if err != nil {
+			return err
+		}
+		selectedUserRole := domain.UserRole{
+			ID:     uuid.New().String(),
+			UserID: userID.String(),
+			RoleID: selectedRoleEntity.ID,
+			Status: domain.UserRoleStatusApproved,
+		}
+		err = uc.userRoleRepo.CreateUserRole(ctx, &selectedUserRole)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

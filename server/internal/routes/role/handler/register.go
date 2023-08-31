@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFunc, db *gorm.Gorm) (gin.HandlerFunc, gin.HandlerFunc) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, db *gorm.Gorm) (gin.HandlerFunc, gin.HandlerFunc) {
 	// Создаем repository, все взаимодействия с db в ней
 	repo := repository.NewRepository(db)
 	authRepository := authRepository.NewRepository(db)
@@ -33,7 +33,7 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 	// Create the endpoints
 	endpoints := router.Group("/role/v1")
 	{
-		endpoints.GET("/list", authMiddleware, isUserMiddleware, h.GetRoles)
+		endpoints.GET("/list", h.GetRoles)
 	}
 
 	return isUserMiddleware, isManagerMiddleware

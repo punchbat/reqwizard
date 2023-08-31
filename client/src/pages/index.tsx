@@ -117,13 +117,11 @@ const router = createBrowserRouter([
         path: "/ticket-response/:id",
         element: (
             <AuthGuard>
-                <ManagerGuard>
-                    <MainLayout>
-                        <Suspense>
-                            <TicketResponse />
-                        </Suspense>
-                    </MainLayout>
-                </ManagerGuard>
+                <MainLayout>
+                    <Suspense>
+                        <TicketResponse />
+                    </Suspense>
+                </MainLayout>
             </AuthGuard>
         ),
         errorElement: <Error />,
@@ -132,13 +130,11 @@ const router = createBrowserRouter([
         path: "/my-ticket-responses",
         element: (
             <AuthGuard>
-                <ManagerGuard>
-                    <MainLayout>
-                        <Suspense>
-                            <MyTicketResponses />
-                        </Suspense>
-                    </MainLayout>
-                </ManagerGuard>
+                <MainLayout>
+                    <Suspense>
+                        <MyTicketResponses />
+                    </Suspense>
+                </MainLayout>
             </AuthGuard>
         ),
         errorElement: <Error />,
@@ -175,6 +171,7 @@ const router = createBrowserRouter([
         ),
         errorElement: <Error />,
     },
+
     {
         path: "/whois",
         element: (

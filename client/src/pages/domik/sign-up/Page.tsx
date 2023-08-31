@@ -85,6 +85,10 @@ const SignUp: FC = function () {
         }
     };
 
+    const handleSendVerifyCode = async () => {
+        await sendVerifyCode(userInput as SignUpInput).unwrap();
+    };
+
     const handleBack = () => {
         navigate("/sign-in");
     };
@@ -241,7 +245,19 @@ const SignUp: FC = function () {
                             >
                                 {!isCheckMode ? "Sign-up" : "Verify code"}
                             </Button>
-                            <Button type="link" htmlType="button" onClick={handleBack}>
+                            {isCheckMode && (
+                                <Button
+                                    type="text"
+                                    htmlType="button"
+                                    onClick={handleSendVerifyCode}
+                                    style={{ marginLeft: "4px" }}
+                                >
+                                    Send verify code again
+                                </Button>
+                            )}
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="link" onClick={handleBack}>
                                 Back to sign-in
                             </Button>
                         </Form.Item>

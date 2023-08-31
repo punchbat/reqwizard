@@ -33,7 +33,7 @@ func InitRoutes(router *gin.Engine, c *cron.Cron, pgGorm *gorm.Gorm, mailer *ema
 	api := router.Group("/api")
 
 	// * ROLE
-	isUserMiddleware, isManagerMiddleware := roleHandler.RegisterHTTPEndpoints(api, authMiddleware, pgGorm)
+	isUserMiddleware, isManagerMiddleware := roleHandler.RegisterHTTPEndpoints(api, pgGorm)
 
 	// * APPLICATION
 	applicationHandler.RegisterHTTPEndpoints(api, authMiddleware, isUserMiddleware, isManagerMiddleware, pgGorm)
