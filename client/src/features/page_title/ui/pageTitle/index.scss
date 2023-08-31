@@ -1,0 +1,12 @@
+.page_title {
+    position: relative;
+
+    &__inner {
+    }
+
+    &__btn {
+        position: absolute;
+        top: 8px;
+        left: -140px;
+    }
+}

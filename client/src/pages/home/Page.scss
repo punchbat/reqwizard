@@ -1,0 +1,16 @@
+.home {
+    &__inner {
+        margin: 0 auto;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    &__content {
+    }
+}

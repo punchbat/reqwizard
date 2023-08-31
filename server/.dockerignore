@@ -1,0 +1,11 @@
+# Дефолт
+bin
+.idea
+.bin
+.data
+
+# Конфиги
+.env.development
+.env.production
+.env.testing
+.env.rc

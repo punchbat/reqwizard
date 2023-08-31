@@ -1,0 +1,1343 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/application/v1/create": {
+            "post": {
+                "description": "Create a specific application",
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Create Application",
+                "parameters": [
+                    {
+                        "description": "Application body",
+                        "name": "application",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/application.CreateApplicationInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application/v1/download-file/{:fileName}": {
+            "get": {
+                "description": "download file",
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Download file",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "File name",
+                        "name": "filename",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application/v1/list": {
+            "get": {
+                "description": "get all applications",
+                "tags": [
+                    "applications"
+                ],
+                "summary": "receiving applications",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "9999990000",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "canceled",
+                                "waiting",
+                                "working",
+                                "done"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "general",
+                                "financial"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "information",
+                                "account_help",
+                                "refunds",
+                                "payment"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "subType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "createdAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "createdAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "updatedAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "updatedAtTo",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseApplications"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application/v1/my-list": {
+            "get": {
+                "description": "get all applications for user id",
+                "tags": [
+                    "applications"
+                ],
+                "summary": "receiving applications",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseApplications"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/application/v1/{id}": {
+            "get": {
+                "description": "Get a specific application by ID",
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Get Application by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Application ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseApplication"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/check-verify-code": {
+            "post": {
+                "description": "check verify code",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "user body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.CheckVerifyCodeInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/get-profile": {
+            "get": {
+                "description": "get user profile",
+                "tags": [
+                    "user"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/send-verify-code": {
+            "post": {
+                "description": "send verify code",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "user body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.SendVerifyCodeInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/sign-in": {
+            "post": {
+                "description": "sign-in",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "user body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.SignInInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/v1/sign-up": {
+            "post": {
+                "description": "sign-up",
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "User body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.SignUpInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/role/v1/list": {
+            "get": {
+                "description": "get all roles",
+                "tags": [
+                    "roles"
+                ],
+                "summary": "receiving roles",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseRoles"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ticket-response/v1/list": {
+            "get": {
+                "description": "get all ticketResponses",
+                "tags": [
+                    "ticketResponses"
+                ],
+                "summary": "receiving ticketResponses",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "9999990000",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "createdAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "createdAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "updatedAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "updatedAtTo",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseTicketResponses"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ticket-response/v1/my-list": {
+            "get": {
+                "description": "get all ticketResponses for user id",
+                "tags": [
+                    "ticketResponses"
+                ],
+                "summary": "receiving ticketResponses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseTicketResponses"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ticket-response/v1/{id}": {
+            "get": {
+                "description": "Get a specific ticketResponse by ID",
+                "tags": [
+                    "ticketResponses"
+                ],
+                "summary": "Get TicketResponse by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "TicketResponse ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseTicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ticketResponse/v1/create": {
+            "post": {
+                "description": "Create a specific ticketResponse",
+                "tags": [
+                    "ticketResponses"
+                ],
+                "summary": "Create TicketResponses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.BadResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "application.CreateApplicationInput": {
+            "type": "object",
+            "required": [
+                "description",
+                "subType",
+                "title",
+                "type"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "email": {
+                    "type": "string"
+                },
+                "file": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "fileExtension": {
+                    "type": "string"
+                },
+                "subType": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "financial",
+                        "general"
+                    ]
+                }
+            }
+        },
+        "auth.CheckVerifyCodeInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "verifyCode"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "verifyCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth.SendVerifyCodeInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
+        "auth.SignInInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
+        "auth.SignUpInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "passwordConfirm",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "passwordConfirm": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "role": {
+                    "type": "string",
+                    "enum": [
+                        "user",
+                        "manager"
+                    ]
+                }
+            }
+        },
+        "domain.Application": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "fileName": {
+                    "type": "string"
+                },
+                "managerId": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/domain.ApplicationStatus"
+                },
+                "subType": {
+                    "$ref": "#/definitions/domain.ApplicationSubType"
+                },
+                "ticketResponseId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/domain.ApplicationType"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ApplicationStatus": {
+            "type": "string",
+            "enum": [
+                "canceled",
+                "waiting",
+                "working",
+                "done"
+            ],
+            "x-enum-varnames": [
+                "ApplicationStatusCanceled",
+                "ApplicationStatusWaiting",
+                "ApplicationStatusWorking",
+                "ApplicationStatusDone"
+            ]
+        },
+        "domain.ApplicationSubType": {
+            "type": "string",
+            "enum": [
+                "information",
+                "account_help",
+                "refunds",
+                "payment"
+            ],
+            "x-enum-varnames": [
+                "ApplicationSubTypeInformation",
+                "ApplicationSubTypeAccountHelp",
+                "ApplicationSubTypeRefunds",
+                "ApplicationSubTypePayment"
+            ]
+        },
+        "domain.ApplicationType": {
+            "type": "string",
+            "enum": [
+                "general",
+                "financial"
+            ],
+            "x-enum-varnames": [
+                "ApplicationTypeGeneral",
+                "ApplicationTypeFinancial"
+            ]
+        },
+        "domain.BadResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Response": {
+            "type": "object",
+            "properties": {
+                "payload": {},
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseApplication": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "$ref": "#/definitions/domain.Application"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseApplications": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Application"
+                    }
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseRoles": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Role"
+                    }
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseTicketResponse": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "$ref": "#/definitions/domain.TicketResponse"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseTicketResponses": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.TicketResponse"
+                    }
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ResponseUser": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "$ref": "#/definitions/domain.User"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Role": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "$ref": "#/definitions/domain.RoleName"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.RoleName": {
+            "type": "string",
+            "enum": [
+                "user",
+                "manager"
+            ],
+            "x-enum-varnames": [
+                "RoleNameUser",
+                "RoleNameManager"
+            ]
+        },
+        "domain.TicketResponse": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "applicationId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "managerId": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "applicationCreatedAt": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "passwordConfirm": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userRoles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.UserRole"
+                    }
+                },
+                "verified": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "domain.UserRole": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "name": {
+                    "$ref": "#/definitions/domain.UserRoleName"
+                },
+                "roleId": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/domain.UserRoleStatus"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UserRoleName": {
+            "type": "string",
+            "enum": [
+                "user",
+                "manager"
+            ],
+            "x-enum-varnames": [
+                "UserRoleNameUser",
+                "UserRoleNameManager"
+            ]
+        },
+        "domain.UserRoleStatus": {
+            "type": "string",
+            "enum": [
+                "canceled",
+                "pending",
+                "approved"
+            ],
+            "x-enum-varnames": [
+                "UserRoleStatusCanceled",
+                "UserRoleStatusPending",
+                "UserRoleStatusApproved"
+            ]
+        }
+    }
+}

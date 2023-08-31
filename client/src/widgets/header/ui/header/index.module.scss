@@ -1,0 +1,14 @@
+.header {
+    border: 1px solid var(--color-bg-border);
+
+    &__inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__app {
+        display: flex;
+        align-items: center;
+    }
+}

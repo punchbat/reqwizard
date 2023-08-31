@@ -1,0 +1,896 @@
+definitions:
+  application.CreateApplicationInput:
+    properties:
+      _id:
+        type: string
+      description:
+        minLength: 10
+        type: string
+      email:
+        type: string
+      file:
+        items:
+          type: integer
+        type: array
+      fileExtension:
+        type: string
+      subType:
+        type: string
+      title:
+        minLength: 10
+        type: string
+      type:
+        enum:
+        - financial
+        - general
+        type: string
+    required:
+    - description
+    - subType
+    - title
+    - type
+    type: object
+  auth.CheckVerifyCodeInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      verifyCode:
+        type: string
+    required:
+    - email
+    - password
+    - verifyCode
+    type: object
+  auth.SendVerifyCodeInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.SignInInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.SignUpInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      passwordConfirm:
+        minLength: 8
+        type: string
+      role:
+        enum:
+        - user
+        - manager
+        type: string
+    required:
+    - email
+    - password
+    - passwordConfirm
+    - role
+    type: object
+  domain.Application:
+    properties:
+      _id:
+        type: string
+      createdAt:
+        type: string
+      description:
+        type: string
+      fileName:
+        type: string
+      managerId:
+        type: string
+      status:
+        $ref: '#/definitions/domain.ApplicationStatus'
+      subType:
+        $ref: '#/definitions/domain.ApplicationSubType'
+      ticketResponseId:
+        type: string
+      title:
+        type: string
+      type:
+        $ref: '#/definitions/domain.ApplicationType'
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  domain.ApplicationStatus:
+    enum:
+    - canceled
+    - waiting
+    - working
+    - done
+    type: string
+    x-enum-varnames:
+    - ApplicationStatusCanceled
+    - ApplicationStatusWaiting
+    - ApplicationStatusWorking
+    - ApplicationStatusDone
+  domain.ApplicationSubType:
+    enum:
+    - information
+    - account_help
+    - refunds
+    - payment
+    type: string
+    x-enum-varnames:
+    - ApplicationSubTypeInformation
+    - ApplicationSubTypeAccountHelp
+    - ApplicationSubTypeRefunds
+    - ApplicationSubTypePayment
+  domain.ApplicationType:
+    enum:
+    - general
+    - financial
+    type: string
+    x-enum-varnames:
+    - ApplicationTypeGeneral
+    - ApplicationTypeFinancial
+  domain.BadResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  domain.Response:
+    properties:
+      payload: {}
+      status:
+        type: integer
+    type: object
+  domain.ResponseApplication:
+    properties:
+      payload:
+        $ref: '#/definitions/domain.Application'
+      status:
+        type: integer
+    type: object
+  domain.ResponseApplications:
+    properties:
+      payload:
+        items:
+          $ref: '#/definitions/domain.Application'
+        type: array
+      status:
+        type: integer
+    type: object
+  domain.ResponseRoles:
+    properties:
+      payload:
+        items:
+          $ref: '#/definitions/domain.Role'
+        type: array
+      status:
+        type: integer
+    type: object
+  domain.ResponseTicketResponse:
+    properties:
+      payload:
+        $ref: '#/definitions/domain.TicketResponse'
+      status:
+        type: integer
+    type: object
+  domain.ResponseTicketResponses:
+    properties:
+      payload:
+        items:
+          $ref: '#/definitions/domain.TicketResponse'
+        type: array
+      status:
+        type: integer
+    type: object
+  domain.ResponseUser:
+    properties:
+      payload:
+        $ref: '#/definitions/domain.User'
+      status:
+        type: integer
+    type: object
+  domain.Role:
+    properties:
+      _id:
+        type: string
+      createdAt:
+        type: string
+      name:
+        $ref: '#/definitions/domain.RoleName'
+      updatedAt:
+        type: string
+    type: object
+  domain.RoleName:
+    enum:
+    - user
+    - manager
+    type: string
+    x-enum-varnames:
+    - RoleNameUser
+    - RoleNameManager
+  domain.TicketResponse:
+    properties:
+      _id:
+        type: string
+      applicationId:
+        type: string
+      createdAt:
+        type: string
+      managerId:
+        type: string
+      text:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      _id:
+        type: string
+      applicationCreatedAt:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      passwordConfirm:
+        type: string
+      updatedAt:
+        type: string
+      userRoles:
+        items:
+          $ref: '#/definitions/domain.UserRole'
+        type: array
+      verified:
+        type: boolean
+    type: object
+  domain.UserRole:
+    properties:
+      _id:
+        type: string
+      createdAt:
+        type: string
+      name:
+        $ref: '#/definitions/domain.UserRoleName'
+      roleId:
+        type: string
+      status:
+        $ref: '#/definitions/domain.UserRoleStatus'
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  domain.UserRoleName:
+    enum:
+    - user
+    - manager
+    type: string
+    x-enum-varnames:
+    - UserRoleNameUser
+    - UserRoleNameManager
+  domain.UserRoleStatus:
+    enum:
+    - canceled
+    - pending
+    - approved
+    type: string
+    x-enum-varnames:
+    - UserRoleStatusCanceled
+    - UserRoleStatusPending
+    - UserRoleStatusApproved
+info:
+  contact: {}
+paths:
+  /api/application/v1/{id}:
+    get:
+      description: Get a specific application by ID
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseApplication'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: Get Application by ID
+      tags:
+      - applications
+  /api/application/v1/create:
+    post:
+      description: Create a specific application
+      parameters:
+      - description: Application body
+        in: body
+        name: application
+        required: true
+        schema:
+          $ref: '#/definitions/application.CreateApplicationInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: Create Application
+      tags:
+      - applications
+  /api/application/v1/download-file/{:fileName}:
+    get:
+      description: download file
+      parameters:
+      - description: File name
+        in: path
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: Download file
+      tags:
+      - applications
+  /api/application/v1/list:
+    get:
+      description: get all applications
+      parameters:
+      - description: "9999990000"
+        in: query
+        name: search
+        type: string
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - canceled
+          - waiting
+          - working
+          - done
+          type: string
+        name: status
+        type: array
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - general
+          - financial
+          type: string
+        name: type
+        type: array
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - information
+          - account_help
+          - refunds
+          - payment
+          type: string
+        name: subType
+        type: array
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: createdAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: createdAtTo
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: updatedAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: updatedAtTo
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseApplications'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: receiving applications
+      tags:
+      - applications
+  /api/application/v1/my-list:
+    get:
+      description: get all applications for user id
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseApplications'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: receiving applications
+      tags:
+      - applications
+  /api/auth/v1/check-verify-code:
+    post:
+      description: check verify code
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.CheckVerifyCodeInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /api/auth/v1/get-profile:
+    get:
+      description: get user profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /api/auth/v1/send-verify-code:
+    post:
+      description: send verify code
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SendVerifyCodeInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /api/auth/v1/sign-in:
+    post:
+      description: sign-in
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignInInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /api/auth/v1/sign-up:
+    post:
+      description: sign-up
+      parameters:
+      - description: User body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignUpInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /api/role/v1/list:
+    get:
+      description: get all roles
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseRoles'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: receiving roles
+      tags:
+      - roles
+  /api/ticket-response/v1/{id}:
+    get:
+      description: Get a specific ticketResponse by ID
+      parameters:
+      - description: TicketResponse ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseTicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: Get TicketResponse by ID
+      tags:
+      - ticketResponses
+  /api/ticket-response/v1/list:
+    get:
+      description: get all ticketResponses
+      parameters:
+      - description: "9999990000"
+        in: query
+        name: search
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: createdAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: createdAtTo
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: updatedAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: updatedAtTo
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseTicketResponses'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: receiving ticketResponses
+      tags:
+      - ticketResponses
+  /api/ticket-response/v1/my-list:
+    get:
+      description: get all ticketResponses for user id
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseTicketResponses'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: receiving ticketResponses
+      tags:
+      - ticketResponses
+  /api/ticketResponse/v1/create:
+    post:
+      description: Create a specific ticketResponse
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      summary: Create TicketResponses
+      tags:
+      - ticketResponses
+swagger: "2.0"

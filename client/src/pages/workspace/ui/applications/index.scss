@@ -1,0 +1,51 @@
+.applications {
+    &__inner {
+    }
+    &__content {
+    }
+
+    &__filters {
+        margin-bottom: 20px;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__main {
+    }
+
+    &__sub {
+        visibility: hidden;
+        margin-top: 0;
+        opacity: 0;
+        height: 0px;
+        transition: all 0.2s ease-in-out;
+
+        &.active {
+            visibility: unset;
+            margin-top: 12px;
+            opacity: 1;
+            height: max-content;
+        }
+    }
+
+    &__sub_content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 12px;
+        row-gap: 12px;
+    }
+
+    &__sub_submit {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__sub_show {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

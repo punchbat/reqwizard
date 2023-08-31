@@ -1,0 +1,26 @@
+.toasts_renderer {
+    position: absolute;
+
+    // &__inner {
+    // }
+
+    &__left_top {
+        position: fixed;
+        z-index: 1400;
+        top: 60px;
+        left: 20px;
+
+        width: max-content;
+        height: max-content;
+    }
+
+    &__right_top {
+        position: fixed;
+        z-index: 1400;
+        top: 60px;
+        right: 20px;
+
+        width: max-content;
+        height: max-content;
+    }
+}

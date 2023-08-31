@@ -1,0 +1,51 @@
+.user {
+    cursor: pointer;
+
+    &__inner {
+    }
+
+    &__modal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__picture {
+        margin-bottom: 12px;
+        & > img {
+            width: 100px;
+        }
+    }
+
+    &__content {
+        margin-bottom: 20px;
+    }
+
+    &__email {
+    }
+
+    &__roles {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__role {
+    }
+
+    &__additional_info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__last_application_time {
+    }
+
+    &__created_at {
+    }
+
+    &__actions {
+        margin-top: 30px;
+    }
+}

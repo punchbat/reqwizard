@@ -1,0 +1,30 @@
+.application {
+    max-width: 900px;
+    margin: 0 auto;
+
+    &__inner {
+        margin: 0 auto;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__content {
+    }
+
+    &__type {
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        column-gap: 10px;
+    }
+
+    &__status {
+    }
+
+    &__time {
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+}

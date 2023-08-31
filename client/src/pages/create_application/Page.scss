@@ -1,0 +1,15 @@
+.application {
+    max-width: 900px;
+    margin: 0 auto;
+
+    &__inner {
+        margin: 0 auto;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__content {
+    }
+}

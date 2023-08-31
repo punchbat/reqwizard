@@ -1,0 +1,49 @@
+.ticket_response_item {
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 8px 18px;
+    border: 1px solid rgb(237, 237, 237);
+    border-radius: 8px;
+
+    &:last-child {
+        margin: unset;
+    }
+
+    &:hover {
+        background-color: rgb(250, 250, 250);
+    }
+
+    &__inner {
+        display: flex;
+    }
+
+    &__info {
+        flex: 1 1 auto;
+    }
+
+    &__title {
+        cursor: pointer;
+
+        & > span {
+            font-size: 22px;
+        }
+
+        &:hover {
+            & > span {
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__text {
+        margin-bottom: 10px;
+    }
+
+    &__time {
+        display: flex;
+        flex-direction: column;
+        & span {
+            font-size: 8px;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+.footer {
+    border: 1px solid var(--color-bg-border);
+    background: var(--header-fill-color);
+    box-shadow: var(--header-shadow);
+
+    &__inner {
+        width: var(--screen-exlg);
+        max-width: var(--screen-exlg);
+        margin: auto;
+        padding: 8px 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__summary {
+    }
+    &__links {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        grid-column-gap: 6px;
+    }
+}

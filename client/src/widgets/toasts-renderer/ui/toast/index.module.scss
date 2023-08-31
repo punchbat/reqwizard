@@ -1,0 +1,64 @@
+@keyframes Toast-exist {
+    0% {
+        opacity: 0;
+
+        transform: scale(0.75);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform: scale(1);
+    }
+}
+
+.toast {
+    margin-bottom: 12px;
+    padding: 13px 18px;
+
+    cursor: pointer;
+
+    border-radius: 16px;
+    background: #ebebeb;
+
+    animation-name: Toast-exist;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+
+    &:last-child {
+        margin-bottom: 0px;
+    }
+
+    // &__inner {
+    // }
+
+    &__DEFAULT {
+        color: var(--color-typo-inverse);
+    }
+
+    &__SUCCESS {
+        color: var(--color-success);
+    }
+
+    &__ERROR {
+        color: var(--color-alert);
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+    }
+
+    &__icon {
+        display: flex;
+
+        span {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &__message {
+        margin-left: 8px;
+    }
+}

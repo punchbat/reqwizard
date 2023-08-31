@@ -1,0 +1,23 @@
+.DomikLayout {
+    overflow-x: hidden;
+
+    height: 100%;
+
+    &__inner {
+        padding: 0px 30px;
+
+        display: flex;
+        flex-direction: column;
+
+        height: 100%;
+
+        background: var(--header-fill-color);
+        box-shadow: var(--header-shadow);
+
+        & > main {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+        }
+    }
+}

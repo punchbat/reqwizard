@@ -1,0 +1,11 @@
+.cube {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.06);
+
+    &__inner {
+    }
+}

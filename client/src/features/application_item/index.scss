@@ -1,0 +1,65 @@
+.application_item {
+    position: relative;
+
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 8px 18px;
+    border: 1px solid rgb(237, 237, 237);
+    border-radius: 8px;
+
+    &:last-child {
+        margin: unset;
+    }
+
+    &:hover {
+        background-color: rgb(250, 250, 250);
+    }
+
+    &__inner {
+        display: flex;
+    }
+
+    &__info {
+        flex: 1 1 auto;
+    }
+
+    &__title {
+        & > span {
+            font-size: 22px;
+        }
+    }
+
+    &__description {
+        margin-bottom: 10px;
+    }
+
+    &__time {
+        display: flex;
+        flex-direction: column;
+        & span {
+            font-size: 8px;
+        }
+    }
+
+    &__sub_info {
+        align-self: flex-start;
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        column-gap: 10px;
+    }
+
+    &__type {
+    }
+
+    &__subType {
+    }
+
+    &__manager_action {
+        position: absolute;
+        right: 18px;
+        bottom: 10px;
+        margin-left: 10px;
+
+        align-self: flex-end;
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "app": {
+    "port": 8080,
+    "ip": "127.0.0.1"
+  },
+
+  "db": {
+    "name": "name",
+    "uri": "postgres://postgres:5432",
+    "user": "",
+    "password": ""
+  },
+
+  "services": {
+    "email": {
+      "SMTP_HOST": "smtp.gmail.com",
+      "SMTP_PORT": "587",
+      "SMTP_FROM": "no.reply.health.api@gmail.com",
+      "SMTP_PASSWORD": ""
+    }
+  },
+
+  "auth": {
+    "signing_key": "signing_key",
+    "token_ttl": 720
+  }
+}

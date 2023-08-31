@@ -1,0 +1,132 @@
+import { FC } from "react";
+import { useParams } from "react-router-dom";
+import { Button, Spin, Typography } from "antd";
+
+import { useGetProfileQuery } from "@app/services/auth";
+import { useGetByIDQuery, useDownloadFileQuery } from "@app/services/applicaiton";
+import { PageTitle } from "@features/index";
+import { cn, isManager } from "@utils";
+import moment from "moment";
+import { Cube } from "@components";
+import { applicationStatusColors } from "@constants";
+
+import "./Page.scss";
+
+const { Title, Text, Link } = Typography;
+
+const b = cn("application");
+
+const Application: FC = function () {
+    const { id } = useParams();
+
+    const { data: dataProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
+
+    const { data, error, isLoading } = useGetByIDQuery(id || "");
+    const {
+        data: dataFileUrl,
+        error: errorFile,
+        isLoading: isFileLoading,
+    } = useDownloadFileQuery(data?.payload?.fileName || "", {
+        skip: !data?.payload?.fileName,
+    });
+
+    if (error || errorFile) {
+        const errorMessage = error
+            ? "An error occurred while loading the application details"
+            : "An error occurred while downloading the file";
+        return (
+            <div className={b()}>
+                <div className={b("inner")}>
+                    <div className={b("title")}>
+                        <PageTitle title={{ text: "Error" }} />
+                    </div>
+                    <div className={b("content")}>
+                        <div className={b("error-message")}>
+                            <Text strong>{errorMessage}</Text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (isLoading || isLoadingProfile || isFileLoading) {
+        return <Spin />;
+    }
+
+    return (
+        <div className={b()}>
+            <div className={b("inner")}>
+                <div className={b("title")}>
+                    <PageTitle
+                        title={{
+                            text:
+                                (
+                                    <>
+                                        {data?.payload?.title}
+                                        {data?.payload?.status && (
+                                            <sup>
+                                                <Text
+                                                    style={{
+                                                        marginLeft: "4px",
+                                                        color: applicationStatusColors[data?.payload?.status],
+                                                    }}
+                                                >
+                                                    {data?.payload?.status}
+                                                </Text>
+                                            </sup>
+                                        )}
+                                    </>
+                                ) || "Application Title",
+                        }}
+                    />
+                </div>
+                <div className={b("content")}>
+                    <div className={b("type")}>
+                        <Cube>
+                            <Text>{data?.payload?.type}</Text>
+                        </Cube>
+                        <Cube>
+                            <Text>{data?.payload?.subType}</Text>
+                        </Cube>
+                    </div>
+                    <div className={b("description")}>
+                        <Title level={3}>{data?.payload?.description}</Title>
+                    </div>
+                    {dataFileUrl && (
+                        <div className={b("file")}>
+                            <Link download href={dataFileUrl} target="_blank" rel="noopener noreferrer">
+                                Download File
+                            </Link>
+                        </div>
+                    )}
+
+                    {data?.payload.ticketResponseId && (
+                        <div className={b("ticketresponse")}>
+                            <Link href={`/ticket-response/${data?.payload.ticketResponseId}`} rel="noopener noreferrer">
+                                Go to Ticket-Response
+                            </Link>
+                        </div>
+                    )}
+
+                    <div className={b("time")}>
+                        <Text disabled>
+                            created at: {moment(data?.payload?.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                        </Text>
+                        <Text disabled>
+                            updated at: {moment(data?.payload?.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
+                        </Text>
+                    </div>
+
+                    {!data?.payload.ticketResponseId && isManager(dataProfile?.payload.userRoles) && (
+                        <div className={b("action")}>
+                            <Button>Create Ticket-Response</Button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export { Application };
