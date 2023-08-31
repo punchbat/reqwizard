@@ -24,8 +24,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 	)
 
 	// Create the middleware instance
-	mUser := NewMiddlewareUser(authRepository, roleRepository, userRoleRepository)
-	mManager := NewMiddlewareManager(authRepository, roleRepository, userRoleRepository)
+	isUserMiddleware := NewMiddlewareUser(authRepository, roleRepository, userRoleRepository)
+	isManagerMiddleware := NewMiddlewareManager(authRepository, roleRepository, userRoleRepository)
 
 	// Create the handler
 	h := NewHandler(uc)
@@ -33,8 +33,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 	// Create the endpoints
 	endpoints := router.Group("/role/v1")
 	{
-		endpoints.GET("/list", h.GetRoles)
+		endpoints.GET("/list", authMiddleware, isUserMiddleware, h.GetRoles)
 	}
 
-	return mUser, mManager
+	return isUserMiddleware, isManagerMiddleware
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFunc, isManagerMiddleware gin.HandlerFunc, db *gorm.Gorm, mailer *email.Mailer) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFunc, isUserMiddleware gin.HandlerFunc, isManagerMiddleware gin.HandlerFunc, db *gorm.Gorm, mailer *email.Mailer) {
 	// Создаем repository, все взаимодействия с db в ней
 	repo := repository.NewRepository(db)
 	applicationRepo := applicationRepository.NewRepository(db)
@@ -32,8 +32,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 	// Create the endpoints
 	endpoints := router.Group("/ticket-response/v1")
 	{
-		endpoints.GET("/:id", authMiddleware, h.GetTicketResponseByID)
-		endpoints.GET("/my-list", authMiddleware, h.GetTicketResponsesByUserID)
+		endpoints.GET("/:id", authMiddleware, isUserMiddleware, h.GetTicketResponseByID)
+		endpoints.GET("/my-list", authMiddleware, isUserMiddleware, h.GetTicketResponsesByUserID)
 		// * manager
 		endpoints.POST("/create", authMiddleware, isManagerMiddleware, h.CreateTicketResponse)
 		endpoints.GET("/manager-list", authMiddleware, isManagerMiddleware, h.GetTicketResponsesByManagerID)

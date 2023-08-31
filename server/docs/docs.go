@@ -262,6 +262,84 @@ const docTemplate = `{
                     "applications"
                 ],
                 "summary": "receiving applications",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "9999990000",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "canceled",
+                                "waiting",
+                                "working",
+                                "done"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "general",
+                                "financial"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "enum": [
+                                "information",
+                                "account_help",
+                                "refunds",
+                                "payment"
+                            ],
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "string enums",
+                        "name": "subType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "createdAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "createdAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "updatedAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "updatedAtTo",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -765,6 +843,38 @@ const docTemplate = `{
                     "ticketResponses"
                 ],
                 "summary": "receiving ticketResponses",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "9999990000",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "createdAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "createdAtTo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-01-25T10:30:00.000Z",
+                        "name": "updatedAtFrom",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "2019-02-25T10:30:00.000Z",
+                        "name": "updatedAtTo",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

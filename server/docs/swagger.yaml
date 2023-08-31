@@ -505,6 +505,61 @@ paths:
   /api/application/v1/my-list:
     get:
       description: get all applications for user id
+      parameters:
+      - description: "9999990000"
+        in: query
+        name: search
+        type: string
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - canceled
+          - waiting
+          - working
+          - done
+          type: string
+        name: status
+        type: array
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - general
+          - financial
+          type: string
+        name: type
+        type: array
+      - collectionFormat: csv
+        description: string enums
+        in: query
+        items:
+          enum:
+          - information
+          - account_help
+          - refunds
+          - payment
+          type: string
+        name: subType
+        type: array
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: createdAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: createdAtTo
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: updatedAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: updatedAtTo
+        type: string
       responses:
         "200":
           description: OK
@@ -834,6 +889,27 @@ paths:
   /api/ticket-response/v1/my-list:
     get:
       description: get all ticketResponses for user id
+      parameters:
+      - description: "9999990000"
+        in: query
+        name: search
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: createdAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: createdAtTo
+        type: string
+      - description: "2019-01-25T10:30:00.000Z"
+        in: query
+        name: updatedAtFrom
+        type: string
+      - description: "2019-02-25T10:30:00.000Z"
+        in: query
+        name: updatedAtTo
+        type: string
       responses:
         "200":
           description: OK
