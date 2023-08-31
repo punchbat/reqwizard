@@ -3,11 +3,15 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"reqwizard/internal/domain"
+	"reqwizard/internal/services/email"
 
 	"reqwizard/internal/routes/application"
 	"reqwizard/internal/routes/auth"
 	"reqwizard/internal/routes/ticketResponse"
+
+	service_email "reqwizard/internal/services/email"
 
 	"github.com/google/uuid"
 )
@@ -16,18 +20,25 @@ type UseCase struct {
 	repo            ticketResponse.Repository
 	applicationRepo application.Repository
 	authRepo        auth.Repository
+
+	mailer *email.Mailer
 }
 
-func NewUseCase(repo ticketResponse.Repository, applicationRepo application.Repository, authRepo auth.Repository) *UseCase {
+func NewUseCase(repo ticketResponse.Repository, applicationRepo application.Repository, authRepo auth.Repository,
+
+	mailer *service_email.Mailer,
+) *UseCase {
 	return &UseCase{
 		repo:            repo,
 		applicationRepo: applicationRepo,
 		authRepo:        authRepo,
+
+		mailer: mailer,
 	}
 }
 
-func (a *UseCase) GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error) {
-	ticketResponse, err := a.repo.GetTicketResponseByID(ctx, id)
+func (uc *UseCase) GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error) {
+	ticketResponse, err := uc.repo.GetTicketResponseByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -35,8 +46,8 @@ func (a *UseCase) GetTicketResponseByID(ctx context.Context, id string) (*domain
 	return ticketResponse, nil
 }
 
-func (a *UseCase) GetTicketResponsesByUserID(ctx context.Context, id string) ([]*domain.TicketResponse, error) {
-	ticketResponses, err := a.repo.GetTicketResponsesByUserID(ctx, id)
+func (uc *UseCase) GetTicketResponsesByUserID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
+	ticketResponses, err := uc.repo.GetTicketResponsesByUserID(ctx, inp)
 	if err != nil {
 		return nil, err
 	}
@@ -45,8 +56,15 @@ func (a *UseCase) GetTicketResponsesByUserID(ctx context.Context, id string) ([]
 }
 
 // * manager.
-func (a *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.CreateTicketResponseInput) error {
-	applcationEntity, err := a.applicationRepo.GetApplicationByID(ctx, inp.ApplicationID)
+
+type EmailContent struct {
+	ApplicationTitle   string
+	TicketResponseText string
+	Link               string
+}
+
+func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.CreateTicketResponseInput) error {
+	applcationEntity, err := uc.applicationRepo.GetApplicationByID(ctx, inp.ApplicationID)
 	if err != nil {
 		return err
 	}
@@ -63,7 +81,7 @@ func (a *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.
 		Text:          inp.Text,
 	}
 
-	err = a.repo.CreateTicketResponse(ctx, ticketResponseEntity)
+	err = uc.repo.CreateTicketResponse(ctx, ticketResponseEntity)
 	if err != nil {
 		return err
 	}
@@ -71,16 +89,34 @@ func (a *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.
 	applcationEntity.TicketResponseID = ticketResponseEntity.ID
 	applcationEntity.ManagerID = inp.ID
 	applcationEntity.Status = domain.ApplicationStatusDone
-	_, err = a.applicationRepo.UpdateApplication(ctx, applcationEntity)
+	_, err = uc.applicationRepo.UpdateApplication(ctx, applcationEntity)
 	if err != nil {
 		return err
 	}
 
+	userEntity, err := uc.authRepo.GetUserByID(ctx, applcationEntity.UserID)
+	if err != nil {
+		return err
+	}
+
+	// Отправляем письмо
+	emailMessage := service_email.Message{
+		Subject:      "Reqwizard: your Application is done",
+		To:           []string{userEntity.Email},
+		TemplateName: "UserApplicationDone",
+		Content: EmailContent{
+			ApplicationTitle:   applcationEntity.Title,
+			TicketResponseText: ticketResponseEntity.Text,
+			Link:               fmt.Sprintf("http://localhost:8000/ticket-response/%s", ticketResponseEntity.ID),
+		},
+	}
+	uc.mailer.Send(&emailMessage)
+
 	return nil
 }
 
-func (a *UseCase) GetTicketResponsesByManagerID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
-	ticketResponses, err := a.repo.GetTicketResponsesByManagerID(ctx, inp)
+func (uc *UseCase) GetTicketResponsesByManagerID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
+	ticketResponses, err := uc.repo.GetTicketResponsesByManagerID(ctx, inp)
 	if err != nil {
 		return nil, err
 	}

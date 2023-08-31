@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"reqwizard/internal/domain"
+	"time"
 )
 
 type Repository interface {
@@ -11,6 +12,8 @@ type Repository interface {
 	GetUserByEmail(ctx context.Context, email string) (*domain.User, error)
 	GetUserByID(ctx context.Context, id string) (*domain.User, error)
 	DeleteUser(ctx context.Context, id string) error
+	DeleteUsers(ctx context.Context, ids []string) error
+	GetUnverifiedUsersCreatedBefore(ctx context.Context, before time.Time) ([]*domain.User, error)
 }
 
 const CtxUserKey = "user"
@@ -24,4 +27,6 @@ type UseCase interface {
 	ParseToken(ctx context.Context, accessToken string) (*domain.User, error)
 
 	GetProfile(ctx context.Context, inp *GetProfileInput) (*domain.User, error)
+
+	RemoveUnverifiedUsers(ctx context.Context) error
 }

@@ -104,12 +104,50 @@ func (r *Repository) GetTicketResponseByID(ctx context.Context, id string) (*dom
 	return dto.ConvertTicketResponseToDomain(&ticketResponseDTO), nil
 }
 
-func (r *Repository) GetTicketResponsesByUserID(ctx context.Context, id string) ([]*domain.TicketResponse, error) {
+func (r *Repository) GetTicketResponsesByUserID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
 	query := r.db.Conn
 
-	uuid := uuid.MustParse(id)
+	uuid := uuid.MustParse(inp.ID)
+	query = query.Where("user_id = ?", uuid)
+
+	if inp.Search != "" {
+		searchTerm := "%" + inp.Search + "%"
+		query = query.Where(
+			"text LIKE ?",
+			searchTerm,
+		)
+	}
+	if inp.CreatedAtFrom != "" {
+		fromTime, err := utils.GetTimeFromString(inp.CreatedAtFrom)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("created_at >= ?", fromTime)
+	}
+	if inp.CreatedAtTo != "" {
+		toTime, err := utils.GetTimeFromString(inp.CreatedAtTo)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("created_at <= ?", toTime)
+	}
+	if inp.UpdatedAtFrom != "" {
+		fromTime, err := utils.GetTimeFromString(inp.UpdatedAtFrom)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("updated_at >= ?", fromTime)
+	}
+	if inp.UpdatedAtTo != "" {
+		toTime, err := utils.GetTimeFromString(inp.UpdatedAtTo)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("updated_at <= ?", toTime)
+	}
+
 	var ticketResponsesDTO []*dto.TicketResponse
-	err := query.Where("user_id = ?", uuid).Find(&ticketResponsesDTO).Error
+	err := query.Find(&ticketResponsesDTO).Error
 	if err != nil {
 		return nil, err
 	}

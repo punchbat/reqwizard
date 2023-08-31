@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 
 	"reqwizard/internal/routes"
 	service_email "reqwizard/internal/services/email"
@@ -19,11 +20,14 @@ import (
 type App struct {
 	httpServer *http.Server
 
+	c      *cron.Cron
 	pgGorm *gorm.Gorm
 	mailer *service_email.Mailer
 }
 
 func New(ctx context.Context) (*App, error) {
+	c := cron.New()
+
 	err := postgres.RunMigrations()
 	if err != nil {
 		return nil, err
@@ -37,12 +41,17 @@ func New(ctx context.Context) (*App, error) {
 	mailer := service_email.NewMailer()
 
 	return &App{
+		c:      c,
 		pgGorm: pgGorm,
 		mailer: mailer,
 	}, nil
 }
 
 func (app *App) Run(port string) error {
+	go func() {
+		app.c.Start()
+	}()
+
 	// Init gin handler
 	router := gin.Default()
 	corsConfig := cors.DefaultConfig()
@@ -56,7 +65,7 @@ func (app *App) Run(port string) error {
 		gin.Logger(),
 	)
 
-	routes.InitRoutes(router, app.pgGorm, app.mailer)
+	routes.InitRoutes(router, app.c, app.pgGorm, app.mailer)
 
 	// Конфиги для сервера
 	app.httpServer = &http.Server{
@@ -77,6 +86,10 @@ func (app *App) Run(port string) error {
 }
 
 func (app *App) Stop() error {
+	app.c.Stop()
+	<-app.c.Stop().Done()
+	log.Println("Cron jobs gracefully stopped")
+
 	err := app.pgGorm.DB.Close()
 	if err == nil {
 		log.Println("pg gorm connection gracefully stopped")

@@ -165,6 +165,7 @@ const Applications: FC = function () {
                     <div className={b("sub", isVisibleSubFilter ? ["active"] : [])}>
                         <div className={b("sub_content")}>
                             <Select
+                                placeholder="Select statuses"
                                 mode="multiple"
                                 value={filter.statuses}
                                 onChange={value => handleFiltersItemChange("statuses", value)}
@@ -175,6 +176,7 @@ const Applications: FC = function () {
                                 <Option value="done">Done</Option>
                             </Select>
                             <Select
+                                placeholder="Select types"
                                 mode="multiple"
                                 value={filter.types}
                                 onChange={value => handleFiltersItemChange("types", value)}
@@ -183,6 +185,7 @@ const Applications: FC = function () {
                                 <Option value="financial">Financial</Option>
                             </Select>
                             <Select
+                                placeholder="Select sub-types, sub-types depend on types"
                                 mode="multiple"
                                 value={filter.subTypes}
                                 onChange={value => handleFiltersItemChange("subTypes", value)}

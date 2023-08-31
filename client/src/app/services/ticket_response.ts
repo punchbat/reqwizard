@@ -43,10 +43,11 @@ export const ticketResponseApi = createApi({
         getTicketResponseByID: builder.query<TicketResponseReponse, string>({
             query: id => `/api/ticket-response/v1/${id}`,
         }),
-        getTicketResponsesByUserID: builder.query<TicketResponsesReponse, void>({
-            query: () => ({
+        getTicketResponsesByUserID: builder.query<TicketResponsesReponse, FilterInput>({
+            query: (filters = {}) => ({
                 url: "/api/ticket-response/v1/my-list",
                 method: "GET",
+                params: filters,
             }),
         }),
     }),

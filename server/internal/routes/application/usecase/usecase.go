@@ -28,8 +28,8 @@ func NewUseCase(repo application.Repository, authRepo auth.Repository) *UseCase 
 	}
 }
 
-func (a *UseCase) CreateApplication(ctx context.Context, inp *application.CreateApplicationInput) error {
-	userEntity, err := a.authRepo.GetUserByID(ctx, inp.ID)
+func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.CreateApplicationInput) error {
+	userEntity, err := uc.authRepo.GetUserByID(ctx, inp.ID)
 	if err != nil {
 		return err
 	}
@@ -66,14 +66,14 @@ func (a *UseCase) CreateApplication(ctx context.Context, inp *application.Create
 		entity.FileName = fileName
 	}
 
-	err = a.repo.CreateApplication(ctx, entity)
+	err = uc.repo.CreateApplication(ctx, entity)
 	if err != nil {
 		return err
 	}
 
 	userEntity.ApplicationCreatedAt = time.Now()
 
-	err = a.authRepo.UpdateUser(ctx, userEntity)
+	err = uc.authRepo.UpdateUser(ctx, userEntity)
 	if err != nil {
 		return err
 	}
@@ -81,13 +81,15 @@ func (a *UseCase) CreateApplication(ctx context.Context, inp *application.Create
 	return nil
 }
 
-func (a *UseCase) GetFile(ctx context.Context, userID string, fileName string) ([]byte, string, error) {
-	userEntity, err := a.authRepo.GetUserByID(ctx, userID)
+func (uc *UseCase) GetFile(ctx context.Context, userID string, fileName string) ([]byte, string, error) {
+	userEntity, err := uc.authRepo.GetUserByID(ctx, userID)
 	if err != nil {
 		return nil, "", err
 	}
 
-	applicationEntities, err := a.repo.GetApplicationsByUserID(ctx, userEntity.ID)
+	applicationEntities, err := uc.repo.GetApplicationsByUserID(ctx, &application.ApplicationListInput{
+		ID: userEntity.ID,
+	})
 	if err != nil {
 		return nil, "", err
 	}
@@ -100,7 +102,7 @@ func (a *UseCase) GetFile(ctx context.Context, userID string, fileName string) (
 	}
 
 	if !hasFileName {
-		return nil, "", errors.New("User doesnt have access to the file")
+		return nil, "", errors.New("User doesn`t have access to the file")
 	}
 
 	filePath := "uploads/applications/" + fileName
@@ -120,8 +122,8 @@ func (a *UseCase) GetFile(ctx context.Context, userID string, fileName string) (
 	return fileContents, mimeType, nil
 }
 
-func (a *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.Application, error) {
-	application, err := a.repo.GetApplicationByID(ctx, id)
+func (uc *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.Application, error) {
+	application, err := uc.repo.GetApplicationByID(ctx, id)
 
 	if err != nil {
 		return nil, err
@@ -130,9 +132,8 @@ func (a *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.Ap
 	return application, nil
 }
 
-func (a *UseCase) GetApplicationsByUserID(ctx context.Context, id string) ([]*domain.Application, error) {
-	applications, err := a.repo.GetApplicationsByUserID(ctx, id)
-
+func (uc *UseCase) GetApplicationsByUserID(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
+	applications, err := uc.repo.GetApplicationsByUserID(ctx, inp)
 	if err != nil {
 		return nil, err
 	}
@@ -141,8 +142,8 @@ func (a *UseCase) GetApplicationsByUserID(ctx context.Context, id string) ([]*do
 }
 
 // * manager.
-func (a *UseCase) GetApplications(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
-	applications, err := a.repo.GetApplications(ctx, inp)
+func (uc *UseCase) GetApplications(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
+	applications, err := uc.repo.GetApplications(ctx, inp)
 	if err != nil {
 		return nil, err
 	}

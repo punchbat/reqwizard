@@ -17,8 +17,8 @@ func NewUseCase(repoRole role.Repository) *UseCase {
 	}
 }
 
-func (a *UseCase) GetRoles(ctx context.Context) ([]*domain.Role, error) {
-	roles, err := a.repoRole.GetRoles(ctx)
+func (uc *UseCase) GetRoles(ctx context.Context) ([]*domain.Role, error) {
+	roles, err := uc.repoRole.GetRoles(ctx)
 
 	if err != nil {
 		return nil, err
@@ -27,8 +27,8 @@ func (a *UseCase) GetRoles(ctx context.Context) ([]*domain.Role, error) {
 	return roles, nil
 }
 
-func (a *UseCase) GetRoleByID(ctx context.Context, id string) (*domain.Role, error) {
-	role, err := a.repoRole.GetRoleByID(ctx, id)
+func (uc *UseCase) GetRoleByID(ctx context.Context, id string) (*domain.Role, error) {
+	role, err := uc.repoRole.GetRoleByID(ctx, id)
 
 	if err != nil {
 		return nil, err

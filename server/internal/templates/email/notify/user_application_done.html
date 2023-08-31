@@ -1,0 +1,10 @@
+{{define "UserApplicationDone"}} {{template "header"}}
+
+<div class="wrapper">
+  <h3>Hello from your Reqwizard</h3>
+  <p>Your Application <strong>{{.ApplicationTitle}}</strong> is done</p>
+  <p>Manager response <strong>{{.TicketResponseText}}</strong></p>
+  <a href="{{.Link}}">Go to Ticket-Response</a>
+</div>
+
+{{template "footer"}} {{end}}

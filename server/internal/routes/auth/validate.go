@@ -11,7 +11,7 @@ type SignUpInput struct {
 	Email           string `json:"email"            validate:"required,email"`
 	Password        string `json:"password"         validate:"required,min=8,containsany=abcdefghijklmnopqrstuvwxyz,containsany=ABCDEFGHIJKLMNOPQRSTUVWXYZ,containsany=0123456789,containsany=@!?"`
 	PasswordConfirm string `json:"passwordConfirm"  validate:"required,min=8,containsany=abcdefghijklmnopqrstuvwxyz,containsany=ABCDEFGHIJKLMNOPQRSTUVWXYZ,containsany=0123456789,containsany=@!?"`
-	Role 			string `json:"role" validate:"required,oneof=user manager"`
+	Role            string `json:"role" validate:"required,oneof=user manager"`
 }
 
 func ValidateSignUpInput(inp *SignUpInput) error {

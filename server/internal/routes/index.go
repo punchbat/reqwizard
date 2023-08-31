@@ -12,21 +12,22 @@ import (
 	"reqwizard/pkg/postgres/gorm"
 
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func InitRoutes(router *gin.Engine, pgGorm *gorm.Gorm, mailer *email.Mailer) {
-	//* Свагер
+func InitRoutes(router *gin.Engine, c *cron.Cron, pgGorm *gorm.Gorm, mailer *email.Mailer) {
+	// * Свагер
 	docs.SwaggerInfo.BasePath = "/api"
-	
-	//* Пингуем сервер
+
+	// * Пингуем сервер
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
 
 	// * AUTH
-	authMiddleware := authHandler.RegisterHTTPEndpoints(router, pgGorm, mailer)
+	authMiddleware := authHandler.RegisterHTTPEndpoints(router, c, pgGorm, mailer)
 
 	// * API endpoints
 	api := router.Group("/api")
@@ -36,9 +37,9 @@ func InitRoutes(router *gin.Engine, pgGorm *gorm.Gorm, mailer *email.Mailer) {
 
 	// * APPLICATION
 	applicationHandler.RegisterHTTPEndpoints(api, authMiddleware, isManagerMiddleware, pgGorm)
-	
+
 	// * TICKET_RESPONSE
-	ticketResponseHandler.RegisterHTTPEndpoints(api, authMiddleware, isManagerMiddleware, pgGorm)
+	ticketResponseHandler.RegisterHTTPEndpoints(api, authMiddleware, isManagerMiddleware, pgGorm, mailer)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

@@ -186,6 +186,14 @@ func (h *Handler) GetApplicationByID(c *gin.Context) {
 // @Tags applications
 // @Summary receiving applications
 // @Description get all applications for user id
+// @Param search query string false "9999990000"
+// @Param status query []string false "string enums" Enums(canceled, waiting, working, done)
+// @Param type query []string false "string enums" Enums(general, financial)
+// @Param subType query []string false "string enums" Enums(information, account_help, refunds, payment)
+// @Param createdAtFrom query string false "2019-01-25T10:30:00.000Z"
+// @Param createdAtTo query string false "2019-02-25T10:30:00.000Z"
+// @Param updatedAtFrom query string false "2019-01-25T10:30:00.000Z"
+// @Param updatedAtTo query string false "2019-02-25T10:30:00.000Z"
 // @Success 200 {object} domain.ResponseApplications
 // @Failure 400 {object} domain.BadResponse
 // @Failure 401 {object} domain.BadResponse
@@ -194,7 +202,7 @@ func (h *Handler) GetApplicationByID(c *gin.Context) {
 // @Failure 500 {object} domain.BadResponse
 // @Router /api/application/v1/my-list [get].
 func (h *Handler) GetApplicationsByUserID(c *gin.Context) {
-	inp := new(application.ApplicationInput)
+	inp := new(application.ApplicationListInput)
 
 	// c токена вытаскиваем
 	if user, exist := c.Get(auth.CtxUserKey); exist {
@@ -202,7 +210,37 @@ func (h *Handler) GetApplicationsByUserID(c *gin.Context) {
 		inp.Email = user.(*domain.User).Email
 	}
 
-	applications, err := h.useCase.GetApplicationsByUserID(c.Request.Context(), inp.ID)
+	if err := c.ShouldBindQuery(inp); err != nil {
+		c.JSON(http.StatusBadRequest, domain.BadResponse{
+			Status:  http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	statuses := utils.RemoveEmptyStrings(strings.Split(c.Query("statuses"), ","))
+	if len(statuses) > 0 {
+		inp.Statuses = statuses
+	}
+	types := utils.RemoveEmptyStrings(strings.Split(c.Query("types"), ","))
+	if len(types) > 0 {
+		inp.Types = types
+	}
+	subTypes := utils.RemoveEmptyStrings(strings.Split(c.Query("subTypes"), ","))
+	if len(subTypes) > 0 {
+		inp.SubTypes = subTypes
+	}
+
+	if err := application.ValidateApplicationListInput(inp); err != nil {
+		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
+			Status:  http.StatusNotAcceptable,
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	applications, err := h.useCase.GetApplicationsByUserID(c.Request.Context(), inp)
 	if err != nil {
 		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
 			Status:  http.StatusNotAcceptable,

@@ -14,9 +14,9 @@ type Middleware struct {
 	roleName domain.RoleName
 	status   domain.UserRoleStatus
 
-	userRepo        auth.Repository
-	roleRepo        role.Repository
-	userRoleRepo    userRole.Repository
+	userRepo     auth.Repository
+	roleRepo     role.Repository
+	userRoleRepo userRole.Repository
 }
 
 func NewMiddlewareUser(userRepo auth.Repository, roleRepo role.Repository, userRoleRepo userRole.Repository) gin.HandlerFunc {

@@ -37,7 +37,7 @@ export const applicationApi = createApi({
                 await queryFulfilled;
 
                 await dispatch(
-                    applicationApi.endpoints.getMyList.initiate(undefined, { subscribe: false, forceRefetch: true }),
+                    applicationApi.endpoints.getMyList.initiate({}, { subscribe: false, forceRefetch: true }),
                 );
                 await dispatch(
                     applicationApi.endpoints.getManagerList.initiate({}, { subscribe: false, forceRefetch: true }),
@@ -61,10 +61,11 @@ export const applicationApi = createApi({
                 },
             }),
         }),
-        getMyList: builder.query<GetMyListResponse, void>({
-            query: () => ({
+        getMyList: builder.query<GetMyListResponse, FilterInput>({
+            query: (filters = {}) => ({
                 url: "/api/application/v1/my-list",
                 method: "GET",
+                params: filters,
             }),
         }),
         getManagerList: builder.query<GetListResponse, FilterInput>({

@@ -7,7 +7,7 @@ import (
 
 type Repository interface {
 	GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error)
-	GetTicketResponsesByUserID(ctx context.Context, id string) ([]*domain.TicketResponse, error)
+	GetTicketResponsesByUserID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, error)
 
 	CreateTicketResponse(ctx context.Context, req *domain.TicketResponse) error
 	GetTicketResponses(ctx context.Context) ([]*domain.TicketResponse, error)
@@ -16,7 +16,7 @@ type Repository interface {
 
 type UseCase interface {
 	GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error)
-	GetTicketResponsesByUserID(ctx context.Context, id string) ([]*domain.TicketResponse, error)
+	GetTicketResponsesByUserID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, error)
 
 	// * manager
 	CreateTicketResponse(ctx context.Context, inp *CreateTicketResponseInput) error

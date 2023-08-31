@@ -28,13 +28,13 @@ func NewHandler(useCase auth.UseCase) *Handler {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/sign-up [post]
+// @Router /api/auth/v1/sign-up [post].
 func (h *Handler) SignUp(c *gin.Context) {
 	inp := new(auth.SignUpInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 		})
 		return
@@ -70,13 +70,13 @@ func (h *Handler) SignUp(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/send-verify-code [post]
+// @Router /api/auth/v1/send-verify-code [post].
 func (h *Handler) SendVerifyCode(c *gin.Context) {
 	inp := new(auth.SendVerifyCodeInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 		})
 		return
@@ -112,13 +112,13 @@ func (h *Handler) SendVerifyCode(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/check-verify-code [post]
+// @Router /api/auth/v1/check-verify-code [post].
 func (h *Handler) CheckVerifyCode(c *gin.Context) {
 	inp := new(auth.CheckVerifyCodeInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 		})
 		return
@@ -143,7 +143,7 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.Response{
-		Status: http.StatusOK,
+		Status:  http.StatusOK,
 		Payload: token,
 	})
 }
@@ -158,13 +158,13 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/sign-in [post]
+// @Router /api/auth/v1/sign-in [post].
 func (h *Handler) SignIn(c *gin.Context) {
 	inp := new(auth.SignInInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 		})
 		return
@@ -200,7 +200,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/get-profile [get]
+// @Router /api/auth/v1/get-profile [get].
 func (h *Handler) GetProfile(c *gin.Context) {
 	inp := new(auth.GetProfileInput)
 
@@ -221,7 +221,7 @@ func (h *Handler) GetProfile(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.ResponseUser{
-		Status: http.StatusOK,
+		Status:  http.StatusOK,
 		Payload: user,
 	})
 }

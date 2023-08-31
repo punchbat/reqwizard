@@ -5,12 +5,13 @@ import (
 	authRepository "reqwizard/internal/routes/auth/repository"
 	"reqwizard/internal/routes/ticketResponse/repository"
 	"reqwizard/internal/routes/ticketResponse/usecase"
+	"reqwizard/internal/services/email"
 	"reqwizard/pkg/postgres/gorm"
 
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFunc, isManagerMiddleware gin.HandlerFunc, db *gorm.Gorm) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFunc, isManagerMiddleware gin.HandlerFunc, db *gorm.Gorm, mailer *email.Mailer) {
 	// Создаем repository, все взаимодействия с db в ней
 	repo := repository.NewRepository(db)
 	applicationRepo := applicationRepository.NewRepository(db)
@@ -21,6 +22,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 		repo,
 		applicationRepo,
 		authRepo,
+
+		mailer,
 	)
 
 	// Create the handler

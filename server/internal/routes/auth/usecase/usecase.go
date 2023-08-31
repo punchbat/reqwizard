@@ -8,6 +8,7 @@ import (
 	"reqwizard/internal/domain"
 	"reqwizard/internal/services/email"
 	service_email "reqwizard/internal/services/email"
+	"reqwizard/internal/shared/utils"
 	"strconv"
 	"time"
 
@@ -71,16 +72,16 @@ func ComparePasswordHash(password1, password2 string) (bool, error) {
 	return true, nil
 }
 
-func (a *UseCase) MakeClearUser(ctx context.Context, user *domain.User) (*domain.User, error) {
+func (uc *UseCase) MakeClearUser(ctx context.Context, user *domain.User) (*domain.User, error) {
 	user.Password = ""
 	user.PasswordConfirm = ""
 
-	userRoles, err := a.userRoleRepo.GetUserRoles(ctx, user.ID)
+	userRoles, err := uc.userRoleRepo.GetUserRoles(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	roles, err := a.roleRepo.GetRoles(ctx)
+	roles, err := uc.roleRepo.GetRoles(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -104,8 +105,8 @@ func (a *UseCase) MakeClearUser(ctx context.Context, user *domain.User) (*domain
 	return user, nil
 }
 
-func (a *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
-	user, err := a.repo.GetUserByEmail(ctx, inp.Email)
+func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
+	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
 	if err == nil {
 		return auth.ErrUserIsExist
 	}
@@ -121,7 +122,7 @@ func (a *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 	}
 
 	// Находим роль обычного юзера
-	role, err := a.roleRepo.GetRoleByName(ctx, string(inp.Role))
+	role, err := uc.roleRepo.GetRoleByName(ctx, string(inp.Role))
 	if err != nil {
 		return err
 	}
@@ -135,7 +136,7 @@ func (a *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		PasswordConfirm: hashPasswordConfirm,
 		Verified:        false,
 	}
-	if err := a.repo.CreateUser(ctx, user); err != nil {
+	if err := uc.repo.CreateUser(ctx, user); err != nil {
 		return err
 	}
 
@@ -147,7 +148,7 @@ func (a *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		RoleID: role.ID,
 		Status: domain.UserRoleStatusApproved,
 	}
-	err = a.userRoleRepo.CreateUserRole(ctx, &userRole)
+	err = uc.userRoleRepo.CreateUserRole(ctx, &userRole)
 	if err != nil {
 		return err
 	}
@@ -159,8 +160,8 @@ type EmailContent struct {
 	VerifyCode string
 }
 
-func (a *UseCase) SendVerifyCode(ctx context.Context, inp *auth.SendVerifyCodeInput) error {
-	user, err := a.repo.GetUserByEmail(ctx, inp.Email)
+func (uc *UseCase) SendVerifyCode(ctx context.Context, inp *auth.SendVerifyCodeInput) error {
+	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
 	if err != nil {
 		return auth.ErrUserNotFound
 	}
@@ -178,26 +179,26 @@ func (a *UseCase) SendVerifyCode(ctx context.Context, inp *auth.SendVerifyCodeIn
 	randomCode := rand.Intn(maxVal-minVal+1) + minVal
 
 	user.VerifyCode = strconv.Itoa(randomCode)
-	if err := a.repo.UpdateUser(ctx, user); err != nil {
+	if err := uc.repo.UpdateUser(ctx, user); err != nil {
 		return err
 	}
 
 	// Отправляем письмо
 	emailMessage := service_email.Message{
-		Subject:      "Service: verify code",
+		Subject:      "Reqwizard: verify code",
 		To:           []string{inp.Email},
 		TemplateName: "VerifyCode",
 		Content: EmailContent{
 			VerifyCode: user.VerifyCode,
 		},
 	}
-	a.mailer.Send(&emailMessage)
+	uc.mailer.Send(&emailMessage)
 
 	return nil
 }
 
-func (a *UseCase) CheckVerifyCode(ctx context.Context, inp *auth.CheckVerifyCodeInput) (string, error) {
-	user, err := a.repo.GetUserByEmail(ctx, inp.Email)
+func (uc *UseCase) CheckVerifyCode(ctx context.Context, inp *auth.CheckVerifyCodeInput) (string, error) {
+	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
 	if err != nil {
 		return "", auth.ErrUserNotFound
 	}
@@ -217,15 +218,15 @@ func (a *UseCase) CheckVerifyCode(ctx context.Context, inp *auth.CheckVerifyCode
 	user.Verified = true
 	user.VerifyCode = ""
 
-	if err := a.repo.UpdateUser(ctx, user); err != nil {
+	if err := uc.repo.UpdateUser(ctx, user); err != nil {
 		return "", err
 	}
 
-	return a.GetToken(ctx, user)
+	return uc.GetToken(ctx, user)
 }
 
-func (a *UseCase) SignIn(ctx context.Context, inp *auth.SignInInput) error {
-	user, err := a.repo.GetUserByEmail(ctx, inp.Email)
+func (uc *UseCase) SignIn(ctx context.Context, inp *auth.SignInInput) error {
+	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
 	if err != nil {
 		return auth.ErrUserNotFound
 	}
@@ -246,8 +247,8 @@ func (a *UseCase) SignIn(ctx context.Context, inp *auth.SignInInput) error {
 	return nil
 }
 
-func (a *UseCase) GetToken(ctx context.Context, user *domain.User) (string, error) {
-	user, err := a.MakeClearUser(ctx, user)
+func (uc *UseCase) GetToken(ctx context.Context, user *domain.User) (string, error) {
+	user, err := uc.MakeClearUser(ctx, user)
 	if err != nil {
 		return "", err
 	}
@@ -255,13 +256,13 @@ func (a *UseCase) GetToken(ctx context.Context, user *domain.User) (string, erro
 	claims := AuthClaims{
 		User: user,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
+			ExpiresAt: jwt.At(time.Now().Add(uc.expireDuration)),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	completeSignedToken, err := token.SignedString(a.signingKey)
+	completeSignedToken, err := token.SignedString(uc.signingKey)
 
 	if err != nil {
 		return "", err
@@ -270,12 +271,12 @@ func (a *UseCase) GetToken(ctx context.Context, user *domain.User) (string, erro
 	return completeSignedToken, nil
 }
 
-func (a *UseCase) ParseToken(ctx context.Context, accessToken string) (*domain.User, error) {
+func (uc *UseCase) ParseToken(ctx context.Context, accessToken string) (*domain.User, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return a.signingKey, nil
+		return uc.signingKey, nil
 	})
 
 	if err != nil {
@@ -289,17 +290,38 @@ func (a *UseCase) ParseToken(ctx context.Context, accessToken string) (*domain.U
 	return nil, auth.ErrInvalidAccessToken
 }
 
-func (a *UseCase) GetProfile(ctx context.Context, inp *auth.GetProfileInput) (*domain.User, error) {
-	user, err := a.repo.GetUserByID(ctx, inp.ID)
+func (uc *UseCase) GetProfile(ctx context.Context, inp *auth.GetProfileInput) (*domain.User, error) {
+	user, err := uc.repo.GetUserByID(ctx, inp.ID)
 
 	if err != nil {
 		return nil, auth.ErrUserNotFound
 	}
 
-	user, err = a.MakeClearUser(ctx, user)
+	user, err = uc.MakeClearUser(ctx, user)
 	if err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func (uc *UseCase) RemoveUnverifiedUsers(ctx context.Context) error {
+	now := time.Now()
+	interval := now.Add(-24 * time.Hour)
+
+	// Получаем список неподтвержденных пользователей, созданных более 24 часов назад
+	unverifiedUsers, err := uc.repo.GetUnverifiedUsersCreatedBefore(ctx, interval)
+	if err != nil {
+		return err
+	}
+
+	unverifiedUserIDs := utils.Map(unverifiedUsers, func(i *domain.User) string {
+		return i.ID
+	})
+
+	if err = uc.repo.DeleteUsers(ctx, unverifiedUserIDs); err != nil {
+		return err
+	}
+
+	return nil
 }

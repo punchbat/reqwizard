@@ -21,7 +21,7 @@ func NewRepository(db *gorm.Gorm) *Repository {
 
 func (r *Repository) GetRoleByID(ctx context.Context, id string) (*domain.Role, error) {
 	query := r.db.Conn
-	
+
 	uuid := uuid.MustParse(id)
 	var roleDTO dto.Role
 
@@ -70,7 +70,7 @@ func (r *Repository) GetRoleByName(ctx context.Context, name string) (*domain.Ro
 
 func (r *Repository) GetRoles(ctx context.Context) ([]*domain.Role, error) {
 	query := r.db.Conn
-	
+
 	var rolesDTO []*dto.Role
 	err := query.Find(&rolesDTO).Error
 	if err != nil {

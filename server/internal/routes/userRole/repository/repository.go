@@ -19,7 +19,7 @@ func NewRepository(db *gorm.Gorm) *Repository {
 
 func (r *Repository) CreateUserRole(ctx context.Context, userRole *domain.UserRole) error {
 	query := r.db.Conn
-	
+
 	model := dto.ConvertUserRoleFromDomain(userRole)
 	err := query.Create(model).Error
 	if err != nil {

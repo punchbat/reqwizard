@@ -80,12 +80,59 @@ func (r *Repository) GetApplicationByID(ctx context.Context, id string) (*domain
 	return dto.ConvertApplicationToDomain(&applicationDTO), nil
 }
 
-func (r *Repository) GetApplicationsByUserID(ctx context.Context, id string) ([]*domain.Application, error) {
+func (r *Repository) GetApplicationsByUserID(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
 	query := r.db.Conn
 
-	uuid := uuid.MustParse(id)
+	uuid := uuid.MustParse(inp.ID)
+	query = query.Where("user_id = ?", uuid)
+
+	if inp.Search != "" {
+		searchTerm := "%" + inp.Search + "%"
+		query = query.Where(
+			"title LIKE ? OR description LIKE ?",
+			searchTerm, searchTerm,
+		)
+	}
+	if len(inp.Statuses) > 0 {
+		query = query.Where("status IN (?)", inp.Statuses)
+	}
+	if len(inp.Types) > 0 {
+		query = query.Where("type IN (?)", inp.Types)
+	}
+	if len(inp.SubTypes) > 0 {
+		query = query.Where("sub_type IN (?)", inp.SubTypes)
+	}
+	if inp.CreatedAtFrom != "" {
+		fromTime, err := utils.GetTimeFromString(inp.CreatedAtFrom)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("created_at >= ?", fromTime)
+	}
+	if inp.CreatedAtTo != "" {
+		toTime, err := utils.GetTimeFromString(inp.CreatedAtTo)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("created_at <= ?", toTime)
+	}
+	if inp.UpdatedAtFrom != "" {
+		fromTime, err := utils.GetTimeFromString(inp.UpdatedAtFrom)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("updated_at >= ?", fromTime)
+	}
+	if inp.UpdatedAtTo != "" {
+		toTime, err := utils.GetTimeFromString(inp.UpdatedAtTo)
+		if err != nil {
+			return nil, err
+		}
+		query = query.Where("updated_at <= ?", toTime)
+	}
+
 	var applicationsDTO []*dto.Application
-	err := query.Where("user_id = ?", uuid).Find(&applicationsDTO).Error
+	err := query.Find(&applicationsDTO).Error
 	if err != nil {
 		return nil, err
 	}

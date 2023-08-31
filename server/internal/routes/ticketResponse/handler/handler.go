@@ -159,6 +159,11 @@ func (h *Handler) GetTicketResponseByID(c *gin.Context) {
 // @Tags ticketResponses
 // @Summary receiving ticketResponses
 // @Description get all ticketResponses for user id
+// @Param search query string false "9999990000"
+// @Param createdAtFrom query string false "2019-01-25T10:30:00.000Z"
+// @Param createdAtTo query string false "2019-02-25T10:30:00.000Z"
+// @Param updatedAtFrom query string false "2019-01-25T10:30:00.000Z"
+// @Param updatedAtTo query string false "2019-02-25T10:30:00.000Z"
 // @Success 200 {object} domain.ResponseTicketResponses
 // @Failure 400 {object} domain.BadResponse
 // @Failure 401 {object} domain.BadResponse
@@ -167,7 +172,7 @@ func (h *Handler) GetTicketResponseByID(c *gin.Context) {
 // @Failure 500 {object} domain.BadResponse
 // @Router /api/ticket-response/v1/my-list [get].
 func (h *Handler) GetTicketResponsesByUserID(c *gin.Context) {
-	inp := new(ticketResponse.TicketResponseInput)
+	inp := new(ticketResponse.TicketResponseListInput)
 
 	// c токена вытаскиваем
 	if user, exist := c.Get(auth.CtxUserKey); exist {
@@ -175,7 +180,24 @@ func (h *Handler) GetTicketResponsesByUserID(c *gin.Context) {
 		inp.Email = user.(*domain.User).Email
 	}
 
-	ticketResponses, err := h.useCase.GetTicketResponsesByUserID(c.Request.Context(), inp.ID)
+	if err := c.ShouldBindQuery(inp); err != nil {
+		c.JSON(http.StatusBadRequest, domain.BadResponse{
+			Status:  http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	if err := ticketResponse.ValidateTicketResponseListInput(inp); err != nil {
+		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
+			Status:  http.StatusNotAcceptable,
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	ticketResponses, err := h.useCase.GetTicketResponsesByUserID(c.Request.Context(), inp)
 	if err != nil {
 		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
 			Status:  http.StatusNotAcceptable,

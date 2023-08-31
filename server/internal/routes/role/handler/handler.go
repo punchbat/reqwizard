@@ -28,7 +28,7 @@ func NewHandler(useCase role.UseCase) *Handler {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/role/v1/list [get]
+// @Router /api/role/v1/list [get].
 func (h *Handler) GetRoles(c *gin.Context) {
 	roles, err := h.useCase.GetRoles(c.Request.Context())
 	if err != nil {
@@ -40,7 +40,7 @@ func (h *Handler) GetRoles(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.ResponseRoles{
-		Status: http.StatusOK,
+		Status:  http.StatusOK,
 		Payload: roles,
 	})
 }

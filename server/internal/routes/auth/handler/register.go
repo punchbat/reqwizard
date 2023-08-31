@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"reqwizard/internal/routes/auth/jobs"
 	"reqwizard/internal/routes/auth/repository"
 	"reqwizard/internal/routes/auth/usecase"
 	roleRepository "reqwizard/internal/routes/role/repository"
@@ -9,10 +10,11 @@ import (
 	"reqwizard/pkg/postgres/gorm"
 
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 	"github.com/spf13/viper"
 )
 
-func RegisterHTTPEndpoints(router *gin.Engine, db *gorm.Gorm, mailer *email.Mailer) gin.HandlerFunc {
+func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mailer *email.Mailer) gin.HandlerFunc {
 	// Создаем repository, все взаимодействия с db в ней
 	repo := repository.NewRepository(db)
 	roleRepository := roleRepository.NewRepository(db)
@@ -28,6 +30,10 @@ func RegisterHTTPEndpoints(router *gin.Engine, db *gorm.Gorm, mailer *email.Mail
 		[]byte(viper.GetString("auth.signing_key")),
 		viper.GetDuration("auth.token_ttl"),
 	)
+
+	// Jobs
+	authJobScheduler := jobs.NewAuthJobScheduler(uc)
+	authJobScheduler.Start(c)
 
 	// Create the middleware instance
 	m := NewMiddleware(uc)
