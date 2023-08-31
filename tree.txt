@@ -1,0 +1,350 @@
+.
+├── README.md
+├── client
+│   ├── README.md
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   └── assets
+│   │       ├── reqwizard.ico
+│   │       └── user.png
+│   ├── src
+│   │   ├── app
+│   │   │   ├── index.scss
+│   │   │   ├── index.tsx
+│   │   │   ├── layouts
+│   │   │   │   ├── DomikLayout
+│   │   │   │   │   ├── index.module.scss
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── MainLayout
+│   │   │   │   │   ├── index.module.scss
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── StoresLayout
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── ThemeLayout
+│   │   │   │   │   └── index.tsx
+│   │   │   │   └── index.tsx
+│   │   │   ├── services
+│   │   │   │   ├── applicaiton.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── base.ts
+│   │   │   │   └── ticket_response.ts
+│   │   │   ├── store
+│   │   │   │   ├── index.ts
+│   │   │   │   └── reducers
+│   │   │   │       └── userSlice.ts
+│   │   │   └── styles
+│   │   │       ├── index.scss
+│   │   │       ├── normalize.scss
+│   │   │       └── vars.scss
+│   │   ├── features
+│   │   │   ├── application_item
+│   │   │   │   ├── index.scss
+│   │   │   │   └── index.tsx
+│   │   │   ├── index.ts
+│   │   │   ├── page_title
+│   │   │   │   ├── index.ts
+│   │   │   │   └── ui
+│   │   │   │       ├── index.ts
+│   │   │   │       └── pageTitle
+│   │   │   │           ├── index.scss
+│   │   │   │           └── index.tsx
+│   │   │   └── ticket-response_item
+│   │   │       ├── index.scss
+│   │   │       └── index.tsx
+│   │   ├── index.tsx
+│   │   ├── pages
+│   │   │   ├── application
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── create_application
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── create_ticket-response
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── domik
+│   │   │   │   ├── sign-in
+│   │   │   │   │   ├── Page.scss
+│   │   │   │   │   ├── Page.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   └── sign-up
+│   │   │   │       ├── Page.scss
+│   │   │   │       ├── Page.tsx
+│   │   │   │       └── index.ts
+│   │   │   ├── error
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── home
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── index.tsx
+│   │   │   ├── my_ticket-responses
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── ticket-response
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── whois
+│   │   │   │   ├── Page.scss
+│   │   │   │   ├── Page.tsx
+│   │   │   │   └── index.ts
+│   │   │   └── workspace
+│   │   │       ├── Page.scss
+│   │   │       ├── Page.tsx
+│   │   │       ├── index.ts
+│   │   │       └── ui
+│   │   │           ├── applications
+│   │   │           │   ├── index.scss
+│   │   │           │   └── index.tsx
+│   │   │           ├── index.ts
+│   │   │           └── ticket-responses
+│   │   │               ├── index.scss
+│   │   │               └── index.tsx
+│   │   ├── shared
+│   │   │   ├── components
+│   │   │   │   ├── cube
+│   │   │   │   │   ├── index.scss
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── index.tsx
+│   │   │   │   └── suspense
+│   │   │   │       ├── index.scss
+│   │   │   │       └── index.tsx
+│   │   │   ├── constants
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── palette.ts
+│   │   │   ├── hooks
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── store-hooks.ts
+│   │   │   │   └── use-timeout.ts
+│   │   │   ├── types
+│   │   │   │   ├── api.ts
+│   │   │   │   ├── base.ts
+│   │   │   │   └── index.ts
+│   │   │   └── utils
+│   │   │       ├── allEqual.ts
+│   │   │       ├── api-check.ts
+│   │   │       ├── api-error.ts
+│   │   │       ├── cn.ts
+│   │   │       ├── dateFormat.ts
+│   │   │       ├── fetch.ts
+│   │   │       ├── getCalcRowType.ts
+│   │   │       ├── getDateFromUnixTS.ts
+│   │   │       ├── getHashString.ts
+│   │   │       ├── getOneFromDuplicate.ts
+│   │   │       ├── hasAccess.ts
+│   │   │       ├── hasDuplicate.ts
+│   │   │       ├── index.ts
+│   │   │       ├── parseGateDesc.ts
+│   │   │       └── secretkey.ts
+│   │   ├── vite-env.d.ts
+│   │   └── widgets
+│   │       ├── footer
+│   │       │   ├── index.ts
+│   │       │   └── ui
+│   │       │       ├── footer
+│   │       │       │   ├── index.module.scss
+│   │       │       │   └── index.tsx
+│   │       │       ├── index.ts
+│   │       │       └── logos
+│   │       │           ├── github
+│   │       │           │   ├── index.module.scss
+│   │       │           │   └── index.tsx
+│   │       │           ├── index.ts
+│   │       │           ├── linkedin
+│   │       │           │   ├── index.module.scss
+│   │       │           │   └── index.tsx
+│   │       │           └── telegram
+│   │       │               ├── index.module.scss
+│   │       │               └── index.tsx
+│   │       ├── header
+│   │       │   ├── index.ts
+│   │       │   └── ui
+│   │       │       ├── header
+│   │       │       │   ├── index.module.scss
+│   │       │       │   └── index.tsx
+│   │       │       ├── index.ts
+│   │       │       └── logos
+│   │       │           ├── app
+│   │       │           │   └── index.tsx
+│   │       │           ├── index.ts
+│   │       │           └── user
+│   │       │               ├── index.scss
+│   │       │               └── index.tsx
+│   │       ├── index.ts
+│   │       ├── navbar
+│   │       │   ├── index.ts
+│   │       │   └── ui
+│   │       │       ├── index.ts
+│   │       │       └── navbar
+│   │       │           ├── index.scss
+│   │       │           └── index.tsx
+│   │       └── toasts-renderer
+│   │           ├── index.ts
+│   │           ├── store
+│   │           │   └── index.ts
+│   │           ├── types
+│   │           │   └── index.ts
+│   │           └── ui
+│   │               ├── index.ts
+│   │               ├── toast
+│   │               │   ├── index.module.scss
+│   │               │   └── index.tsx
+│   │               └── toasts-renderer
+│   │                   ├── index.module.scss
+│   │                   └── index.tsx
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+├── server
+│   ├── Dockerfile
+│   ├── Makefile
+│   ├── README.md
+│   ├── cmd
+│   │   └── api
+│   │       └── main.go
+│   ├── configs
+│   │   ├── development.json
+│   │   ├── init.go
+│   │   └── production.json
+│   ├── docker-compose.yml
+│   ├── docs
+│   │   ├── docs.go
+│   │   ├── swagger.json
+│   │   └── swagger.yaml
+│   ├── go.mod
+│   ├── go.sum
+│   ├── internal
+│   │   ├── app
+│   │   │   └── app.go
+│   │   ├── domain
+│   │   │   ├── application.go
+│   │   │   ├── response.go
+│   │   │   ├── role.go
+│   │   │   ├── ticket_response.go
+│   │   │   ├── user.go
+│   │   │   └── user_role.go
+│   │   ├── routes
+│   │   │   ├── application
+│   │   │   │   ├── error.go
+│   │   │   │   ├── handler
+│   │   │   │   │   ├── handler.go
+│   │   │   │   │   └── register.go
+│   │   │   │   ├── interfaces.go
+│   │   │   │   ├── repository
+│   │   │   │   │   ├── dto
+│   │   │   │   │   │   └── table.go
+│   │   │   │   │   └── repository.go
+│   │   │   │   ├── usecase
+│   │   │   │   │   └── usecase.go
+│   │   │   │   └── validate.go
+│   │   │   ├── auth
+│   │   │   │   ├── error.go
+│   │   │   │   ├── handler
+│   │   │   │   │   ├── handler.go
+│   │   │   │   │   ├── middleware.go
+│   │   │   │   │   └── register.go
+│   │   │   │   ├── interfaces.go
+│   │   │   │   ├── repository
+│   │   │   │   │   ├── dto
+│   │   │   │   │   │   └── table.go
+│   │   │   │   │   └── repository.go
+│   │   │   │   ├── usecase
+│   │   │   │   │   └── usecase.go
+│   │   │   │   └── validate.go
+│   │   │   ├── index.go
+│   │   │   ├── role
+│   │   │   │   ├── error.go
+│   │   │   │   ├── handler
+│   │   │   │   │   ├── handler.go
+│   │   │   │   │   ├── middleware.go
+│   │   │   │   │   └── register.go
+│   │   │   │   ├── interfaces.go
+│   │   │   │   ├── repository
+│   │   │   │   │   ├── dto
+│   │   │   │   │   │   └── table.go
+│   │   │   │   │   └── repository.go
+│   │   │   │   ├── usecase
+│   │   │   │   │   └── usecase.go
+│   │   │   │   └── validate.go
+│   │   │   ├── ticketResponse
+│   │   │   │   ├── error.go
+│   │   │   │   ├── handler
+│   │   │   │   │   ├── handler.go
+│   │   │   │   │   └── register.go
+│   │   │   │   ├── interfaces.go
+│   │   │   │   ├── repository
+│   │   │   │   │   ├── dto
+│   │   │   │   │   │   └── table.go
+│   │   │   │   │   └── repository.go
+│   │   │   │   ├── usecase
+│   │   │   │   │   └── usecase.go
+│   │   │   │   └── validate.go
+│   │   │   └── userRole
+│   │   │       ├── error.go
+│   │   │       ├── interfaces.go
+│   │   │       └── repository
+│   │   │           ├── dto
+│   │   │           │   └── table.go
+│   │   │           └── repository.go
+│   │   ├── services
+│   │   │   └── email
+│   │   │       └── email.go
+│   │   ├── shared
+│   │   │   ├── constants
+│   │   │   │   └── file.go
+│   │   │   └── utils
+│   │   │       ├── checkRole.go
+│   │   │       ├── findIndex.go
+│   │   │       ├── isValidFileExtension.go
+│   │   │       ├── isoTime.go
+│   │   │       ├── map.go
+│   │   │       ├── parseDate.go
+│   │   │       ├── removeElementByIndex.go
+│   │   │       ├── removeEmptyStrings.go
+│   │   │       ├── removeKeyFromStruct.go
+│   │   │       └── validate.go
+│   │   └── templates
+│   │       └── email
+│   │           ├── auth
+│   │           │   └── VerifyCode.html
+│   │           ├── footer.html
+│   │           ├── header.html
+│   │           └── styles.html
+│   ├── pkg
+│   │   ├── postgres
+│   │   │   ├── gorm
+│   │   │   │   ├── init.go
+│   │   │   │   └── transactor.go
+│   │   │   ├── init.go
+│   │   │   └── migrations
+│   │   │       ├── 20230815112455_new_user_table.sql
+│   │   │       ├── 20230815114704_new_role_table.sql
+│   │   │       ├── 20230815115133_new_user_role_table.sql
+│   │   │       ├── 20230815151217_new_application_table.sql
+│   │   │       ├── 20230816195835_new_ticket_response_table.sql
+│   │   │       ├── 20230817132143_new_column_user_table.sql
+│   │   │       ├── 20230817141643_new_column_application_table.sql
+│   │   │       ├── 20230822065650_new_column_application_table.sql
+│   │   │       ├── 20230822072447_new_status_column_application_table.sql
+│   │   │       └── 20230830193717_new_column_application_table.sql
+│   │   └── transactor
+│   │       └── transactor.go
+│   └── uploads
+│       └── applications
+│           ├── 8de70829-957b-49e5-a824-0160a0a4b016.txt
+│           ├── 9d74d8a2-02ef-4147-ac0b-0b90bd073d6f.json
+│           ├── ec18dc79-26cb-4fff-80a3-876172826145.txt
+│           └── ee41c2c4-994f-4550-bab4-d9fa505a974e.txt
+└── tree.txt
+
+115 directories, 233 files

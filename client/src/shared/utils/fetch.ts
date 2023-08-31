@@ -1,11 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from "axios";
 
-import { APIError } from 'src/client/shared/utils/api-error';
-import { getSecretkey } from 'src/client/shared/utils/secretkey';
+import { APIError, getSecretkey } from "@utils";
 
-const DEFAULT_HEADERS: HeadersInit = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
+const DEFAULT_HEADERS: RawAxiosRequestHeaders = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
 };
 
 async function handleErrorResponse(response: AxiosResponse) {
@@ -18,7 +17,7 @@ async function handleErrorResponse(response: AxiosResponse) {
     try {
         data = await response.data;
     } finally {
-        code = (data && data.internalCode) || '500_ISE';
+        code = (data && data.internalCode) || "500_ISE";
         message = data && data.message;
     }
 
@@ -26,10 +25,9 @@ async function handleErrorResponse(response: AxiosResponse) {
 }
 
 async function fetch<T>(path: string, options: AxiosRequestConfig = {}): Promise<T> {
-    const { method = 'GET', headers = {}, ...restOptions } = options;
-
-    if (method !== 'GET') {
-        headers['x-csrf-token'] = getSecretkey();
+    const { method = "GET", headers = {}, ...restOptions } = options;
+    if (method !== "GET") {
+        headers["x-csrf-token"] = getSecretkey();
     }
 
     const response = await axios(path, {

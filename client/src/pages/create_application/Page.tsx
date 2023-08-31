@@ -11,6 +11,7 @@ import { ToastStore } from "@widgets/index";
 import { PageTitle } from "@features/index";
 
 import "./Page.scss";
+import { FailResponse } from "../../shared/types/api";
 
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -76,10 +77,11 @@ const CreateApplication: FC = function () {
 
             navigate("/");
         } catch (err) {
+            const { data } = err as { data: FailResponse };
             dispatch(
                 ToastStore.notify({
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    message: err?.data?.message,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+                    message: data?.message,
                     options: {
                         type: ToastStore.MessageType.ERROR,
                         duration: 3000,

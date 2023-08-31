@@ -4,7 +4,6 @@ import { Button, Form, Input, Typography, Spin } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { cn } from "@utils";
 
-import "./Page.scss";
 import {
     CheckVerifyCodeInput,
     useSignInMutation,
@@ -14,7 +13,9 @@ import {
 } from "@app/services/auth";
 import { useAppDispatch } from "@hooks/index";
 import { ToastStore } from "@widgets/index";
-import { ResponseInterface, isSuccessResponse } from "@localtypes";
+import { FailResponse, ResponseInterface, isSuccessResponse } from "@localtypes";
+
+import "./Page.scss";
 
 const { Title } = Typography;
 
@@ -42,9 +43,11 @@ const SignIn: FC = function () {
 
                 setIsCheckMode(true);
             } catch (err) {
+                const { data } = err as { data: FailResponse };
+
                 dispatch(
                     ToastStore.notify({
-                        message: err?.data?.message,
+                        message: data?.message,
                         options: {
                             type: ToastStore.MessageType.ERROR,
                             duration: 3000,
@@ -65,9 +68,11 @@ const SignIn: FC = function () {
                     navigate("/");
                 }
             } catch (err) {
+                const { data } = err as { data: FailResponse };
+
                 dispatch(
                     ToastStore.notify({
-                        message: err?.data?.message,
+                        message: data?.message,
                         options: {
                             type: ToastStore.MessageType.ERROR,
                             duration: 3000,

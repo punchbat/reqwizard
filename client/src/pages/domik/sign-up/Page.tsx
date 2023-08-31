@@ -4,7 +4,7 @@ import { Button, Form, Input, Typography, Select, Spin } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { cn } from "@utils";
 
-import { ResponseInterface, isSuccessResponse } from "@localtypes";
+import { FailResponse, ResponseInterface, isSuccessResponse } from "@localtypes";
 import {
     SignUpInput,
     CheckVerifyCodeInput,
@@ -46,9 +46,10 @@ const SignUp: FC = function () {
 
                 setIsCheckMode(true);
             } catch (err) {
+                const { data } = err as { data: FailResponse };
                 dispatch(
                     ToastStore.notify({
-                        message: err?.data?.message,
+                        message: data?.message,
                         options: {
                             type: ToastStore.MessageType.ERROR,
                             duration: 3000,
@@ -69,9 +70,10 @@ const SignUp: FC = function () {
                     navigate("/");
                 }
             } catch (err) {
+                const { data } = err as { data: FailResponse };
                 dispatch(
                     ToastStore.notify({
-                        message: err?.data?.message,
+                        message: data?.message,
                         options: {
                             type: ToastStore.MessageType.ERROR,
                             duration: 3000,

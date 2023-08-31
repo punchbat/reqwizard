@@ -13,11 +13,13 @@ const initialState: Partial<InitialState> = {
     loading: false,
 
     user: {
-        id: null,
-        email: null,
-        first_name: null,
-        last_name: null,
-        avatar: null,
+        _id: "",
+        email: "",
+        verified: false,
+        userRoles: [],
+        applicationCreatedAt: "",
+        createdAt: "",
+        updatedAt: "",
     },
 };
 

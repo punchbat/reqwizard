@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
-import React, { Fragment, FC } from "react";
-import { useAppSelector } from "@hooks";
+import { Fragment, FC } from "react";
+import { useAppSelector } from "@hooks/index";
 import { MessageType, MessagePositions, selectToasts, ToastProp } from "../../store";
 import { Toast } from "../toast";
 import { DefaultParamsProp } from "../../types";

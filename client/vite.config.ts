@@ -21,4 +21,8 @@ export default defineConfig({
             "@app": `${path.resolve(__dirname, "./src/app/")}`,
         },
     },
+    server: {
+        host: true,
+        port: 8000,
+    },
 });

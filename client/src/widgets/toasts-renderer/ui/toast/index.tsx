@@ -1,5 +1,5 @@
-import React, { useCallback, FC } from "react";
-import { useAppDispatch, useTimeout } from "@hooks";
+import { useCallback, FC, ReactNode } from "react";
+import { useAppDispatch, useTimeout } from "@hooks/index";
 import { Typography } from "antd";
 import { ExclamationCircleOutlined, CheckOutlined } from "@ant-design/icons";
 import { close, MessageType, ToastProp } from "../../store";
@@ -24,11 +24,11 @@ const Toast: FC<Props> = ({ defaultParams, item }) => {
 
     const closeToast = useCallback(() => {
         dispatch(close(item?.options?.id));
-    }, [item]);
+    }, [dispatch, item?.options?.id]);
 
     useTimeout(closeToast, duration);
 
-    const getToast = () => {
+    const getToast = (): ReactNode => {
         switch (type) {
             case MessageType.SUCCESS:
                 return (
@@ -37,7 +37,7 @@ const Toast: FC<Props> = ({ defaultParams, item }) => {
                             <CheckOutlined />
                         </div>
                         <div className={styles.toast__message}>
-                            <Text type="success">{message}</Text>
+                            <Text type="success">{message as ReactNode}</Text>
                         </div>
                     </div>
                 );
@@ -48,16 +48,17 @@ const Toast: FC<Props> = ({ defaultParams, item }) => {
                             <ExclamationCircleOutlined />
                         </div>
                         <div className={styles.toast__message}>
-                            <Text type="danger">{message}</Text>
+                            <Text type="danger">{message as ReactNode}</Text>
                         </div>
                     </div>
                 );
             default:
-                return message;
+                return <div>{message as ReactNode}</div>;
         }
     };
 
     return (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
         <div className={styles.toast} onClick={closeToast}>
             <div className={styles.toast__inner}>
                 <div className={styles[`toast__${type}`]}>{getToast()}</div>
