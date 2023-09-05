@@ -2,11 +2,12 @@ import { useCallback, FC, ReactNode } from "react";
 import { useAppDispatch, useTimeout } from "@hooks/index";
 import { Typography } from "antd";
 import { ExclamationCircleOutlined, CheckOutlined } from "@ant-design/icons";
-import { close, MessageType, ToastProp } from "../../store";
 
+import { cn } from "@utils";
+import { close, MessageType, ToastProp } from "../../store";
 import { DefaultParamsProp } from "../../types";
 
-import styles from "./index.module.scss";
+import "./index.scss";
 
 const { Text } = Typography;
 
@@ -14,6 +15,8 @@ interface Props {
     defaultParams: DefaultParamsProp;
     item: ToastProp;
 }
+
+const b = cn("toast");
 
 const Toast: FC<Props> = ({ defaultParams, item }) => {
     const dispatch = useAppDispatch();
@@ -32,22 +35,22 @@ const Toast: FC<Props> = ({ defaultParams, item }) => {
         switch (type) {
             case MessageType.SUCCESS:
                 return (
-                    <div className={styles.toast__content}>
-                        <div className={styles.toast__icon}>
+                    <div className={b("content")}>
+                        <div className={b("icon")}>
                             <CheckOutlined />
                         </div>
-                        <div className={styles.toast__message}>
+                        <div className={b("message")}>
                             <Text type="success">{message as ReactNode}</Text>
                         </div>
                     </div>
                 );
             case MessageType.ERROR:
                 return (
-                    <div className={styles.toast__content}>
-                        <div className={styles.toast__icon}>
+                    <div className={b("content")}>
+                        <div className={b("icon")}>
                             <ExclamationCircleOutlined />
                         </div>
-                        <div className={styles.toast__message}>
+                        <div className={b("message")}>
                             <Text type="danger">{message as ReactNode}</Text>
                         </div>
                     </div>
@@ -59,10 +62,8 @@ const Toast: FC<Props> = ({ defaultParams, item }) => {
 
     return (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div className={styles.toast} onClick={closeToast}>
-            <div className={styles.toast__inner}>
-                <div className={styles[`toast__${type}`]}>{getToast()}</div>
-            </div>
+        <div className={b("", [type])} onClick={closeToast}>
+            <div className={b("inner")}>{getToast()}</div>
         </div>
     );
 };

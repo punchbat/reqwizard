@@ -9,12 +9,13 @@ import (
 	"reqwizard/pkg/postgres"
 	"reqwizard/pkg/postgres/gorm"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"github.com/robfig/cron/v3"
-
 	"reqwizard/internal/routes"
 	service_email "reqwizard/internal/services/email"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/csrf"
+	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 )
 
 type App struct {
@@ -52,19 +53,31 @@ func (app *App) Run(port string) error {
 		app.c.Start()
 	}()
 
-	// Init gin handler
 	router := gin.Default()
+
+	// * CORS
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowCredentials = true
+	// corsConfig.AllowAllOrigins = true
+	corsConfig.AllowAllOrigins = false
+	corsConfig.AllowOrigins = []string{"http://localhost:8000"}
 	corsConfig.AddAllowHeaders("Authorization")
 	corsConfig.AddAllowHeaders("Content-Type")
+
+
+	// * CSRF 
+	csrfMiddleware := csrf.Default(csrf.Options{
+        Secret: "your-secret-key", // Замените на ваш секретный ключ
+    })
+
 	router.Use(
 		cors.New(corsConfig),
+		csrfMiddleware,
 		gin.Recovery(),
 		gin.Logger(),
 	)
 
+	// * ROUTES
 	routes.InitRoutes(router, app.c, app.pgGorm, app.mailer)
 
 	// Конфиги для сервера

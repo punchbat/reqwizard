@@ -10,3 +10,9 @@ func IsValidFileExtension(filename string) bool {
 
 	return constants.FILE_EXTENSIONS[ext]
 }
+
+func IsValidAvatarImageExtension(filename string) bool {
+	ext := filepath.Ext(filename)
+
+	return constants.AVATAR_IMAGE_EXTENSIONS[ext]
+}

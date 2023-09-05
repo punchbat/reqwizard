@@ -1,15 +1,23 @@
 package usecase
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"image"
+	"image/jpeg"
+	"image/png"
+	"io/ioutil"
 	"math/rand"
+	"os"
+	"path/filepath"
 	"reqwizard/internal/domain"
 	"reqwizard/internal/services/email"
 	service_email "reqwizard/internal/services/email"
 	"reqwizard/internal/shared/utils"
 	"strconv"
+	"strings"
 	"time"
 
 	"reqwizard/internal/routes/auth"
@@ -106,9 +114,12 @@ func (uc *UseCase) MakeClearUser(ctx context.Context, user *domain.User) (*domai
 }
 
 func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
+	// * Юзер есть и не верифицирован
 	user, err := uc.repo.GetUserByEmail(ctx, inp.Email)
-	if err == nil {
+	if err == nil && user.Verified == false {
 		return nil
+	} else if err == nil && user.Verified == true {
+		return auth.ErrUserIsExist
 	}
 
 	hashPassword, err := HashPassword(inp.Password)
@@ -121,6 +132,11 @@ func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		return err
 	}
 
+	birthday, err := utils.GetTimeFromString(inp.Birthday)
+	if err != nil {
+		return err
+	}
+
 	// * Создаем Аккаунт
 	userID := uuid.New()
 	user = &domain.User{
@@ -129,6 +145,82 @@ func (uc *UseCase) SignUp(ctx context.Context, inp *auth.SignUpInput) error {
 		Password:        hashPassword,
 		PasswordConfirm: hashPasswordConfirm,
 		Verified:        false,
+
+		Name:     inp.Name,
+		Surname:  inp.Surname,
+		Gender:   domain.UserGender(inp.Gender),
+		Birthday: birthday,
+	}
+	// * Проверяем наличие аватарки
+	// if len(inp.Avatar) > 0 {
+	// 	avatarName := uuid.New().String() + filepath.Ext(inp.AvatarName)
+	// 	avatarPath := "uploads/avatars/" + avatarName
+
+	// 	err = ioutil.WriteFile(avatarPath, inp.Avatar, 0644)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+
+	// 	user.Avatar = avatarName
+	// }
+
+	if inp.Avatar != nil {
+		avatarExt := filepath.Ext(inp.AvatarName)
+		avatarName := uuid.New().String() + avatarExt
+		avatarPath := "uploads/avatars/" + avatarName
+
+		// Чтение данных из inp.Avatar
+		avatarData, err := ioutil.ReadAll(inp.Avatar)
+		if err != nil {
+			return err
+		}
+
+		// Создание изображения из данных
+		img, _, err := image.Decode(bytes.NewReader(avatarData))
+		if err != nil {
+			return err
+		}
+
+		// Сохранить изображение в формате JPEG с заданным качеством (80%)
+		outFile, err := os.Create(avatarPath)
+		if err != nil {
+			return err
+		}
+		defer outFile.Close()
+
+		format := strings.ToLower(avatarExt)
+		switch format {
+		case ".jpg", ".jpeg":
+			// Сохранить изображение в формате JPEG с заданным качеством (80%)
+			outFile, err := os.Create(avatarPath)
+			if err != nil {
+				return err
+			}
+			defer outFile.Close()
+
+			err = jpeg.Encode(outFile, img, &jpeg.Options{Quality: 80})
+			if err != nil {
+				return err
+			}
+
+		case ".png":
+			// Сохранить изображение в формате PNG
+			outFile, err := os.Create(avatarPath)
+			if err != nil {
+				return err
+			}
+			defer outFile.Close()
+
+			err = png.Encode(outFile, img)
+			if err != nil {
+				return err
+			}
+
+		default:
+			return fmt.Errorf("неподдерживаемое расширение изображения: %s", format)
+		}
+
+		user.Avatar = avatarName
 	}
 	if err := uc.repo.CreateUser(ctx, user); err != nil {
 		return err

@@ -19,14 +19,13 @@ func NewMiddleware(usecase auth.UseCase) gin.HandlerFunc {
 }
 
 func (m *Middleware) Handle(c *gin.Context) {
-	tokenFromHeader := c.GetHeader("Authorization")
-
-	if tokenFromHeader == "" {
+	tokenFromCookie, err := c.Cookie("token")
+	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
-	user, err := m.usecase.ParseToken(c.Request.Context(), tokenFromHeader)
+	user, err := m.usecase.ParseToken(c.Request.Context(), tokenFromCookie)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, domain.BadResponse{
 			Status:  http.StatusUnauthorized,

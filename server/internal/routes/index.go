@@ -26,6 +26,9 @@ func InitRoutes(router *gin.Engine, c *cron.Cron, pgGorm *gorm.Gorm, mailer *ema
 		c.String(http.StatusOK, "pong")
 	})
 
+	// * раздача статики аватарок
+	router.Static("/uploads/avatars", "./uploads/avatars")
+
 	// * AUTH
 	authMiddleware := authHandler.RegisterHTTPEndpoints(router, c, pgGorm, mailer)
 

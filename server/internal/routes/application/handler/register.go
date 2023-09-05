@@ -27,7 +27,7 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, authMiddleware gin.HandlerFu
 	endpoints := router.Group("/application/v1")
 	{
 		endpoints.POST("/create", authMiddleware, isUserMiddleware, h.CreateApplication)
-		endpoints.GET("/download-file/:fileName", isUserMiddleware, authMiddleware, h.GetFile)
+		endpoints.GET("/download-file/:fileName", authMiddleware, isUserMiddleware, h.GetFile)
 		endpoints.GET("/:id", authMiddleware, isUserMiddleware, h.GetApplicationByID)
 		endpoints.GET("/my-list", authMiddleware, isUserMiddleware, h.GetApplicationsByUserID)
 		// * manager

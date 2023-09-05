@@ -98,115 +98,123 @@ const SignIn: FC = function () {
 
     return (
         <div className={b()}>
-            <div className={b("inner")}>
-                <div className={b("title")}>
-                    <Title level={1}>{!isCheckMode ? "Sign-in" : "Verify code"}</Title>
-                </div>
-                <div className={b("content")}>
-                    <Form name="basic" initialValues={{ remember: true }} onFinish={onFinish} layout="vertical">
-                        {!isCheckMode ? (
-                            <>
+            <div className={b("wrapper")}>
+                <div className={b("inner")}>
+                    <div className={b("title")}>
+                        <Title level={1}>{!isCheckMode ? "Sign-in" : "Verify code"}</Title>
+                    </div>
+                    <div className={b("content")}>
+                        <Form
+                            name="basic"
+                            initialValues={{ remember: true }}
+                            onFinish={onFinish}
+                            layout="vertical"
+                            size="large"
+                        >
+                            {!isCheckMode ? (
+                                <>
+                                    <Form.Item
+                                        name="email"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                type: "email",
+                                                message: "The input is not valid Email!",
+                                            },
+                                        ]}
+                                    >
+                                        <Input
+                                            prefix={<UserOutlined className="site-form-item-icon" />}
+                                            placeholder="Email"
+                                        />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        name="password"
+                                        rules={[
+                                            { required: true, message: "Please input your password!" },
+                                            () => ({
+                                                validator(_, value) {
+                                                    const password = value as string;
+
+                                                    const hasUpperCase = /[A-Z]/.test(password);
+                                                    const hasLowerCase = /[a-z]/.test(password);
+                                                    const hasNumber = /\d/.test(password);
+                                                    const hasSymbol = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]/.test(
+                                                        password,
+                                                    );
+                                                    const isLengthValid = password.length >= 8;
+
+                                                    if (
+                                                        hasUpperCase &&
+                                                        hasLowerCase &&
+                                                        hasNumber &&
+                                                        hasSymbol &&
+                                                        isLengthValid
+                                                    ) {
+                                                        return Promise.resolve();
+                                                    }
+
+                                                    return Promise.reject(
+                                                        new Error(
+                                                            "The password must contain at least one uppercase letter, one lowercase letter, one digit, one symbol, and be at least 8 characters long!",
+                                                        ),
+                                                    );
+                                                },
+                                            }),
+                                        ]}
+                                    >
+                                        <Input
+                                            prefix={<LockOutlined className="site-form-item-icon" />}
+                                            type="password"
+                                            placeholder="Password"
+                                        />
+                                    </Form.Item>
+                                </>
+                            ) : (
                                 <Form.Item
-                                    name="email"
+                                    name="verifyCode"
+                                    hasFeedback
                                     rules={[
                                         {
                                             required: true,
-                                            type: "email",
-                                            message: "The input is not valid Email!",
+                                            message: "Please enter the verification code!",
+                                        },
+                                        {
+                                            pattern: /^\d{6}$/,
+                                            message: "The verification code must consist of 6 digits!",
                                         },
                                     ]}
                                 >
                                     <Input
-                                        prefix={<UserOutlined className="site-form-item-icon" />}
-                                        placeholder="Email"
-                                    />
-                                </Form.Item>
-
-                                <Form.Item
-                                    name="password"
-                                    rules={[
-                                        { required: true, message: "Please input your password!" },
-                                        () => ({
-                                            validator(_, value) {
-                                                const password = value as string;
-
-                                                const hasUpperCase = /[A-Z]/.test(password);
-                                                const hasLowerCase = /[a-z]/.test(password);
-                                                const hasNumber = /\d/.test(password);
-                                                const hasSymbol = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]/.test(
-                                                    password,
-                                                );
-                                                const isLengthValid = password.length >= 8;
-
-                                                if (
-                                                    hasUpperCase &&
-                                                    hasLowerCase &&
-                                                    hasNumber &&
-                                                    hasSymbol &&
-                                                    isLengthValid
-                                                ) {
-                                                    return Promise.resolve();
-                                                }
-
-                                                return Promise.reject(
-                                                    new Error(
-                                                        "The password must contain at least one uppercase letter, one lowercase letter, one digit, one symbol, and be at least 8 characters long!",
-                                                    ),
-                                                );
-                                            },
-                                        }),
-                                    ]}
-                                >
-                                    <Input
                                         prefix={<LockOutlined className="site-form-item-icon" />}
-                                        type="password"
-                                        placeholder="Password"
+                                        placeholder="Verification Code"
+                                        min={0}
+                                        max={999999}
+                                        onInput={e => {
+                                            const inputValue = e.currentTarget.value;
+                                            if (inputValue.length > 6) {
+                                                e.currentTarget.value = inputValue.slice(0, 6);
+                                            }
+                                        }}
                                     />
                                 </Form.Item>
-                            </>
-                        ) : (
-                            <Form.Item
-                                name="verifyCode"
-                                hasFeedback
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please enter the verification code!",
-                                    },
-                                    {
-                                        pattern: /^\d{6}$/,
-                                        message: "The verification code must consist of 6 digits!",
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    prefix={<LockOutlined className="site-form-item-icon" />}
-                                    placeholder="Verification Code"
-                                    min={0}
-                                    max={999999}
-                                    onInput={e => {
-                                        const inputValue = e.currentTarget.value;
-                                        if (inputValue.length > 6) {
-                                            e.currentTarget.value = inputValue.slice(0, 6);
-                                        }
-                                    }}
-                                />
-                            </Form.Item>
-                        )}
+                            )}
 
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                loading={isSignInLoading || isSendVerifyCodeLoading || isCheckVerifyCodeLoading}
-                            >
-                                {!isCheckMode ? "Sign-in" : "Verify code"}
-                            </Button>
-                            <Button type="link" htmlType="button" onClick={handleSignUp}>
-                                Go to sign-up
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                            <Form.Item>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={isSignInLoading || isSendVerifyCodeLoading || isCheckVerifyCodeLoading}
+                                >
+                                    {!isCheckMode ? "Sign-in" : "Verify code"}
+                                </Button>
+                                <Button type="link" htmlType="button" onClick={handleSignUp}>
+                                    Go to sign-up
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,13 +5,14 @@ import { Spin, Button, Form, Input, Select, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "@hooks/index";
 
-import { cn } from "@utils";
+import { cn, getBase64 } from "@utils";
 import { useCreateMutation } from "@app/services/applicaiton";
 import { ToastStore } from "@widgets/index";
 import { PageTitle } from "@features/index";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
+import { FailResponse } from "../../shared/types/api";
 
 import "./Page.scss";
-import { FailResponse } from "../../shared/types/api";
 
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -23,9 +24,7 @@ interface FormValues {
     subType: string;
     title: string;
     description: string;
-    file: {
-        file: File;
-    };
+    file: UploadChangeParam<UploadFile>;
 }
 
 const CreateApplication: FC = function () {
@@ -56,24 +55,19 @@ const CreateApplication: FC = function () {
             formData.append("description", values.description);
 
             if (values.file && values.file.file) {
-                const { file } = values.file;
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const fileContent = e?.target?.result;
-                    if (fileContent) {
-                        formData.append(
-                            "file",
-                            new File([fileContent], file.name, {
-                                type: file.type,
-                            }),
-                        );
-                        createApplication(formData).unwrap();
-                    }
-                };
-                reader.readAsArrayBuffer(file as unknown as Blob);
-            } else {
-                await createApplication(formData).unwrap();
+                const content = await getBase64(values.file.file as RcFile);
+
+                if (content) {
+                    formData.append(
+                        "file",
+                        new File([content], values.file.file.name, {
+                            type: values.file.file.type,
+                        }),
+                    );
+                }
             }
+
+            await createApplication(formData).unwrap();
 
             navigate("/");
         } catch (err) {

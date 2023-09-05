@@ -54,16 +54,22 @@ func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.Creat
 	}
 
 	// * Проверяем наличие файла
-	if len(inp.File) > 0 {
-		fileName := uuid.New().String() + inp.FileExtension
-		filePath := "uploads/applications/" + fileName
+	if inp.File != nil {
+		fileExt := filepath.Ext(inp.FileName)
+		newFileName := uuid.New().String() + fileExt
+		filePath := "uploads/applications/" + newFileName
 
-		err = ioutil.WriteFile(filePath, inp.File, 0644)
+		fileBytes, err := ioutil.ReadAll(inp.File)
 		if err != nil {
 			return err
 		}
 
-		entity.FileName = fileName
+		err = ioutil.WriteFile(filePath, fileBytes, 0644)
+		if err != nil {
+			return err
+		}
+
+		entity.FileName = newFileName
 	}
 
 	err = uc.repo.CreateApplication(ctx, entity)

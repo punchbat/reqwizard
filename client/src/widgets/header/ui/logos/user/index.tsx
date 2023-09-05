@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/jsx-no-comment-textnodes */
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@utils";
 import { Modal, Spin, Typography, Button } from "antd";
 import { useGetProfileQuery } from "@app/services/auth";
-import { PALETTE, USER_TOKEN } from "@constants";
+import { PALETTE } from "@constants";
 
 import "./index.scss";
 
@@ -24,11 +24,22 @@ const UserLogo: FC = () => {
         setIsModalOpen(!isModalOpen);
     };
 
-    const handleSinIn = () => {
-        localStorage.setItem(USER_TOKEN, "");
+    const handleExit = () => {
+        // localStorage.setItem(USER_TOKEN, "");
 
         navigate("/sign-in");
     };
+
+    useEffect(() => {
+        fetch("http://localhost:8080/uploads/avatars/4d7ff447-81c6-4951-b8d2-f7d9edb9d16a.jpg", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(response => {
+            console.log(response);
+        });
+    }, []);
 
     if (error) {
         return <div>Something went wrong!</div>;
@@ -38,6 +49,8 @@ const UserLogo: FC = () => {
         <>
             <div className={b()} onClick={handleOpen}>
                 <div className={b("inner")}>
+                    <img src="http://localhost:8080/uploads/avatars/4d7ff447-81c6-4951-b8d2-f7d9edb9d16a.jpg" alt="" />
+
                     <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
@@ -126,7 +139,7 @@ const UserLogo: FC = () => {
                             </div>
                         </div>
                         <div className={b("actions")}>
-                            <Button type="link" htmlType="button" onClick={handleSinIn}>
+                            <Button type="link" htmlType="button" onClick={handleExit}>
                                 Exit
                             </Button>
                         </div>

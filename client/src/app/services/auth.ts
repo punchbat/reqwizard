@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { IUser, SuccessResponse } from "@localtypes";
-import { USER_TOKEN } from "@constants";
 import { baseQuery } from "./base";
 
 // * RESPONSES
@@ -20,13 +19,6 @@ export type GetRolesResponse = SuccessResponse<
 >;
 
 // * REQUESTS
-export interface SignUpInput {
-    email: string;
-    password: string;
-    passwordConfirm: string;
-    role: string;
-}
-
 export interface SignInput {
     email: string;
     password: string;
@@ -42,7 +34,7 @@ export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery,
     endpoints: builder => ({
-        signUp: builder.mutation<void, SignUpInput>({
+        signUp: builder.mutation<void, FormData>({
             query: body => ({
                 url: "/auth/v1/sign-up",
                 method: "POST",
@@ -63,14 +55,9 @@ export const authApi = createApi({
                 body,
             }),
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
-                const { data } = await queryFulfilled;
+                await queryFulfilled;
 
-                const token = data?.payload;
-                if (token) {
-                    localStorage.setItem(USER_TOKEN, token);
-
-                    await dispatch(authApi.endpoints.getProfile.initiate(undefined, { forceRefetch: true }));
-                }
+                await dispatch(authApi.endpoints.getProfile.initiate(undefined, { forceRefetch: true }));
             },
         }),
         signIn: builder.mutation<void, SignInput>({

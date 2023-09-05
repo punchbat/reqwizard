@@ -19,7 +19,12 @@
     cursor: pointer;
 
     border-radius: 16px;
-    background: #ebebeb;
+    background: #fdfdfd;
+
+    border-radius: 4px;
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+    min-width: 200px;
+    border-bottom: 4px solid;
 
     animation-name: Toast-exist;
     animation-duration: 0.2s;
@@ -29,19 +34,31 @@
         margin-bottom: 0px;
     }
 
-    // &__inner {
-    // }
+    &.DEFAULT {
+        border-bottom-color: var(--color-default);
 
-    &__DEFAULT {
-        color: var(--color-typo-inverse);
+        .toast__icon svg {
+            color: var(--color-default);
+        }
     }
 
-    &__SUCCESS {
-        color: var(--color-success);
+    &.ERROR {
+        border-bottom-color: var(--color-error);
+
+        .toast__icon svg {
+            color: var(--color-error);
+        }
     }
 
-    &__ERROR {
-        color: var(--color-alert);
+    &.SUCCESS {
+        border-bottom-color: var(--color-success);
+
+        .toast__icon svg {
+            color: var(--color-success);
+        }
+    }
+
+    &__inner {
     }
 
     &__content {

@@ -2,9 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"path/filepath"
 	"reqwizard/internal/domain"
 	"reqwizard/internal/routes/application"
 	"reqwizard/internal/routes/auth"
@@ -62,20 +60,12 @@ func (h *Handler) CreateApplication(c *gin.Context) {
 	if err == nil {
 		defer file.Close()
 
-		fileBytes, err := ioutil.ReadAll(file)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, domain.BadResponse{
-				Status:  http.StatusInternalServerError,
-				Message: "Error reading file",
-			})
-			return
-		}
-
-		// * maximum 3MB
-		if len(fileBytes) > 3*1024*1024 {
+		fileSize := header.Size
+		maxSize := int64(3 * 1024 * 1024) // 3MB
+		if fileSize > maxSize {
 			c.JSON(http.StatusBadRequest, domain.BadResponse{
 				Status:  http.StatusBadRequest,
-				Message: "File size exceeds the limit of 5MB",
+				Message: "File size exceeds the limit of 3MB",
 			})
 			return
 		}
@@ -88,8 +78,8 @@ func (h *Handler) CreateApplication(c *gin.Context) {
 			return
 		}
 
-		inp.File = fileBytes
-		inp.FileExtension = filepath.Ext(header.Filename)
+		inp.File = file
+		inp.FileName = header.Filename
 	} else if err != http.ErrMissingFile {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
 			Status:  http.StatusBadRequest,

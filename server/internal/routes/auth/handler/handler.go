@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"reqwizard/internal/domain"
 	"reqwizard/internal/routes/auth"
+	"reqwizard/internal/shared/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,10 +33,43 @@ func NewHandler(useCase auth.UseCase) *Handler {
 func (h *Handler) SignUp(c *gin.Context) {
 	inp := new(auth.SignUpInput)
 
-	if err := c.BindJSON(inp); err != nil {
+	inp.Email = c.PostForm("email")
+	inp.Password = c.PostForm("password")
+	inp.PasswordConfirm = c.PostForm("passwordConfirm")
+	inp.Role = c.PostForm("role")
+	inp.Name = c.PostForm("name")
+	inp.Surname = c.PostForm("surname")
+	inp.Gender = c.PostForm("gender")
+	inp.Birthday = c.PostForm("birthday")
+
+	avatar, header, err := c.Request.FormFile("avatar")
+	if err == nil {
+		defer avatar.Close()
+
+		fileSize := header.Size
+		maxSize := int64(2 * 1024 * 1024) // 2MB
+		if fileSize > maxSize {
+			c.JSON(http.StatusBadRequest, domain.BadResponse{
+				Status:  http.StatusBadRequest,
+				Message: "Avatar size exceeds the limit of 2MB",
+			})
+			return
+		}
+
+		if !utils.IsValidAvatarImageExtension(header.Filename) {
+			c.JSON(http.StatusBadRequest, domain.BadResponse{
+				Status:  http.StatusBadRequest,
+				Message: "Invalid avatar type (allowed: png, jpeg, jpg)",
+			})
+			return
+		}
+
+		inp.Avatar = avatar
+		inp.AvatarName = header.Filename
+	} else if err != http.ErrMissingFile {
 		c.JSON(http.StatusBadRequest, domain.BadResponse{
 			Status:  http.StatusBadRequest,
-			Message: err.Error(),
+			Message: "Error uploading avatar",
 		})
 		return
 	}
@@ -142,10 +176,9 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.Response{
-		Status:  http.StatusOK,
-		Payload: token,
-	})
+	c.SetCookie("token", token, 7*24*60*60, "/", "localhost", false, true) // 1week, 7days
+
+	c.Status(http.StatusOK)
 }
 
 // SignIn

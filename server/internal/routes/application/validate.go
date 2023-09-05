@@ -3,6 +3,7 @@ package application
 import (
 	"errors"
 	"fmt"
+	"mime/multipart"
 	"reqwizard/internal/shared/utils"
 
 	"github.com/go-playground/validator"
@@ -17,12 +18,12 @@ type CreateApplicationInput struct {
 	ID    string `form:"_id,omitempty"`
 	Email string `form:"email"`
 
-	Type          string `form:"type" validate:"required,oneof=financial general"`
-	SubType       string `form:"subType" validate:"required,subType_validation"`
-	Title         string `form:"title" validate:"required,min=10"`
-	Description   string `form:"description" validate:"required,min=10"`
-	File          []byte `form:"file"`
-	FileExtension string
+	Type        string         `form:"type" validate:"required,oneof=financial general"`
+	SubType     string         `form:"subType" validate:"required,subType_validation"`
+	Title       string         `form:"title" validate:"required,min=10"`
+	Description string         `form:"description" validate:"required,min=10"`
+	File        multipart.File `form:"file"`
+	FileName    string
 }
 
 func ValidateCreateApplicationInput(inp *CreateApplicationInput) error {

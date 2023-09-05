@@ -3,9 +3,20 @@ interface IUser {
     email: string;
     verified: boolean;
     userRoles: Array<IUserRole>;
+    name: string;
+    surname: string;
+    gender: EUserGender;
+    birthday: string;
+    avatar: string;
     applicationCreatedAt: string;
     createdAt: string;
     updatedAt: string;
+}
+
+enum EUserGender {
+    MALE = "male",
+    FEMALE = "female",
+    OTHER = "other",
 }
 
 interface IUserRole {

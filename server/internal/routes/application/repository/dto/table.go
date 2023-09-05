@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"database/sql"
 	"reqwizard/internal/domain"
 	"time"
 
@@ -13,12 +14,13 @@ type Application struct {
 	TicketResponseID *uuid.UUID
 	UserID           uuid.UUID `gorm:"not null"`
 	ManagerID        *uuid.UUID
-	Status           domain.ApplicationStatus  `gorm:"not null"`
-	Type             domain.ApplicationType    `gorm:"not null"`
-	SubType          domain.ApplicationSubType `gorm:"not null"`
-	Title            string                    `gorm:"not null"`
-	Description      string                    `gorm:"not null"`
-	FileName         string
+
+	Status      domain.ApplicationStatus  `gorm:"not null"`
+	Type        domain.ApplicationType    `gorm:"not null"`
+	SubType     domain.ApplicationSubType `gorm:"not null"`
+	Title       string                    `gorm:"not null"`
+	Description string                    `gorm:"not null"`
+	FileName    sql.NullString
 
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time
@@ -46,7 +48,7 @@ func ConvertApplicationToDomain(i *Application) *domain.Application {
 		SubType:          i.SubType,
 		Title:            i.Title,
 		Description:      i.Description,
-		FileName:         i.FileName,
+		FileName:         i.FileName.String,
 
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
@@ -62,7 +64,7 @@ func ConvertApplicationFromDomain(i *domain.Application) *Application {
 		SubType:     i.SubType,
 		Title:       i.Title,
 		Description: i.Description,
-		FileName:    i.FileName,
+		FileName:    sql.NullString{String: i.FileName, Valid: true},
 
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
