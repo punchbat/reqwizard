@@ -9,3 +9,10 @@ bin
 .env.production
 .env.testing
 .env.rc
+
+# Зависимости
+vendor
+
+# Медиа файлы
+uploads/applications/*
+uploads/avatars/*

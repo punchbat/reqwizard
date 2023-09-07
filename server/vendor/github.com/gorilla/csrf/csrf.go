@@ -13,7 +13,7 @@ import (
 // CSRF token length in bytes.
 const tokenLength = 32
 
-// Context/session keys & prefixes.
+// Context/session keys & prefixes
 const (
 	tokenKey     string = "gorilla.csrf.Token"
 	formKey      string = "gorilla.csrf.Form"
@@ -28,7 +28,7 @@ var (
 	fieldName = tokenKey
 	// defaultAge sets the default MaxAge for cookies.
 	defaultAge = 3600 * 12
-	// The default HTTP request header to inspect.
+	// The default HTTP request header to inspect
 	headerName = "X-CSRF-Token"
 	// Idempotent (safe) methods as defined by RFC7231 section 4.2.2.
 	safeMethods = []string{"GET", "HEAD", "OPTIONS", "TRACE"}
@@ -60,12 +60,12 @@ var (
 // See https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00 for details.
 type SameSiteMode int
 
-// SameSite options.
+// SameSite options
 const (
 	// SameSiteDefaultMode sets the `SameSite` cookie attribute, which is
 	// invalid in some older browsers due to changes in the SameSite spec. These
 	// browsers will not send the cookie to the server.
-	// csrf uses SameSiteLaxMode (SameSite=Lax) as the default as of v1.7.0+.
+	// csrf uses SameSiteLaxMode (SameSite=Lax) as the default as of v1.7.0+
 	SameSiteDefaultMode SameSiteMode = iota + 1
 	SameSiteLaxMode
 	SameSiteStrictMode
@@ -108,7 +108,6 @@ type options struct {
 // 'Forbidden' error response.
 //
 // Example:
-//
 //	package main
 //
 //	import (
@@ -145,6 +144,7 @@ type options struct {
 //		// This is useful if you're sending JSON to clients or a front-end JavaScript
 //		// framework.
 //	}
+//
 func Protect(authKey []byte, opts ...Option) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		cs := parseOptions(h, opts...)
@@ -214,8 +214,6 @@ func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// An error represents either a cookie that failed HMAC validation
 	// or that doesn't exist.
 	realToken, err := cs.st.Get(r)
-	fmt.Println("cs.st.Get(r)", realToken)
-
 	if err != nil || len(realToken) != tokenLength {
 		// If there was an error retrieving the token, the token doesn't exist
 		// yet, or it's the wrong length, generate a new token.
@@ -241,8 +239,6 @@ func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r = contextSave(r, tokenKey, mask(realToken, r))
 	// Save the field name to the request context
 	r = contextSave(r, formKey, cs.opts.FieldName)
-
-	fmt.Println(safeMethods, r.Method)
 
 	// HTTP methods not defined as idempotent ("safe") under RFC7231 require
 	// inspection.
@@ -278,8 +274,6 @@ func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		fmt.Println(4)
-
 		// Retrieve the combined token (pad + masked) token...
 		maskedToken, err := cs.requestToken(r)
 		if err != nil {
@@ -297,14 +291,13 @@ func (cs *csrf) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// ... and unmask it.
 		requestToken := unmask(maskedToken)
 
-		fmt.Println(requestToken, realToken, compareTokens(requestToken, realToken))
-
 		// Compare the request token against the real token
 		if !compareTokens(requestToken, realToken) {
 			r = envError(r, ErrBadToken)
 			cs.opts.ErrorHandler.ServeHTTP(w, r)
 			return
 		}
+
 	}
 
 	// Set the Vary: Cookie header to protect clients from caching the response.

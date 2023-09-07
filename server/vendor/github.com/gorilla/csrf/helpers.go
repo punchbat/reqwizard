@@ -51,11 +51,12 @@ func UnsafeSkipCheck(r *http.Request) *http.Request {
 //
 // Example:
 //
-//	// The following tag in our form.tmpl template:
-//	{{ .csrfField }}
+//      // The following tag in our form.tmpl template:
+//      {{ .csrfField }}
 //
-//	// ... becomes:
-//	<input type="hidden" name="gorilla.csrf.Token" value="<token>">
+//      // ... becomes:
+//      <input type="hidden" name="gorilla.csrf.Token" value="<token>">
+//
 func TemplateField(r *http.Request) template.HTML {
 	if name, err := contextGet(r, formKey); err == nil {
 		fragment := fmt.Sprintf(`<input type="hidden" name="%s" value="%s">`,
@@ -149,6 +150,7 @@ func generateRandomBytes(n int) ([]byte, error) {
 	}
 
 	return b, nil
+
 }
 
 // sameOrigin returns true if URLs a and b share the same origin. The same
