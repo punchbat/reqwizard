@@ -6,9 +6,11 @@ import "./index.scss";
 function App() {
     return (
         <StoresLayout>
+            {/* <AppLayout> */}
             <ThemeLayout>
                 <Routing />
             </ThemeLayout>
+            {/* </AppLayout> */}
         </StoresLayout>
     );
 }

@@ -1,18 +1,21 @@
-import React, { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { Header, Footer, ToastsRenderer, Navbar } from "@widgets/index";
 
-import styles from "./index.module.scss";
+import { cn } from "@utils";
+import "./index.scss";
+
+const b = cn("main_layout");
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
     return (
-        <div className={`${styles.MainLayout}`}>
-            <div className={`${styles.MainLayout__inner}`}>
+        <div className={b("")}>
+            <div className={b("inner")}>
                 <ToastsRenderer />
                 <Header />
                 <Navbar />
 
-                <div className={styles.MainLayout__content}>
+                <div className={b("content")}>
                     <main>{children}</main>
                 </div>
 

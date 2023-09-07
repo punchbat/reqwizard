@@ -1,13 +1,16 @@
-import React, { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { ToastsRenderer } from "@widgets/index";
+import { cn } from "@utils";
 
-import styles from "./index.module.scss";
+import "./index.scss";
+
+const b = cn("domik_layout");
 
 const DomikLayout: FC<PropsWithChildren> = ({ children }) => {
     return (
-        <div className={`${styles.DomikLayout}`}>
-            <div className={`${styles.DomikLayout__inner}`}>
+        <div className={b("")}>
+            <div className={b("inner")}>
                 <ToastsRenderer />
 
                 <main>{children}</main>

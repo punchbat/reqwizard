@@ -7,7 +7,7 @@ import { ticketResponseApi } from "@app/services/ticket_response";
 // * компоненты
 import toastsSlice from "@widgets/toasts-renderer/store";
 // * обычные
-import userSlice from "./reducers/userSlice";
+import appSlice from "./reducers/appSlice";
 
 export function makeStore() {
     return configureStore({
@@ -21,7 +21,7 @@ export function makeStore() {
             toasts: toastsSlice,
 
             // * обычные
-            user: userSlice,
+            app: appSlice,
         },
 
         middleware: getdefaultMiddleware =>

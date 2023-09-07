@@ -20,7 +20,7 @@ type SignUpInput struct {
 	Gender          string         `form:"gender" validate:"required,oneof=male female other"`
 	Birthday        string         `form:"birthday" validate:"required,age_validation"`
 	Avatar          multipart.File `form:"avatar,omitempty"`
-	AvatarName string
+	AvatarName      string
 }
 
 func ValidateSignUpInput(inp *SignUpInput) error {

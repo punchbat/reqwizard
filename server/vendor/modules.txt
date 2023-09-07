@@ -89,6 +89,15 @@ github.com/goccy/go-json/internal/runtime
 # github.com/google/uuid v1.3.0
 ## explicit
 github.com/google/uuid
+# github.com/gorilla/csrf v1.7.1
+## explicit; go 1.13
+github.com/gorilla/csrf
+# github.com/gorilla/securecookie v1.1.1
+## explicit
+github.com/gorilla/securecookie
+# github.com/gwatts/gin-adapter v1.0.0
+## explicit; go 1.18
+github.com/gwatts/gin-adapter
 # github.com/hashicorp/hcl v1.0.0
 ## explicit
 github.com/hashicorp/hcl
@@ -177,6 +186,9 @@ github.com/pelletier/go-toml/v2/internal/characters
 github.com/pelletier/go-toml/v2/internal/danger
 github.com/pelletier/go-toml/v2/internal/tracker
 github.com/pelletier/go-toml/v2/unstable
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
 # github.com/pressly/goose/v3 v3.15.0
 ## explicit; go 1.19
 github.com/pressly/goose/v3

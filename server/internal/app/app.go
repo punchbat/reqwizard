@@ -13,8 +13,9 @@ import (
 	service_email "reqwizard/internal/services/email"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/csrf"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/csrf"
+	adapter "github.com/gwatts/gin-adapter"
 	"github.com/robfig/cron/v3"
 )
 
@@ -55,32 +56,50 @@ func (app *App) Run(port string) error {
 
 	router := gin.Default()
 
+	// * CLIENT ORIGINS
+	clientOrigins := []string{"http://localhost:8000"}
+
 	// * CORS
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowCredentials = true
-	// corsConfig.AllowAllOrigins = true
 	corsConfig.AllowAllOrigins = false
-	corsConfig.AllowOrigins = []string{"http://localhost:8000"}
-	corsConfig.AddAllowHeaders("Authorization")
+	corsConfig.AllowOrigins = clientOrigins
+	corsConfig.AddAllowHeaders("Authorization", "")
 	corsConfig.AddAllowHeaders("Content-Type")
+	corsConfig.AddAllowHeaders("X-CSRF-Token")
+	// * ALLOW TO GET FROM BROWSER HEADER
+	corsConfig.AddExposeHeaders("X-Csrf-Token")
 
+	// * CSRF
+	csrfMiddleware := csrf.Protect(
+		[]byte("3d34b27f1df5c6ad7a24ac2fc7b0b340c5f1a88e27a22e44a73f129d3f0e9e6f"),
+		csrf.Secure(false),
+		csrf.TrustedOrigins(clientOrigins),
+		csrf.Path("/"),
+	)
 
-	// * CSRF 
-	csrfMiddleware := csrf.Default(csrf.Options{
-        Secret: "your-secret-key", // Замените на ваш секретный ключ
-    })
-
+	// * MIDDLEWARES
 	router.Use(
 		cors.New(corsConfig),
-		csrfMiddleware,
 		gin.Recovery(),
 		gin.Logger(),
 	)
 
+	// * CSRF
+	router.Use(
+		adapter.Wrap(csrfMiddleware),
+	)
+
+	router.Use(func(c *gin.Context) {
+		c.Header("X-CSRF-Token", csrf.Token(c.Request))
+
+		c.Next()
+	})
+
 	// * ROUTES
 	routes.InitRoutes(router, app.c, app.pgGorm, app.mailer)
 
-	// Конфиги для сервера
+	// * Конфиги для сервера
 	app.httpServer = &http.Server{
 		Addr:           ":" + port,
 		Handler:        router,

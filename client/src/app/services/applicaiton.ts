@@ -54,8 +54,9 @@ export const applicationApi = createApi({
             query: id => ({
                 url: `/api/application/v1/download-file/${id}`,
                 method: "GET",
-                responseHandler: async response => {
+                responseHandler: async (response: { blob: () => any }) => {
                     const blob = await response.blob();
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     const blobUrl = URL.createObjectURL(blob);
                     return blobUrl;
                 },
