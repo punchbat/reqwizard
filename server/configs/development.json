@@ -4,6 +4,10 @@
     "ip": "127.0.0.1"
   },
 
+  "clients": {
+    "web": "http://localhost:8000"
+  },
+
   "db": {
     "user": "",
     "password": "",
@@ -26,5 +30,17 @@
   "auth": {
     "signing_key": "signing_key",
     "token_ttl": 720
+  },
+
+  "cors": {
+    "credentials": true,
+    "headers": ["Authorization", "Content-Type", "X-CSRF-Token"]
+  },
+
+  "csrf": {
+    "auth_key": "3d34b27f1df5c6ad7a24ac2fc7b0b340c5f1a88e27a22e44a73f129d3f0e9e6f",
+    "secure": false,
+    "http_only": true,
+    "path": "/"
   }
 }

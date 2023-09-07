@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/csrf"
 	adapter "github.com/gwatts/gin-adapter"
 	"github.com/robfig/cron/v3"
+	"github.com/spf13/viper"
 )
 
 type App struct {
@@ -57,25 +58,30 @@ func (app *App) Run(port string) error {
 	router := gin.Default()
 
 	// * CLIENT ORIGINS
-	clientOrigins := []string{"http://localhost:8000"}
+	clientsMap := viper.GetStringMap("clients")
+	clientOrigins := []string{}
+	web, ok := clientsMap["web"]
+	if ok {
+		clientOrigins = append(clientOrigins, web.(string))
+	}
 
 	// * CORS
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowCredentials = true
-	corsConfig.AllowAllOrigins = false
+	corsConfig.AllowCredentials = viper.GetBool("cors.credentials")
+	corsHeaders := viper.GetStringSlice("cors.headers")
+	corsConfig.AllowAllOrigins = !(len(corsHeaders) > 0)
 	corsConfig.AllowOrigins = clientOrigins
-	corsConfig.AddAllowHeaders("Authorization", "")
-	corsConfig.AddAllowHeaders("Content-Type")
-	corsConfig.AddAllowHeaders("X-CSRF-Token")
+	corsConfig.AddAllowHeaders(corsHeaders...)
 	// * ALLOW TO GET FROM BROWSER HEADER
 	corsConfig.AddExposeHeaders("X-Csrf-Token")
 
 	// * CSRF
 	csrfMiddleware := csrf.Protect(
-		[]byte("3d34b27f1df5c6ad7a24ac2fc7b0b340c5f1a88e27a22e44a73f129d3f0e9e6f"),
-		csrf.Secure(false),
+		[]byte(viper.GetString("csrf.auth_key")),
+		csrf.Secure(viper.GetBool("csrf.secure")),
 		csrf.TrustedOrigins(clientOrigins),
-		csrf.Path("/"),
+		csrf.Path(viper.GetString("csrf.path")),
+		csrf.HttpOnly(viper.GetBool("csrf.http_only")),
 	)
 
 	// * MIDDLEWARES

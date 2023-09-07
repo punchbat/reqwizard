@@ -4,6 +4,10 @@
     "ip": "127.0.0.1"
   },
 
+  "clients": {
+    "web": "http://localhost:8000"
+  },
+
   "db": {
     "name": "name",
     "uri": "postgres://postgres:5432",
@@ -23,5 +27,17 @@
   "auth": {
     "signing_key": "signing_key",
     "token_ttl": 720
+  },
+
+  "cors": {
+    "credentials": true,
+    "headers": ["Authorization", "Content-Type", "X-CSRF-Token"]
+  },
+
+  "csrf": {
+    "auth_key": "",
+    "secure": true,
+    "http_only": true,
+    "path": "/"
   }
 }
