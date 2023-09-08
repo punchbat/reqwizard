@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron/v3"
-	"github.com/spf13/viper"
 )
 
 func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mailer *email.Mailer) gin.HandlerFunc {
@@ -27,8 +26,6 @@ func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mail
 		userRoleRepository,
 
 		mailer,
-		[]byte(viper.GetString("auth.signing_key")),
-		viper.GetDuration("auth.token_ttl"),
 	)
 
 	// Jobs
@@ -51,6 +48,9 @@ func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mail
 
 		// * проверяем на наличие аутентификации
 		endpoints.GET("/get-profile", authMiddleware, h.GetProfile)
+
+		// * выход
+		endpoints.POST("/logout", h.Logout)
 	}
 
 	return authMiddleware

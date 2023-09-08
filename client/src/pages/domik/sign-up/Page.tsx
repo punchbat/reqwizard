@@ -72,12 +72,8 @@ const SignUp: FC = function () {
                     const content = await getBase64(localValues?.avatar?.file as RcFile);
 
                     if (content) {
-                        formData.append(
-                            "avatar",
-                            new File([content], localValues?.avatar?.file?.name, {
-                                type: localValues?.avatar?.file?.type,
-                            }),
-                        );
+                        const blob = await fetch(content).then(res => res.blob());
+                        formData.append("avatar", blob, localValues.avatar.file.name);
                     }
                 }
 

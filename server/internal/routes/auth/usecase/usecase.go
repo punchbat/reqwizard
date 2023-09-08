@@ -26,6 +26,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go/v4"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,12 +36,10 @@ type AuthClaims struct {
 }
 
 type UseCase struct {
-	repo           auth.Repository
-	roleRepo       role.Repository
-	userRoleRepo   userRole.Repository
-	mailer         *email.Mailer
-	signingKey     []byte
-	expireDuration time.Duration
+	repo         auth.Repository
+	roleRepo     role.Repository
+	userRoleRepo userRole.Repository
+	mailer       *email.Mailer
 }
 
 func NewUseCase(
@@ -48,17 +47,13 @@ func NewUseCase(
 	roleRepo role.Repository,
 	userRoleRepo userRole.Repository,
 
-	mailer *service_email.Mailer,
-	signingKey []byte,
-	tokenTTLHours time.Duration) *UseCase {
+	mailer *service_email.Mailer) *UseCase {
 	return &UseCase{
 		repo:         repo,
 		roleRepo:     roleRepo,
 		userRoleRepo: userRoleRepo,
 
-		mailer:         mailer,
-		signingKey:     signingKey,
-		expireDuration: time.Hour * tokenTTLHours,
+		mailer: mailer,
 	}
 }
 
@@ -362,13 +357,15 @@ func (uc *UseCase) GetToken(ctx context.Context, user *domain.User) (string, err
 	claims := AuthClaims{
 		User: user,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: jwt.At(time.Now().Add(uc.expireDuration)),
+			ExpiresAt: jwt.At(time.Now().Add(viper.GetDuration("auth.token.ttl"))),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	completeSignedToken, err := token.SignedString(uc.signingKey)
+	signingKey := []byte(viper.GetString("auth.signing_key"))
+
+	completeSignedToken, err := token.SignedString(signingKey)
 
 	if err != nil {
 		return "", err
@@ -378,11 +375,13 @@ func (uc *UseCase) GetToken(ctx context.Context, user *domain.User) (string, err
 }
 
 func (uc *UseCase) ParseToken(ctx context.Context, accessToken string) (*domain.User, error) {
+	signingKey := []byte(viper.GetString("auth.signing_key"))
+
 	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return uc.signingKey, nil
+		return signingKey, nil
 	})
 
 	if err != nil {

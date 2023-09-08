@@ -34,7 +34,7 @@ func setConfigsFromEnv() {
 
 	// set auth env
 	setEnv("AUTH_SIGNING_KEY", "auth.signing_key")
-	setEnv("AUTH_TOKEN_TTL", "auth.token_ttl")
+	setEnv("AUTH_TOKEN_TTL", "auth.token.ttl")
 }
 
 func Init() {

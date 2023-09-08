@@ -56,14 +56,9 @@ const CreateApplication: FC = function () {
 
             if (values.file && values.file.file) {
                 const content = await getBase64(values.file.file as RcFile);
-
                 if (content) {
-                    formData.append(
-                        "file",
-                        new File([content], values.file.file.name, {
-                            type: values.file.file.type,
-                        }),
-                    );
+                    const blob = await fetch(content).then(res => res.blob());
+                    formData.append("file", blob, values.file.file.name);
                 }
             }
 

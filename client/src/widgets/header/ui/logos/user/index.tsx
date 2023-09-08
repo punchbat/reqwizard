@@ -25,8 +25,6 @@ const UserLogo: FC = () => {
     };
 
     const handleExit = () => {
-        // localStorage.setItem(USER_TOKEN, "");
-
         navigate("/sign-in");
     };
 

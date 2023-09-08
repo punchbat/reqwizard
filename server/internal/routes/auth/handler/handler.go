@@ -5,8 +5,10 @@ import (
 	"reqwizard/internal/domain"
 	"reqwizard/internal/routes/auth"
 	"reqwizard/internal/shared/utils"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type Handler struct {
@@ -29,7 +31,7 @@ func NewHandler(useCase auth.UseCase) *Handler {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/sign-up [post].
+// @Router /auth/v1/sign-up [post].
 func (h *Handler) SignUp(c *gin.Context) {
 	inp := new(auth.SignUpInput)
 
@@ -104,7 +106,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/send-verify-code [post].
+// @Router /auth/v1/send-verify-code [post].
 func (h *Handler) SendVerifyCode(c *gin.Context) {
 	inp := new(auth.SendVerifyCodeInput)
 
@@ -146,7 +148,7 @@ func (h *Handler) SendVerifyCode(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/check-verify-code [post].
+// @Router /auth/v1/check-verify-code [post].
 func (h *Handler) CheckVerifyCode(c *gin.Context) {
 	inp := new(auth.CheckVerifyCodeInput)
 
@@ -176,7 +178,15 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", token, 7*24*60*60, "/", "localhost", false, true) // 1week, 7days
+	c.SetCookie(
+		viper.GetString("auth.token.name"),
+		token,
+		int(time.Hour*viper.GetDuration("auth.token.ttl")),
+		viper.GetString("auth.token.path"),
+		viper.GetString("auth.token.domain"),
+		viper.GetBool("auth.token.secure"),
+		viper.GetBool("auth.token.http_only"),
+	)
 
 	c.Status(http.StatusOK)
 }
@@ -191,7 +201,7 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/sign-in [post].
+// @Router /auth/v1/sign-in [post].
 func (h *Handler) SignIn(c *gin.Context) {
 	inp := new(auth.SignInInput)
 
@@ -233,7 +243,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /api/auth/v1/get-profile [get].
+// @Router /auth/v1/get-profile [get].
 func (h *Handler) GetProfile(c *gin.Context) {
 	inp := new(auth.GetProfileInput)
 
@@ -257,4 +267,29 @@ func (h *Handler) GetProfile(c *gin.Context) {
 		Status:  http.StatusOK,
 		Payload: user,
 	})
+}
+
+// Logout
+// @Tags user
+// @Description logout
+// @Success 200 {object} domain.Response
+// @Failure 400 {object} domain.BadResponse
+// @Failure 401 {object} domain.BadResponse
+// @Failure 403 {object} domain.BadResponse
+// @Failure 405 {object} domain.BadResponse
+// @Failure 500 {object} domain.BadResponse
+// @Router /auth/v1/logout [post].
+func (h *Handler) Logout(c *gin.Context) {
+	// Удаление куки
+	c.SetCookie(
+		viper.GetString("auth.token.name"),
+		"",
+		-1,
+		viper.GetString("auth.token.path"),
+		viper.GetString("auth.token.domain"),
+		viper.GetBool("auth.token.secure"),
+		viper.GetBool("auth.token.http_only"),
+	)
+
+	c.Status(http.StatusOK)
 }

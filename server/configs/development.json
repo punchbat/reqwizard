@@ -29,7 +29,14 @@
 
   "auth": {
     "signing_key": "signing_key",
-    "token_ttl": 720
+    "token": {
+      "ttl": 720,
+      "name": "token",
+      "path": "/",
+      "domain": "localhost",
+      "secure": false,
+      "http_only": true
+    }
   },
 
   "cors": {
