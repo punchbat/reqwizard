@@ -4,7 +4,7 @@ import { Button, Form, Input, Typography, Select, Spin, Upload, DatePicker } fro
 import { LockOutlined, UserOutlined, UploadOutlined } from "@ant-design/icons";
 import { cn, getBase64 } from "@utils";
 
-import { FailResponse, ResponseInterface, isSuccessResponse } from "@localtypes";
+import { EUserGender, FailResponse, ResponseInterface, isSuccessResponse } from "@localtypes";
 import {
     useSignUpMutation,
     useSendVerifyCodeMutation,
@@ -313,7 +313,11 @@ const SignUp: FC = function () {
                                         rules={[{ required: true, message: "Please select your birthday!" }]}
                                         wrapperCol={{ span: 24 }}
                                     >
-                                        <DatePicker placeholder="Select birthday" style={{ width: "100%" }} />
+                                        <DatePicker
+                                            placeholder="Select birthday"
+                                            style={{ width: "100%" }}
+                                            showTime={false}
+                                        />
                                     </Form.Item>
                                     <Form.Item
                                         name="name"
@@ -332,9 +336,11 @@ const SignUp: FC = function () {
                                         rules={[{ required: true, message: "Please select your gender!" }]}
                                     >
                                         <Select placeholder="Select gender">
-                                            <Option value="male">Male</Option>
-                                            <Option value="female">Female</Option>
-                                            <Option value="other">Other</Option>
+                                            {Object.entries(EUserGender).map(([key, value]) => (
+                                                <Option key={key} value={value}>
+                                                    {value}
+                                                </Option>
+                                            ))}
                                         </Select>
                                     </Form.Item>
                                 </>

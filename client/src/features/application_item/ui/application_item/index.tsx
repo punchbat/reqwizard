@@ -2,7 +2,7 @@ import { FC, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Button } from "antd";
 
-import { useGetProfileQuery } from "@app/services/auth";
+import { useGetMyProfileQuery } from "@app/services/auth";
 import { cn, isManager } from "@utils";
 import moment from "moment";
 import { IApplication } from "@localtypes";
@@ -30,7 +30,7 @@ const ApplicationItem: FC<Props> = function ({
 }) {
     const navigate = useNavigate();
 
-    const { data, isLoading } = useGetProfileQuery();
+    const { data, isLoading } = useGetMyProfileQuery();
 
     const handleClick = () => {
         navigate(`/application/${_id}`);

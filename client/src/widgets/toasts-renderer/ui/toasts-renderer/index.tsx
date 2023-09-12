@@ -1,11 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 import { Fragment, FC } from "react";
 import { useAppSelector } from "@hooks/index";
+import { cn } from "@utils";
 import { MessageType, MessagePositions, selectToasts, ToastProp } from "../../store";
 import { Toast } from "../toast";
 import { DefaultParamsProp } from "../../types";
 
-import styles from "./index.module.scss";
+import "./index.scss";
+
+const b = cn("toasts_renderer");
 
 const defaultParams: DefaultParamsProp = {
     message: "not message",
@@ -27,9 +30,9 @@ const ToastsRenderer: FC = () => {
     );
 
     return (
-        <div className={styles.toasts_renderer}>
-            <div className={styles.toasts_renderer__inner}>
-                <div className={styles.toasts_renderer__left_top}>
+        <div className={b("")}>
+            <div className={b("inner")}>
+                <div className={b("left_top")}>
                     {leftToasts.map((item, index) => {
                         return (
                             <Fragment key={index}>
@@ -38,7 +41,7 @@ const ToastsRenderer: FC = () => {
                         );
                     })}
                 </div>
-                <div className={styles.toasts_renderer__right_top}>
+                <div className={b("right_top")}>
                     {rightToasts.map((item, index) => {
                         return (
                             <Fragment key={index}>

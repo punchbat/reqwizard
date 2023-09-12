@@ -172,3 +172,43 @@ type GetProfileInput struct {
 	ID    string `json:"_id,omitempty"`
 	Email string `json:"email"`
 }
+
+type UpdateInput struct {
+	ID         string         `json:"_id,omitempty"`
+	UserRoles  []string       `form:"userRoles" validate:"required,dive,oneof=user manager"`
+	Name       string         `form:"name" validate:"required,max=64"`
+	Surname    string         `form:"surname" validate:"required,max=64"`
+	Gender     string         `form:"gender" validate:"required,oneof=male female other"`
+	Birthday   string         `form:"birthday" validate:"required,age_validation"`
+	Avatar     multipart.File `form:"avatar,omitempty"`
+	AvatarName string
+}
+
+func ValidateUpdateInput(inp *UpdateInput) error {
+	validate := validator.New()
+	validate.RegisterValidation("age_validation", validateAge)
+
+	err := validate.Struct(inp)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			switch err.Tag() {
+			case "required":
+				return errors.New(fmt.Sprintf("%s is required", err.Field()))
+			case "dive":
+				return errors.New(fmt.Sprintf("%s must contain valid role values [user manager]", err.Field()))
+			case "min":
+				return errors.New(fmt.Sprintf("%s must be at least %s characters long", err.Field(), err.Param()))
+			case "max":
+				return errors.New(fmt.Sprintf("%s cannot exceed %s characters", err.Field(), err.Param()))
+			case "containsany":
+				return errors.New(fmt.Sprintf("%s should contain at least one %s character", err.Field(), err.Param()))
+			case "oneof":
+				return errors.New(fmt.Sprintf("%s should include at least one of the following: %s", err.Field(), err.Param()))
+			case "age_validation":
+				return errors.New(fmt.Sprintf("%s age must not exceed 100 years", err.Field()))
+			}
+		}
+	}
+
+	return nil
+}

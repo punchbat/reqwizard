@@ -19,14 +19,15 @@ type Repository interface {
 const CtxUserKey = "user"
 
 type UseCase interface {
-	SignUp(ctx context.Context, inp *SignUpInput) error
-	SendVerifyCode(ctx context.Context, inp *SendVerifyCodeInput) error
-	CheckVerifyCode(ctx context.Context, inp *CheckVerifyCodeInput) (string, error)
+	SignUp(ctx context.Context, inp *SignUpInput) (int, error)
+	SendVerifyCode(ctx context.Context, inp *SendVerifyCodeInput) (int, error)
+	CheckVerifyCode(ctx context.Context, inp *CheckVerifyCodeInput) (string, int, error)
 
-	SignIn(ctx context.Context, inp *SignInInput) error
-	ParseToken(ctx context.Context, accessToken string) (*domain.User, error)
+	SignIn(ctx context.Context, inp *SignInInput) (int, error)
+	ParseToken(ctx context.Context, accessToken string) (*domain.User, int, error)
 
-	GetProfile(ctx context.Context, inp *GetProfileInput) (*domain.User, error)
+	GetProfile(ctx context.Context, id string) (*domain.User, int, error)
+	UpdateProfile(ctx context.Context, inp *UpdateInput) (int, error)
 
-	RemoveUnverifiedUsers(ctx context.Context) error
+	RemoveUnverifiedUsers(ctx context.Context) (int, error)
 }

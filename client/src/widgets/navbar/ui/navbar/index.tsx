@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { Typography, Spin } from "antd";
 import { cn, isManager } from "@utils";
-import { useGetProfileQuery } from "@app/services/auth";
+import { useGetMyProfileQuery } from "@app/services/auth";
 
 import "./index.scss";
 
@@ -15,7 +15,7 @@ const Navbar: FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { data, isLoading } = useGetProfileQuery();
+    const { data, isLoading } = useGetMyProfileQuery();
 
     const handleClick = (path: string) => {
         navigate(path);

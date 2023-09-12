@@ -70,4 +70,4 @@ interface ITicketResponse {
 }
 
 export type { IUser, IUserRole, IApplication, ITicketResponse };
-export { EApplicationStatus, EUserRoleName, EUserRoleStatus };
+export { EApplicationStatus, EUserRoleName, EUserRoleStatus, EUserGender };

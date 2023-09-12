@@ -57,7 +57,7 @@ export const authApi = createApi({
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 await queryFulfilled;
 
-                await dispatch(authApi.endpoints.getProfile.initiate(undefined, { forceRefetch: true }));
+                await dispatch(authApi.endpoints.getMyProfile.initiate(undefined, { forceRefetch: true }));
             },
         }),
         signIn: builder.mutation<void, SignInput>({
@@ -67,16 +67,40 @@ export const authApi = createApi({
                 body,
             }),
         }),
-        getProfile: builder.query<GetProfileResponse, void>({
+        getMyProfile: builder.query<GetProfileResponse, void>({
             query: () => ({
-                url: "/auth/v1/get-profile",
+                url: "/auth/v1/get-my-profile",
                 method: "GET",
             }),
+        }),
+        getProfile: builder.query<GetProfileResponse, string>({
+            query: id => ({
+                url: `/auth/v1/get-profile/${id}`,
+                method: "GET",
+            }),
+        }),
+        updateProfile: builder.mutation<void, FormData>({
+            query: body => ({
+                url: "/auth/v1/update-profile",
+                method: "PUT",
+                body,
+            }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+
+                await dispatch(authApi.endpoints.getMyProfile.initiate(undefined, { forceRefetch: true }));
+            },
         }),
         getRoles: builder.query<GetRolesResponse, void>({
             query: () => ({
                 url: "/api/role/v1/list",
                 method: "GET",
+            }),
+        }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: "/auth/v1/logout",
+                method: "POST",
             }),
         }),
     }),
@@ -87,6 +111,9 @@ export const {
     useSendVerifyCodeMutation,
     useCheckVerifyCodeMutation,
     useSignInMutation,
+    useGetMyProfileQuery,
     useGetProfileQuery,
+    useUpdateProfileMutation,
     useGetRolesQuery,
+    useLogoutMutation,
 } = authApi;

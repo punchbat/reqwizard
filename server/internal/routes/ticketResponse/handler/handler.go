@@ -56,16 +56,16 @@ func (h *Handler) CreateTicketResponse(c *gin.Context) {
 		return
 	}
 
-	err := h.useCase.CreateTicketResponse(c.Request.Context(), inp)
+	status, err := h.useCase.CreateTicketResponse(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.Status(http.StatusOK)
+	c.Status(status)
 }
 
 // GetTicketResponses
@@ -110,17 +110,17 @@ func (h *Handler) GetTicketResponsesByManagerID(c *gin.Context) {
 		return
 	}
 
-	ticketResponses, err := h.useCase.GetTicketResponsesByManagerID(c.Request.Context(), inp)
+	ticketResponses, status, err := h.useCase.GetTicketResponsesByManagerID(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseTicketResponses{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseTicketResponses{
+		Status:  status,
 		Payload: ticketResponses,
 	})
 }
@@ -140,17 +140,17 @@ func (h *Handler) GetTicketResponsesByManagerID(c *gin.Context) {
 func (h *Handler) GetTicketResponseByID(c *gin.Context) {
 	ticketResponseID := c.Param("id")
 
-	ticketResponse, err := h.useCase.GetTicketResponseByID(c.Request.Context(), ticketResponseID)
+	ticketResponse, status, err := h.useCase.GetTicketResponseByID(c.Request.Context(), ticketResponseID)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseTicketResponse{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseTicketResponse{
+		Status:  status,
 		Payload: ticketResponse,
 	})
 }
@@ -197,17 +197,17 @@ func (h *Handler) GetTicketResponsesByUserID(c *gin.Context) {
 		return
 	}
 
-	ticketResponses, err := h.useCase.GetTicketResponsesByUserID(c.Request.Context(), inp)
+	ticketResponses, status, err := h.useCase.GetTicketResponsesByUserID(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseTicketResponses{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseTicketResponses{
+		Status:  status,
 		Payload: ticketResponses,
 	})
 }

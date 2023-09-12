@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"net/http"
 	"reqwizard/internal/domain"
 
 	"reqwizard/internal/routes/role"
@@ -17,22 +18,21 @@ func NewUseCase(repoRole role.Repository) *UseCase {
 	}
 }
 
-func (uc *UseCase) GetRoles(ctx context.Context) ([]*domain.Role, error) {
+func (uc *UseCase) GetRoles(ctx context.Context) ([]*domain.Role, int, error) {
 	roles, err := uc.repoRole.GetRoles(ctx)
-
 	if err != nil {
-		return nil, err
+		return nil, http.StatusInternalServerError, err
 	}
 
-	return roles, nil
+	return roles, http.StatusOK, nil
 }
 
-func (uc *UseCase) GetRoleByID(ctx context.Context, id string) (*domain.Role, error) {
+func (uc *UseCase) GetRoleByID(ctx context.Context, id string) (*domain.Role, int, error) {
 	role, err := uc.repoRole.GetRoleByID(ctx, id)
 
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return role, nil
+	return role, http.StatusOK, nil
 }

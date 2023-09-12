@@ -15,10 +15,10 @@ type Repository interface {
 }
 
 type UseCase interface {
-	GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error)
-	GetTicketResponsesByUserID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, error)
+	GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, int, error)
+	GetTicketResponsesByUserID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, int, error)
 
 	// * manager
-	CreateTicketResponse(ctx context.Context, inp *CreateTicketResponseInput) error
-	GetTicketResponsesByManagerID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, error)
+	CreateTicketResponse(ctx context.Context, inp *CreateTicketResponseInput) (int, error)
+	GetTicketResponsesByManagerID(ctx context.Context, inp *TicketResponseListInput) ([]*domain.TicketResponse, int, error)
 }

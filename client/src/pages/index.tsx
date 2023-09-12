@@ -2,7 +2,7 @@ import { FC, lazy, ReactElement } from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 import { Suspense } from "@components";
-import { useGetProfileQuery } from "@app/services/auth";
+import { useGetMyProfileQuery } from "@app/services/auth";
 import { DomikLayout, MainLayout } from "@app/layouts";
 import { isManager, isAuthenticatedAndHasRole } from "@utils";
 import { Error } from "./error";
@@ -11,6 +11,8 @@ const SignUp = lazy(() => import("./domik/sign-up"));
 const SignIn = lazy(() => import("./domik/sign-in"));
 
 const Home = lazy(() => import("./home"));
+const Profile = lazy(() => import("./profile"));
+
 const CreateApplication = lazy(() => import("./create_application"));
 const Application = lazy(() => import("./application"));
 
@@ -24,7 +26,7 @@ const Workspace = lazy(() => import("./workspace"));
 const Whois = lazy(() => import("./whois"));
 
 const AuthGuard: FC<{ children: ReactElement }> = ({ children }) => {
-    const { data, error, isLoading } = useGetProfileQuery();
+    const { data, error, isLoading } = useGetMyProfileQuery();
 
     if (isLoading) {
         return null;
@@ -38,7 +40,7 @@ const AuthGuard: FC<{ children: ReactElement }> = ({ children }) => {
 };
 
 const ManagerGuard: FC<{ children: ReactElement }> = ({ children }) => {
-    const { data, error, isLoading } = useGetProfileQuery();
+    const { data, error, isLoading } = useGetMyProfileQuery();
 
     if (isLoading) {
         return null;
@@ -133,6 +135,19 @@ const router = createBrowserRouter([
                 <MainLayout>
                     <Suspense>
                         <MyTicketResponses />
+                    </Suspense>
+                </MainLayout>
+            </AuthGuard>
+        ),
+        errorElement: <Error />,
+    },
+    {
+        path: "/profile/:id",
+        element: (
+            <AuthGuard>
+                <MainLayout>
+                    <Suspense>
+                        <Profile />
                     </Suspense>
                 </MainLayout>
             </AuthGuard>

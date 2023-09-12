@@ -1,23 +1,26 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { Typography } from "antd";
+import { cn } from "@utils";
 import { AppLogo, UserLogo } from "../logos";
 
-import styles from "./index.module.scss";
+import "./index.scss";
 
 const { Text } = Typography;
 
+const b = cn("header");
+
 const Header: FC = () => {
     return (
-        <header className={styles.header}>
-            <div className={`${styles.header__inner}`}>
-                <div className={`${styles.header__app}`}>
+        <header className={b("")}>
+            <div className={b("inner")}>
+                <div className={b("app")}>
                     <AppLogo to="/sign-in" />
 
                     <Text strong>Communication between users and reqwizard</Text>
                 </div>
 
-                <div className={`${styles.header__user}`}>
+                <div className={b("user")}>
                     <UserLogo />
                 </div>
             </div>

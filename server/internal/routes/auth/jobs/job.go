@@ -22,18 +22,18 @@ func (uc *AuthJobScheduler) Start(c *cron.Cron) {
 	go func() {
 		_, err := c.AddFunc("0 0 * * *", uc.RemoveUnverifiedUsers) // Ежедневно в полночь UTC
 		if err != nil {
-			log.Fatalf("failed to start job RemoveUnverifiedUsers %v", err)
+			log.Fatalf("Failed to start job --RemoveUnverifiedUsers--\n%v", err)
 		}
 	}()
 }
 
 func (uc *AuthJobScheduler) RemoveUnverifiedUsers() {
-	log.Printf("started job creating new partition")
+	log.Printf("Started job --RemoveUnverifiedUsers--")
 
-	err := uc.useCase.RemoveUnverifiedUsers(context.Background())
+	status, err := uc.useCase.RemoveUnverifiedUsers(context.Background())
 	if err != nil {
-		log.Fatalf("failed to create new partition for dlh table: %v", err)
+		log.Fatalf("Failed job --RemoveUnverifiedUsers--\nstatus: %d;\nerr: %v;", status, err)
 	}
 
-	log.Printf("finished job creating new partition")
+	log.Printf("Finished job --RemoveUnverifiedUsers--")
 }

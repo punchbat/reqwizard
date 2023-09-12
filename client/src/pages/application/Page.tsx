@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Spin, Typography } from "antd";
 
-import { useGetProfileQuery } from "@app/services/auth";
+import { useGetMyProfileQuery } from "@app/services/auth";
 import { useGetByIDQuery, useDownloadFileQuery } from "@app/services/applicaiton";
 import { PageTitle } from "@features/index";
 import { cn, isManager } from "@utils";
@@ -19,7 +19,7 @@ const b = cn("application");
 const Application: FC = function () {
     const { id } = useParams();
 
-    const { data: dataProfile, isLoading: isLoadingProfile } = useGetProfileQuery();
+    const { data: dataProfile, isLoading: isLoadingProfile } = useGetMyProfileQuery();
 
     const { data, error, isLoading } = useGetByIDQuery(id || "");
     const {

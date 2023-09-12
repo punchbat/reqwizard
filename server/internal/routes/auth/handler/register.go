@@ -47,7 +47,9 @@ func RegisterHTTPEndpoints(router *gin.Engine, c *cron.Cron, db *gorm.Gorm, mail
 		endpoints.POST("/sign-in", h.SignIn)
 
 		// * проверяем на наличие аутентификации
-		endpoints.GET("/get-profile", authMiddleware, h.GetProfile)
+		endpoints.GET("/get-my-profile", authMiddleware, h.GetMyProfile)
+		endpoints.GET("/get-profile/:id", authMiddleware, h.GetProfile)
+		endpoints.PUT("/update-profile", authMiddleware, h.UpdateProfile)
 
 		// * выход
 		endpoints.POST("/logout", h.Logout)

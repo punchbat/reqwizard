@@ -6,6 +6,7 @@ import (
 	"reqwizard/internal/routes/auth"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type Middleware struct {
@@ -19,16 +20,16 @@ func NewMiddleware(usecase auth.UseCase) gin.HandlerFunc {
 }
 
 func (m *Middleware) Handle(c *gin.Context) {
-	tokenFromCookie, err := c.Cookie("token")
+	tokenFromCookie, err := c.Cookie(viper.GetString("auth.token.name"))
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
-	user, err := m.usecase.ParseToken(c.Request.Context(), tokenFromCookie)
+	user, status, err := m.usecase.ParseToken(c.Request.Context(), tokenFromCookie)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, domain.BadResponse{
-			Status:  http.StatusUnauthorized,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 

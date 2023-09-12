@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"net/http"
 	"reqwizard/internal/domain"
 	"reqwizard/internal/routes/role"
 
@@ -30,17 +29,17 @@ func NewHandler(useCase role.UseCase) *Handler {
 // @Failure 500 {object} domain.BadResponse
 // @Router /api/role/v1/list [get].
 func (h *Handler) GetRoles(c *gin.Context) {
-	roles, err := h.useCase.GetRoles(c.Request.Context())
+	roles, status, err := h.useCase.GetRoles(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseRoles{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseRoles{
+		Status:  status,
 		Payload: roles,
 	})
 }

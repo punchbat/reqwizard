@@ -1,8 +1,6 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { Typography } from "antd";
-
-import styles from "./index.module.scss";
 
 const { Link } = Typography;
 
@@ -12,7 +10,7 @@ interface Props {
 
 const LinkedinLogo: FC<Props> = ({ href = "https://www.linkedin.com/in/akassymov/" }) => {
     return (
-        <Link className={styles.Logo} href={href}>
+        <Link href={href}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

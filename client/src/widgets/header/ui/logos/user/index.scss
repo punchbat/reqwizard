@@ -4,48 +4,20 @@
     &__inner {
     }
 
-    &__modal {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    &__avatar {
+        width: 50px;
+        height: 50px;
 
-    &__picture {
-        margin-bottom: 12px;
+        border-radius: 50px;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         & > img {
-            width: 100px;
+            width: 100%;
+            height: 100%;
         }
-    }
-
-    &__content {
-        margin-bottom: 20px;
-    }
-
-    &__email {
-    }
-
-    &__roles {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    &__role {
-    }
-
-    &__additional_info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    &__last_application_time {
-    }
-
-    &__created_at {
-    }
-
-    &__actions {
-        margin-top: 30px;
     }
 }

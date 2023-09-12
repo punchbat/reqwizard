@@ -97,16 +97,16 @@ func (h *Handler) CreateApplication(c *gin.Context) {
 		return
 	}
 
-	err = h.useCase.CreateApplication(c.Request.Context(), inp)
+	status, err := h.useCase.CreateApplication(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.Status(http.StatusOK)
+	c.Status(status)
 }
 
 // GetFile
@@ -129,10 +129,10 @@ func (h *Handler) GetFile(c *gin.Context) {
 		userID = user.(*domain.User).ID
 	}
 
-	fileContents, mimeType, err := h.useCase.GetFile(c.Request.Context(), userID, fileName)
+	fileContents, mimeType, status, err := h.useCase.GetFile(c.Request.Context(), userID, fileName)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
@@ -157,17 +157,17 @@ func (h *Handler) GetFile(c *gin.Context) {
 func (h *Handler) GetApplicationByID(c *gin.Context) {
 	applicationID := c.Param("id")
 
-	application, err := h.useCase.GetApplicationByID(c.Request.Context(), applicationID)
+	application, status, err := h.useCase.GetApplicationByID(c.Request.Context(), applicationID)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseApplication{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseApplication{
+		Status:  status,
 		Payload: application,
 	})
 }
@@ -230,17 +230,17 @@ func (h *Handler) GetApplicationsByUserID(c *gin.Context) {
 		return
 	}
 
-	applications, err := h.useCase.GetApplicationsByUserID(c.Request.Context(), inp)
+	applications, status, err := h.useCase.GetApplicationsByUserID(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseApplications{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseApplications{
+		Status:  status,
 		Payload: applications,
 	})
 }
@@ -303,17 +303,17 @@ func (h *Handler) GetApplications(c *gin.Context) {
 		return
 	}
 
-	applications, err := h.useCase.GetApplications(c.Request.Context(), inp)
+	applications, status, err := h.useCase.GetApplications(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseApplications{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseApplications{
+		Status:  status,
 		Payload: applications,
 	})
 }

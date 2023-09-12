@@ -51,16 +51,16 @@ func (h *Handler) SignUp(c *gin.Context) {
 		fileSize := header.Size
 		maxSize := int64(2 * 1024 * 1024) // 2MB
 		if fileSize > maxSize {
-			c.JSON(http.StatusBadRequest, domain.BadResponse{
-				Status:  http.StatusBadRequest,
+			c.JSON(http.StatusNotAcceptable, domain.BadResponse{
+				Status:  http.StatusNotAcceptable,
 				Message: "Avatar size exceeds the limit of 2MB",
 			})
 			return
 		}
 
 		if !utils.IsValidAvatarImageExtension(header.Filename) {
-			c.JSON(http.StatusBadRequest, domain.BadResponse{
-				Status:  http.StatusBadRequest,
+			c.JSON(http.StatusUnsupportedMediaType, domain.BadResponse{
+				Status:  http.StatusUnsupportedMediaType,
 				Message: "Invalid avatar type (allowed: png, jpeg, jpg)",
 			})
 			return
@@ -69,8 +69,8 @@ func (h *Handler) SignUp(c *gin.Context) {
 		inp.Avatar = avatar
 		inp.AvatarName = header.Filename
 	} else if err != http.ErrMissingFile {
-		c.JSON(http.StatusBadRequest, domain.BadResponse{
-			Status:  http.StatusBadRequest,
+		c.JSON(http.StatusUnprocessableEntity, domain.BadResponse{
+			Status:  http.StatusUnprocessableEntity,
 			Message: "Error uploading avatar",
 		})
 		return
@@ -85,15 +85,16 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
-	if err := h.useCase.SignUp(c.Request.Context(), inp); err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+	status, err := h.useCase.SignUp(c.Request.Context(), inp)
+	if err != nil {
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.Status(http.StatusOK)
+	c.Status(status)
 }
 
 // SendVerifyCode
@@ -127,15 +128,16 @@ func (h *Handler) SendVerifyCode(c *gin.Context) {
 		return
 	}
 
-	if err := h.useCase.SendVerifyCode(c.Request.Context(), inp); err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+	status, err := h.useCase.SendVerifyCode(c.Request.Context(), inp)
+	if err != nil {
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
 	}
 
-	c.Status(http.StatusOK)
+	c.Status(status)
 }
 
 // CheckVerifyCode
@@ -169,10 +171,10 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 		return
 	}
 
-	token, err := h.useCase.CheckVerifyCode(c.Request.Context(), inp)
+	token, status, err := h.useCase.CheckVerifyCode(c.Request.Context(), inp)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
-			Status:  http.StatusNotAcceptable,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 		return
@@ -181,14 +183,14 @@ func (h *Handler) CheckVerifyCode(c *gin.Context) {
 	c.SetCookie(
 		viper.GetString("auth.token.name"),
 		token,
-		int(time.Hour*viper.GetDuration("auth.token.ttl")),
+		int(time.Hour.Seconds()*viper.GetDuration("auth.token.ttl").Seconds()),
 		viper.GetString("auth.token.path"),
 		viper.GetString("auth.token.domain"),
 		viper.GetBool("auth.token.secure"),
 		viper.GetBool("auth.token.http_only"),
 	)
 
-	c.Status(http.StatusOK)
+	c.Status(status)
 }
 
 // SignIn
@@ -222,16 +224,51 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	if err := h.useCase.SignIn(c.Request.Context(), inp); err != nil {
-		c.JSON(http.StatusUnauthorized, domain.BadResponse{
-			Status:  http.StatusUnauthorized,
+	status, err := h.useCase.SignIn(c.Request.Context(), inp)
+	if err != nil {
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 
 		return
 	}
 
-	c.Status(http.StatusOK)
+	c.Status(status)
+}
+
+// GetMyProfile
+// @Tags user
+// @Description get my profile
+// @Success 200 {object} domain.ResponseUser
+// @Failure 400 {object} domain.BadResponse
+// @Failure 401 {object} domain.BadResponse
+// @Failure 403 {object} domain.BadResponse
+// @Failure 405 {object} domain.BadResponse
+// @Failure 500 {object} domain.BadResponse
+// @Router /auth/v1/get-my-profile [get].
+func (h *Handler) GetMyProfile(c *gin.Context) {
+	var myID string
+
+	// c токена вытаскиваем
+	if user, exist := c.Get(auth.CtxUserKey); exist {
+		myID = user.(*domain.User).ID
+	}
+
+	user, status, err := h.useCase.GetProfile(c.Request.Context(), myID)
+	if err != nil {
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(status, domain.ResponseUser{
+		Status:  status,
+		Payload: user,
+	})
 }
 
 // GetProfile
@@ -243,30 +280,102 @@ func (h *Handler) SignIn(c *gin.Context) {
 // @Failure 403 {object} domain.BadResponse
 // @Failure 405 {object} domain.BadResponse
 // @Failure 500 {object} domain.BadResponse
-// @Router /auth/v1/get-profile [get].
+// @Router /auth/v1/get-profile/{id} [get].
 func (h *Handler) GetProfile(c *gin.Context) {
-	inp := new(auth.GetProfileInput)
+	ID := c.Param("id")
 
-	// c токена вытаскиваем
-	if user, exist := c.Get(auth.CtxUserKey); exist {
-		inp.ID = user.(*domain.User).ID
-		inp.Email = user.(*domain.User).Email
-	}
-
-	user, err := h.useCase.GetProfile(c.Request.Context(), inp)
+	user, status, err := h.useCase.GetProfile(c.Request.Context(), ID)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, domain.BadResponse{
-			Status:  http.StatusUnauthorized,
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
 			Message: err.Error(),
 		})
 
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.ResponseUser{
-		Status:  http.StatusOK,
+	c.JSON(status, domain.ResponseUser{
+		Status:  status,
 		Payload: user,
 	})
+}
+
+// UpdateProfile
+// @Tags user
+// @Description update user profile
+// @Success 200 {object} domain.Response
+// @Failure 400 {object} domain.BadResponse
+// @Failure 401 {object} domain.BadResponse
+// @Failure 403 {object} domain.BadResponse
+// @Failure 405 {object} domain.BadResponse
+// @Failure 500 {object} domain.BadResponse
+// @Router /auth/v1/update-profile [put].
+func (h *Handler) UpdateProfile(c *gin.Context) {
+	inp := new(auth.UpdateInput)
+
+	// c токена вытаскиваем
+	if user, exist := c.Get(auth.CtxUserKey); exist {
+		inp.ID = user.(*domain.User).ID
+	}
+
+	inp.UserRoles = c.PostFormArray("userRoles")
+	inp.Name = c.PostForm("name")
+	inp.Surname = c.PostForm("surname")
+	inp.Gender = c.PostForm("gender")
+	inp.Birthday = c.PostForm("birthday")
+
+	avatar, header, err := c.Request.FormFile("avatar")
+	if err == nil {
+		defer avatar.Close()
+
+		fileSize := header.Size
+		maxSize := int64(2 * 1024 * 1024) // 2MB
+		if fileSize > maxSize {
+			c.JSON(http.StatusNotAcceptable, domain.BadResponse{
+				Status:  http.StatusNotAcceptable,
+				Message: "Avatar size exceeds the limit of 2MB",
+			})
+			return
+		}
+
+		if !utils.IsValidAvatarImageExtension(header.Filename) {
+			c.JSON(http.StatusUnsupportedMediaType, domain.BadResponse{
+				Status:  http.StatusUnsupportedMediaType,
+				Message: "Invalid avatar type (allowed: png, jpeg, jpg)",
+			})
+			return
+		}
+
+		inp.Avatar = avatar
+		inp.AvatarName = header.Filename
+	} else if err != http.ErrMissingFile {
+		c.JSON(http.StatusUnprocessableEntity, domain.BadResponse{
+			Status:  http.StatusUnprocessableEntity,
+			Message: "Error uploading avatar",
+		})
+		return
+	}
+
+	if err := auth.ValidateUpdateInput(inp); err != nil {
+		c.JSON(http.StatusNotAcceptable, domain.BadResponse{
+			Status:  http.StatusNotAcceptable,
+			Message: err.Error(),
+		})
+
+		return
+	}
+
+	// Вызовите метод вашей use case для обновления профиля.
+	status, err := h.useCase.UpdateProfile(c.Request.Context(), inp)
+	if err != nil {
+		c.JSON(status, domain.BadResponse{
+			Status:  status,
+			Message: err.Error(),
+		})
+		return
+	}
+
+	c.Status(status)
 }
 
 // Logout

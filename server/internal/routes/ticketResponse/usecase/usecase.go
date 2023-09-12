@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"reqwizard/internal/domain"
 	"reqwizard/internal/services/email"
 
@@ -37,22 +38,22 @@ func NewUseCase(repo ticketResponse.Repository, applicationRepo application.Repo
 	}
 }
 
-func (uc *UseCase) GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, error) {
+func (uc *UseCase) GetTicketResponseByID(ctx context.Context, id string) (*domain.TicketResponse, int, error) {
 	ticketResponse, err := uc.repo.GetTicketResponseByID(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return ticketResponse, nil
+	return ticketResponse, http.StatusOK, nil
 }
 
-func (uc *UseCase) GetTicketResponsesByUserID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
+func (uc *UseCase) GetTicketResponsesByUserID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, int, error) {
 	ticketResponses, err := uc.repo.GetTicketResponsesByUserID(ctx, inp)
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return ticketResponses, nil
+	return ticketResponses, http.StatusOK, nil
 }
 
 // * manager.
@@ -63,14 +64,14 @@ type EmailContent struct {
 	Link               string
 }
 
-func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.CreateTicketResponseInput) error {
+func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse.CreateTicketResponseInput) (int, error) {
 	applcationEntity, err := uc.applicationRepo.GetApplicationByID(ctx, inp.ApplicationID)
 	if err != nil {
-		return err
+		return http.StatusNotFound, err
 	}
 
 	if len(applcationEntity.TicketResponseID) != 0 {
-		return errors.New("You cannot create more than 1 ticket-response")
+		return http.StatusBadRequest, errors.New("You cannot create more than 1 ticket-response")
 	}
 
 	ticketResponseEntity := &domain.TicketResponse{
@@ -83,7 +84,7 @@ func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse
 
 	err = uc.repo.CreateTicketResponse(ctx, ticketResponseEntity)
 	if err != nil {
-		return err
+		return http.StatusNotAcceptable, err
 	}
 
 	applcationEntity.TicketResponseID = ticketResponseEntity.ID
@@ -91,12 +92,12 @@ func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse
 	applcationEntity.Status = domain.ApplicationStatusDone
 	_, err = uc.applicationRepo.UpdateApplication(ctx, applcationEntity)
 	if err != nil {
-		return err
+		return http.StatusInternalServerError, err
 	}
 
 	userEntity, err := uc.authRepo.GetUserByID(ctx, applcationEntity.UserID)
 	if err != nil {
-		return err
+		return http.StatusInternalServerError, err
 	}
 
 	// Отправляем письмо
@@ -112,14 +113,14 @@ func (uc *UseCase) CreateTicketResponse(ctx context.Context, inp *ticketResponse
 	}
 	uc.mailer.Send(&emailMessage)
 
-	return nil
+	return http.StatusCreated, nil
 }
 
-func (uc *UseCase) GetTicketResponsesByManagerID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, error) {
+func (uc *UseCase) GetTicketResponsesByManagerID(ctx context.Context, inp *ticketResponse.TicketResponseListInput) ([]*domain.TicketResponse, int, error) {
 	ticketResponses, err := uc.repo.GetTicketResponsesByManagerID(ctx, inp)
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return ticketResponses, nil
+	return ticketResponses, http.StatusOK, nil
 }

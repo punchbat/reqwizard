@@ -1,34 +1,5 @@
 definitions:
   application.CreateApplicationInput:
-    properties:
-      _id:
-        type: string
-      description:
-        minLength: 10
-        type: string
-      email:
-        type: string
-      file:
-        items:
-          type: integer
-        type: array
-      fileExtension:
-        type: string
-      subType:
-        type: string
-      title:
-        minLength: 10
-        type: string
-      type:
-        enum:
-        - financial
-        - general
-        type: string
-    required:
-    - description
-    - subType
-    - title
-    - type
     type: object
   auth.CheckVerifyCodeInput:
     properties:
@@ -67,25 +38,6 @@ definitions:
     - password
     type: object
   auth.SignUpInput:
-    properties:
-      email:
-        type: string
-      password:
-        minLength: 8
-        type: string
-      passwordConfirm:
-        minLength: 8
-        type: string
-      role:
-        enum:
-        - user
-        - manager
-        type: string
-    required:
-    - email
-    - password
-    - passwordConfirm
-    - role
     type: object
   domain.Application:
     properties:
@@ -249,13 +201,23 @@ definitions:
         type: string
       applicationCreatedAt:
         type: string
+      avatar:
+        type: string
+      birthday:
+        type: string
       createdAt:
         type: string
       email:
         type: string
+      gender:
+        $ref: '#/definitions/domain.UserGender'
+      name:
+        type: string
       password:
         type: string
       passwordConfirm:
+        type: string
+      surname:
         type: string
       updatedAt:
         type: string
@@ -266,6 +228,16 @@ definitions:
       verified:
         type: boolean
     type: object
+  domain.UserGender:
+    enum:
+    - male
+    - female
+    - other
+    type: string
+    x-enum-varnames:
+    - UserGenderMale
+    - UserGenderFemale
+    - UserGenderOther
   domain.UserRole:
     properties:
       _id:
@@ -588,184 +560,6 @@ paths:
       summary: receiving applications
       tags:
       - applications
-  /api/auth/v1/check-verify-code:
-    post:
-      description: check verify code
-      parameters:
-      - description: user body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/auth.CheckVerifyCodeInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "405":
-          description: Method Not Allowed
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-      tags:
-      - user
-  /api/auth/v1/get-profile:
-    get:
-      description: get user profile
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.ResponseUser'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "405":
-          description: Method Not Allowed
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-      tags:
-      - user
-  /api/auth/v1/send-verify-code:
-    post:
-      description: send verify code
-      parameters:
-      - description: user body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/auth.SendVerifyCodeInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "405":
-          description: Method Not Allowed
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-      tags:
-      - user
-  /api/auth/v1/sign-in:
-    post:
-      description: sign-in
-      parameters:
-      - description: user body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/auth.SignInInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "405":
-          description: Method Not Allowed
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-      tags:
-      - user
-  /api/auth/v1/sign-up:
-    post:
-      description: sign-up
-      parameters:
-      - description: User body
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/auth.SignUpInput'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "405":
-          description: Method Not Allowed
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/domain.BadResponse'
-      tags:
-      - user
   /api/role/v1/list:
     get:
       description: get all roles
@@ -969,4 +763,272 @@ paths:
       summary: Create TicketResponses
       tags:
       - ticketResponses
+  /auth/v1/check-verify-code:
+    post:
+      description: check verify code
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.CheckVerifyCodeInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/get-my-profile:
+    get:
+      description: get my profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/get-profile/{id}:
+    get:
+      description: get user profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/logout:
+    post:
+      description: logout
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/send-verify-code:
+    post:
+      description: send verify code
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SendVerifyCodeInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/sign-in:
+    post:
+      description: sign-in
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignInInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/sign-up:
+    post:
+      description: sign-up
+      parameters:
+      - description: User body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignUpInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
+  /auth/v1/update-profile:
+    put:
+      description: update user profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BadResponse'
+      tags:
+      - user
 swagger: "2.0"

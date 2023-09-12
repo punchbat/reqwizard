@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"mime"
+	"net/http"
 	"os"
 	"path/filepath"
 	"reqwizard/internal/domain"
@@ -28,10 +29,10 @@ func NewUseCase(repo application.Repository, authRepo auth.Repository) *UseCase 
 	}
 }
 
-func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.CreateApplicationInput) error {
+func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.CreateApplicationInput) (int, error) {
 	userEntity, err := uc.authRepo.GetUserByID(ctx, inp.ID)
 	if err != nil {
-		return err
+		return http.StatusNotFound, err
 	}
 
 	// // * Проверяем, была ли уже создана заявка пользователем
@@ -39,7 +40,7 @@ func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.Creat
 	// // * today := time.Now().UTC().Truncate(24 * time.Hour) // Обнуляем время
 	// today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 	// if !userEntity.ApplicationCreatedAt.IsZero() && userEntity.ApplicationCreatedAt.After(today) {
-	// 	return errors.New("user can create only 1 application per day")
+	// 	return http.StatusBadRequest, errors.New("User can create only 1 application per day")
 	// }
 
 	// * Создаем Заявку со статус Ожидание
@@ -61,12 +62,12 @@ func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.Creat
 
 		fileBytes, err := ioutil.ReadAll(inp.File)
 		if err != nil {
-			return err
+			return http.StatusNotAcceptable, err
 		}
 
 		err = ioutil.WriteFile(filePath, fileBytes, 0644)
 		if err != nil {
-			return err
+			return http.StatusNotAcceptable, err
 		}
 
 		entity.FileName = newFileName
@@ -74,30 +75,30 @@ func (uc *UseCase) CreateApplication(ctx context.Context, inp *application.Creat
 
 	err = uc.repo.CreateApplication(ctx, entity)
 	if err != nil {
-		return err
+		return http.StatusInternalServerError, err
 	}
 
 	userEntity.ApplicationCreatedAt = time.Now()
 
 	err = uc.authRepo.UpdateUser(ctx, userEntity)
 	if err != nil {
-		return err
+		return http.StatusInternalServerError, err
 	}
 
-	return nil
+	return http.StatusCreated, nil
 }
 
-func (uc *UseCase) GetFile(ctx context.Context, userID string, fileName string) ([]byte, string, error) {
+func (uc *UseCase) GetFile(ctx context.Context, userID string, fileName string) ([]byte, string, int, error) {
 	userEntity, err := uc.authRepo.GetUserByID(ctx, userID)
 	if err != nil {
-		return nil, "", err
+		return nil, "", http.StatusNotFound, err
 	}
 
 	applicationEntities, err := uc.repo.GetApplicationsByUserID(ctx, &application.ApplicationListInput{
 		ID: userEntity.ID,
 	})
 	if err != nil {
-		return nil, "", err
+		return nil, "", http.StatusNotFound, err
 	}
 
 	hasFileName := false
@@ -108,51 +109,50 @@ func (uc *UseCase) GetFile(ctx context.Context, userID string, fileName string) 
 	}
 
 	if !hasFileName {
-		return nil, "", errors.New("User doesn`t have access to the file")
+		return nil, "", http.StatusBadRequest, errors.New("User doesn`t have access to the file")
 	}
 
 	filePath := "uploads/applications/" + fileName
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, "", err
+		return nil, "", http.StatusNotAcceptable, err
 	}
 	defer file.Close()
 
 	fileContents, err := ioutil.ReadAll(file)
 	if err != nil {
-		return nil, "", err
+		return nil, "", http.StatusNotAcceptable, err
 	}
 
 	mimeType := mime.TypeByExtension(filepath.Ext(filePath))
 
-	return fileContents, mimeType, nil
+	return fileContents, mimeType, http.StatusAccepted, nil
 }
 
-func (uc *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.Application, error) {
+func (uc *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.Application, int, error) {
 	application, err := uc.repo.GetApplicationByID(ctx, id)
-
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return application, nil
+	return application, http.StatusOK, nil
 }
 
-func (uc *UseCase) GetApplicationsByUserID(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
+func (uc *UseCase) GetApplicationsByUserID(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, int, error) {
 	applications, err := uc.repo.GetApplicationsByUserID(ctx, inp)
 	if err != nil {
-		return nil, err
+		return nil, http.StatusNotFound, err
 	}
 
-	return applications, nil
+	return applications, http.StatusOK, nil
 }
 
 // * manager.
-func (uc *UseCase) GetApplications(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, error) {
+func (uc *UseCase) GetApplications(ctx context.Context, inp *application.ApplicationListInput) ([]*domain.Application, int, error) {
 	applications, err := uc.repo.GetApplications(ctx, inp)
 	if err != nil {
-		return nil, err
+		return nil, http.StatusInternalServerError, err
 	}
 
-	return applications, nil
+	return applications, http.StatusOK, nil
 }
