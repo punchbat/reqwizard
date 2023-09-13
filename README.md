@@ -161,9 +161,14 @@ Don't forget to give the project a star! Thanks again!
 
 ## Contact
 
-Kassymov Abat - <kasabat001@gmail.com>
+<img src='images/monkey_coding.gif' align='left'>
 
-Project Link: [https://github.com/Syqpe/reqwizard](https://github.com/Syqpe/reqwizard)
+### Hi 👋, I`m Abat from Kazakhstan
+
+- 🔭 [project link](https://github.com/Syqpe/reqwizard)
+- 🌱 I’m currently imporeving myself
+- 💬 Ask me about anything, I am happy to help
+- 🌐 My [linkedin](https://www.linkedin.com/in/akassymov/), [telegram](https://t.me/gggwws)
 
 <p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
@@ -201,20 +206,3 @@ Project Link: [https://github.com/Syqpe/reqwizard](https://github.com/Syqpe/reqw
 [Docker-url]: https://www.docker.com/
 [VSCode]: https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white
 [VSCode-url]: https://code.visualstudio.com/
-
-<img src='images/monkey_coding.gif' align='left'>
-
-### Hi 👋 ![visitors](https://visitor-badge.glitch.me/badge?page_id=https://github.com/keshavsingh4522)
-
-- :school: I'm [Keshav Singh](https://keshavsingh4522.github.io/), have pursued B.Tech(CSE) from <a href="https://jecrcfoundation.com/">@JECRC </a>
-- 🔭 I’m currently working on **Backend Development**
-- :neutral_face: I have a **love/hate** relationship with **Programming**
-- 🌱 I’m currently Working with tech Microservice,**AWS,.Net Core**
-- 🤔 I’m looking for help with Data Structures and Algorithms 😭
-- 💬 Ask me about anything, I am happy to help
-- 😄 Pronouns: **Coder, Leader** and **Kind Hearted**
-- :bulb: Occasionally I do participate in **Hackathons**
-- 👨 Know more about me at [Sourcerer](https://sourcerer.io/keshavsingh4522)
-- 🌐 Visit my [porfolio website](https://keshavsingh4522.github.io/) for complete background and contact.
-- :boom: awesome octoprofile : [Keshav Singh](https://octoprofile.now.sh/user?id=keshavsingh4522)
-<!-- - ⚡ Languages: **Python3 | SQL | HTML | CSS |** -->
