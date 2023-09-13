@@ -38,11 +38,8 @@ Welcome to the world of Reqwizard - a place where feedback becomes reliable, con
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -50,31 +47,31 @@ Welcome to the world of Reqwizard - a place where feedback becomes reliable, con
 
 - **Frontend**:
 
-  - [Ant Design][Antd-url] ![Ant Design][Antd]: User interface designed with Ant Design.
-  - [React.js][React-url] ![React.js][React.js]: Frontend built using React.js.
-  - [Redux][Redux-url] ![Redux][Redux]: State management.
-  - [Sass][Sass-url] ![Sass][Sass]: Styles preprocessor.
+  - [![Ant Design][Antd]][Antd-url]: User interface designed with Ant Design.
+  - [![React.js][React.js]][React-url]: Frontend built using React.js.
+  - [![Redux][Redux]][Redux-url]: State management.
+  - [![Sass][Sass]][Sass-url]: Styles preprocessor.
 
 - **Development Tools**:
 
-  - [Vite][Vite-url] ![Vite][Vite]: Development infrastructure.
-  - [Babel][Babel-url] ![Babel][Babel]: JavaScript transpiler.
-  - [npm][npm-url] ![npm][npm]: Package manager.
-  - [ESLint][Eslint-url] ![ESLint][Eslint]: Code linting.
-  - [Prettier][Prettier-url] ![Prettier][Prettier]: Code formatting.
-  - [Stylelint][Stylelint-url] ![Stylelint][Stylelint]: Styles linting.
+  - [![Vite][Vite]][Vite-url]: Development infrastructure.
+  - [![Babel][Babel]][Babel-url]: JavaScript transpiler.
+  - [![npm][npm]][npm-url]: Package manager.
+  - [![ESLint][ESLint]][Eslint-url]: Code linting.
+  - [![Prettier][Prettier]][Prettier-url]: Code formatting.
+  - [![Stylelint][Stylelint]][Stylelint-url]: Styles linting.
 
 - **Backend**:
 
-  - [Golang][Golang-url] ![Golang][Golang]: Backend developed in Go.
-  - [PostgreSQL][PostgresQL-url] ![PostgreSQL][PostgresQL]: Database management system.
+  - [![Golang][Golang]][Golang-url]: Backend developed in Go.
+  - [![PostgreSQL][PostgresQL]][PostgresQL-url]: Database management system.
   - ![JWT][JWT]: JSON Web Tokens for authentication.
-  - [Postman][Postman-url] ![Postman][Postman]: API testing.
-  - [Swagger][Swagger-url] ![Swagger][Swagger]: API documentation.
-  - [Docker][Docker-url] ![Docker][Docker]: Containerization.
+  - [![Postman][Postman]][Postman-url]: API testing.
+  - [![Swagger][Swagger]][Swagger-url]: API documentation.
+  - [![Docker][Docker]][Docker-url]: Containerization.
 
 - **IDE**:
-  - [Visual Studio Code][VSCode-url] ![Visual Studio Code][VSCode]: Development environment.
+  - [![Visual Studio Code][VSCode]][VSCode-url]: Development environment.
 
 <!-- GETTING STARTED -->
 
@@ -91,11 +88,13 @@ Before you begin, ensure you have met the following requirements:
 
   If you don't have npm installed, you can get it by following these [instructions](https://www.npmjs.com/get-npm).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Installation
 
 To install and run the project locally, follow these steps:
 
-1. Clone the repo:
+1. Clone the repo
 
    ```sh
    git clone https://github.com/Syqpe/reqwizard.git
@@ -107,29 +106,39 @@ To install and run the project locally, follow these steps:
    cd reqwizard
    ```
 
-3. Install client-side dependencies:
+3. Install client-side dependencies
 
    ```sh
    make install_dependencies_client
    ```
 
-4. Install server-side dependencies:
+4. Install server-side dependencies
 
-```sh
+   ```sh
    make install_dependencies_server
-```
+   ```
 
 Now you have successfully installed all the necessary dependencies.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- USAGE EXAMPLES -->
+### Starting the Project
 
-## Starting the Project
+1. Start the client-side
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+   ```sh
+   make start_client
+   ```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+   The client will be available at <http://localhost:8000>
+
+2. Start the server-side
+
+   ```sh
+   make start_server
+   ```
+
+   The server will be running on port <http://localhost:8080>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
