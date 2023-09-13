@@ -28,7 +28,7 @@
 
 ## Awesome Reqwizard
 
-[![Reqwizard Screen Shot][product-screenshot]]
+![Reqwizard Screen Shot][product-screenshot]
 
 The Reqwizard project was invented by me literally in a few minutes, I tried to fit all my experience in development into this project, I hope it worked out.
 
