@@ -165,10 +165,10 @@ Don't forget to give the project a star! Thanks again!
 
 ### Hi 👋, I`m Abat from Kazakhstan
 
-- 🔭 [project link](https://github.com/Syqpe/reqwizard)
-- 🌱 I’m currently imporeving myself
-- 💬 Ask me about anything, I am happy to help
 - 🌐 My [linkedin](https://www.linkedin.com/in/akassymov/), [telegram](https://t.me/gggwws)
+- 💬 Ask me about anything, I am happy to help
+- 🌱 If you have any suggestions, I am open to cooperation
+- 🔭 Now I’m thinking about growing towards management, let’s see what comes of it :)
 
 <p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
