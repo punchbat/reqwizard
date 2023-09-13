@@ -43,6 +43,9 @@ type Application struct {
 	Description      string             `json:"description,omitempty"`
 	FileName         string             `json:"fileName,omitempty"`
 
+	User    *User `json:"user,omitempty"`
+	Manager *User `json:"manager,omitempty"`
+
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }

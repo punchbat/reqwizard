@@ -9,7 +9,7 @@ import (
 )
 
 type TicketResponse struct {
-	ID            uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
+	ID            uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	ApplicationID uuid.UUID `gorm:"not null"`
 	UserID        uuid.UUID `gorm:"not null"`
 	ManagerID     uuid.UUID

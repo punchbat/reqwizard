@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {
-    to: string;
+    to?: string;
 }
 
 const AppLogo: FC<Props> = ({ to = "/" }) => {

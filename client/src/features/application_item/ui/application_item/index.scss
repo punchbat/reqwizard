@@ -23,6 +23,17 @@
         flex: 1 1 auto;
     }
 
+    &__main {
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        column-gap: 8px;
+        align-items: center;
+    }
+    &__profile {
+    }
+    &__text {
+    }
+
     &__title {
         & > span {
             font-size: 22px;

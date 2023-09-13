@@ -135,6 +135,22 @@ func (uc *UseCase) GetApplicationByID(ctx context.Context, id string) (*domain.A
 		return nil, http.StatusNotFound, err
 	}
 
+	// user, err := uc.authRepo.GetUserByID(ctx, application.UserID)
+	// if err != nil {
+	// 	return nil, http.StatusNotFound, err
+	// }
+
+	// if len(application.ManagerID) > 0 {
+	// 	manager, err := uc.authRepo.GetUserByID(ctx, application.ManagerID)
+	// 	if err != nil {
+	// 		return nil, http.StatusNotFound, err
+	// 	}
+
+	// 	application.Manager = manager
+	// }
+
+	// application.User = user
+
 	return application, http.StatusOK, nil
 }
 

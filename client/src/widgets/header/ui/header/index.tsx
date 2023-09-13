@@ -15,7 +15,7 @@ const Header: FC = () => {
         <header className={b("")}>
             <div className={b("inner")}>
                 <div className={b("app")}>
-                    <AppLogo to="/sign-in" />
+                    <AppLogo />
 
                     <Text strong>Communication between users and reqwizard</Text>
                 </div>

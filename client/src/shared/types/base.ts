@@ -41,7 +41,9 @@ interface IApplication {
     _id: string;
     ticketResponseId: string;
     userId: string;
+    user: IUser;
     managerId: string;
+    manager: IUser;
     status: EApplicationStatus;
     title: string;
     description: string;

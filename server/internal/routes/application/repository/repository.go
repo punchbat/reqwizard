@@ -72,6 +72,8 @@ func (r *Repository) GetApplicationByID(ctx context.Context, id string) (*domain
 	uuid := uuid.MustParse(id)
 	var applicationDTO dto.Application
 
+	query = query.Preload("User").Preload("Manager")
+
 	err := query.Where("id = ?", uuid).First(&applicationDTO).Error
 	if err != nil {
 		return nil, err
@@ -130,6 +132,9 @@ func (r *Repository) GetApplicationsByUserID(ctx context.Context, inp *applicati
 		}
 		query = query.Where("updated_at <= ?", toTime)
 	}
+
+	// *
+	query = query.Preload("User").Preload("Manager")
 
 	var applicationsDTO []*dto.Application
 	err := query.Find(&applicationsDTO).Error
@@ -192,6 +197,8 @@ func (r *Repository) GetApplications(ctx context.Context, inp *application.Appli
 		}
 		query = query.Where("updated_at <= ?", toTime)
 	}
+
+	query = query.Preload("User").Preload("Manager")
 
 	var applicationsDTO []*dto.Application
 	err := query.Find(&applicationsDTO).Error

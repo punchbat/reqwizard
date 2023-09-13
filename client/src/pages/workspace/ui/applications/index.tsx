@@ -250,7 +250,7 @@ const Applications: FC = function () {
                         <div className={b("items")}>
                             {data?.payload?.map((i, index) => (
                                 // eslint-disable-next-line react/no-array-index-key, react/jsx-props-no-spreading
-                                <ApplicationItem key={index} {...i} />
+                                <ApplicationItem key={index} {...i} withProfile />
                             ))}
                         </div>
                     ) : (

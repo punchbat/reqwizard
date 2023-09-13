@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { FC, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Button } from "antd";
@@ -10,12 +11,15 @@ import { applicationStatusColors } from "@constants";
 import { Cube } from "@components";
 
 import "./index.scss";
+import { Avatar } from "@features/index";
 
 const { Text } = Typography;
 
 const b = cn("application_item");
 
-type Props = IApplication;
+type Props = IApplication & {
+    withProfile?: boolean;
+};
 
 const ApplicationItem: FC<Props> = function ({
     _id,
@@ -27,6 +31,8 @@ const ApplicationItem: FC<Props> = function ({
     subType,
     createdAt,
     updatedAt,
+    user,
+    withProfile = false,
 }) {
     const navigate = useNavigate();
 
@@ -49,23 +55,32 @@ const ApplicationItem: FC<Props> = function ({
         <div className={b()} onClick={handleClick}>
             <div className={b("inner")}>
                 <div className={b("info")}>
-                    <div className={b("title")}>
-                        <Text>
-                            {title}
-                            <sup>
-                                <Text
-                                    style={{
-                                        marginLeft: "4px",
-                                        color: applicationStatusColors[status],
-                                    }}
-                                >
-                                    {status}
+                    <div className={b("main")}>
+                        {withProfile && (
+                            <div className={b("profile")}>
+                                <Avatar {...user} />
+                            </div>
+                        )}
+                        <div className={b("text")}>
+                            <div className={b("title")}>
+                                <Text>
+                                    {title}
+                                    <sup>
+                                        <Text
+                                            style={{
+                                                marginLeft: "4px",
+                                                color: applicationStatusColors[status],
+                                            }}
+                                        >
+                                            {status}
+                                        </Text>
+                                    </sup>
                                 </Text>
-                            </sup>
-                        </Text>
-                    </div>
-                    <div className={b("description")}>
-                        <Text>{description}</Text>
+                            </div>
+                            <div className={b("description")}>
+                                <Text>{description}</Text>
+                            </div>
+                        </div>
                     </div>
                     <div className={b("time")}>
                         <Text disabled>created at: {moment(createdAt).format("MMMM Do YYYY, h:mm:ss a")}</Text>
