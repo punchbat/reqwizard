@@ -1,3 +1,25 @@
+<!-- ABOUT THE PROJECT -->
+
+## Reqwizard
+
+![Reqwizard Screen Shot][product-screenshot]
+
+The Reqwizard project was invented by me literally in a few minutes, I tried to fit all my experience in development into this project, I hope it worked out.
+
+Reqwizard is a platform designed to provide efficient and secure processing of user feedback. There are two key roles represented in this project: users and managers.
+
+Users have the opportunity to create private or public Requests in which they can describe their requests and needs. Applications can be of various types, which allows the user to choose the most appropriate way of presenting information.
+
+At the same time, managers on the Reqwizard platform are processing Applications and providing responses to them. This functionality creates a unique interaction between users and specialists, ensuring a high degree of accountability and accuracy in servicing requests.
+
+Particular attention is paid to data confidentiality. Our mechanisms provide reliable protection of Applications and responses from unauthorized access. This ensures that information remains private and accessible only to those who have the right to see it.
+
+Additionally, the notification system in Reqwizard accompanies you at every stage of processing. As soon as a response from the manager appears, you will instantly receive a notification, which provides instant information and facilitates further interaction.
+
+The Reqwizard project was created using advanced technologies and taking care of your comfort and safety. We also pay special attention to authentication and confirmation of roles, so that each participant can enjoy all the benefits of the platform only after successfully completing the approval process.
+
+Welcome to the world of Reqwizard - a place where feedback becomes reliable, convenient and confidential!
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -24,28 +46,6 @@
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
-
-## Reqwizard
-
-![Reqwizard Screen Shot][product-screenshot]
-
-The Reqwizard project was invented by me literally in a few minutes, I tried to fit all my experience in development into this project, I hope it worked out.
-
-Reqwizard is a platform designed to provide efficient and secure processing of user feedback. There are two key roles represented in this project: users and managers.
-
-Users have the opportunity to create private or public Requests in which they can describe their requests and needs. Applications can be of various types, which allows the user to choose the most appropriate way of presenting information.
-
-At the same time, managers on the Reqwizard platform are processing Applications and providing responses to them. This functionality creates a unique interaction between users and specialists, ensuring a high degree of accountability and accuracy in servicing requests.
-
-Particular attention is paid to data confidentiality. Our mechanisms provide reliable protection of Applications and responses from unauthorized access. This ensures that information remains private and accessible only to those who have the right to see it.
-
-Additionally, the notification system in Reqwizard accompanies you at every stage of processing. As soon as a response from the manager appears, you will instantly receive a notification, which provides instant information and facilitates further interaction.
-
-The Reqwizard project was created using advanced technologies and taking care of your comfort and safety. We also pay special attention to authentication and confirmation of roles, so that each participant can enjoy all the benefits of the platform only after successfully completing the approval process.
-
-Welcome to the world of Reqwizard - a place where feedback becomes reliable, convenient and confidential!
-
 ### Techologies
 
 - **Frontend**:
@@ -68,7 +68,7 @@ Welcome to the world of Reqwizard - a place where feedback becomes reliable, con
 
   - [Golang][Golang-url] ![Golang][Golang]: Backend developed in Go.
   - [PostgreSQL][PostgresQL-url] ![PostgreSQL][PostgresQL]: Database management system.
-  - [JWT][JWT]: JSON Web Tokens for authentication.
+  - ![JWT][JWT]: JSON Web Tokens for authentication.
   - [Postman][Postman-url] ![Postman][Postman]: API testing.
   - [Swagger][Swagger-url] ![Swagger][Swagger]: API documentation.
   - [Docker][Docker-url] ![Docker][Docker]: Containerization.
@@ -85,42 +85,47 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Before you begin, ensure you have met the following requirements:
 
-- npm
+- **npm**:
 
-  ```sh
-  npm install npm@latest -g
-  ```
+  If you don't have npm installed, you can get it by following these [instructions](https://www.npmjs.com/get-npm).
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+To install and run the project locally, follow these steps:
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-
-3. Install NPM packages
+1. Clone the repo:
 
    ```sh
-   npm install
+   git clone https://github.com/Syqpe/reqwizard.git
    ```
 
-4. Enter your API in `config.js`
+2. Change to the project directory
 
-   ```js
-   const API_KEY = "ENTER YOUR API";
+   ```sh
+   cd reqwizard
    ```
+
+3. Install client-side dependencies:
+
+   ```sh
+   make install_dependencies_client
+   ```
+
+4. Install server-side dependencies:
+
+```sh
+   make install_dependencies_server
+```
+
+Now you have successfully installed all the necessary dependencies.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
-## Usage
+## Starting the Project
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
@@ -149,9 +154,9 @@ Don't forget to give the project a star! Thanks again!
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - <email@example.com>
+Kassymov Abat - <kasabat001@gmail.com>
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/Syqpe/reqwizard](https://github.com/Syqpe/reqwizard)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
