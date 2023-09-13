@@ -1231,6 +1231,9 @@ const docTemplate = `{
                 "fileName": {
                     "type": "string"
                 },
+                "manager": {
+                    "$ref": "#/definitions/domain.User"
+                },
                 "managerId": {
                     "type": "string"
                 },
@@ -1251,6 +1254,9 @@ const docTemplate = `{
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/domain.User"
                 },
                 "userId": {
                     "type": "string"
@@ -1433,6 +1439,9 @@ const docTemplate = `{
                 "createdAt": {
                     "type": "string"
                 },
+                "manager": {
+                    "$ref": "#/definitions/domain.User"
+                },
                 "managerId": {
                     "type": "string"
                 },
@@ -1441,6 +1450,9 @@ const docTemplate = `{
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/domain.User"
                 },
                 "userId": {
                     "type": "string"

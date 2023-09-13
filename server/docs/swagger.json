@@ -1219,6 +1219,9 @@
                 "fileName": {
                     "type": "string"
                 },
+                "manager": {
+                    "$ref": "#/definitions/domain.User"
+                },
                 "managerId": {
                     "type": "string"
                 },
@@ -1239,6 +1242,9 @@
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/domain.User"
                 },
                 "userId": {
                     "type": "string"
@@ -1421,6 +1427,9 @@
                 "createdAt": {
                     "type": "string"
                 },
+                "manager": {
+                    "$ref": "#/definitions/domain.User"
+                },
                 "managerId": {
                     "type": "string"
                 },
@@ -1429,6 +1438,9 @@
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/domain.User"
                 },
                 "userId": {
                     "type": "string"
