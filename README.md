@@ -140,6 +140,49 @@ Now you have successfully installed all the necessary dependencies.
 
 <p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
+<!-- USAGE -->
+
+## Usage
+
+Here are the instructions for using the Reqwizard platform:
+
+1. **User Registration**: If you're a new user, start by registering an account on the Reqwizard platform.
+
+2. **Logging In**: After registration, log in with your credentials to access the platform.
+
+3. **Creating Requests**:
+
+   - Once logged in, you can create new requests.
+   - Choose whether the request should be private or public, depending on your preferences.
+   - Describe your request and provide any necessary details.
+
+4. **Managing Requests**:
+
+   - Users can view and manage their requests from the dashboard.
+   - Managers will review and process these requests.
+
+5. **Notifications**:
+
+   - Stay updated with the notification system.
+   - Receive instant notifications when managers respond to your requests.
+
+6. **Manager Interaction**:
+
+   - Managers can access the platform to process and respond to user requests.
+   - Ensure prompt and accurate service to users.
+
+7. **Data Confidentiality**:
+
+   - Rest assured that your requests and responses are secure.
+   - The platform employs robust mechanisms to protect your data from unauthorized access.
+
+8. **Enjoy the Platform**:
+   - Explore the features and benefits of the Reqwizard platform.
+
+Feel free to reach out to the project contributors for any questions or assistance with using the platform.
+
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
+
 <!-- CONTRIBUTING -->
 
 ## Contributing
