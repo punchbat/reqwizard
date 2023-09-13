@@ -10,7 +10,6 @@ import "./index.scss";
 const { Title } = Typography;
 
 const b = cn("page_title");
-
 interface Props {
     title: {
         text: string | ReactNode;
@@ -20,9 +19,10 @@ interface Props {
         text?: string;
         handleBack?: () => {};
     };
+    avatar?: ReactNode;
 }
 
-const PageTitle: FC<Props> = ({ title, back }) => {
+const PageTitle: FC<Props> = ({ title, back, avatar }) => {
     const navigate = useNavigate();
 
     const handleBackOrBackToHome = () => {
@@ -37,11 +37,14 @@ const PageTitle: FC<Props> = ({ title, back }) => {
 
     return (
         <div className={b()}>
-            <div className={b("inner")}>
+            <div className={b("inner", { widthAvatar: !!avatar })}>
                 <Button className={b("btn")} type="text" icon={<LeftOutlined />} onClick={handleBackOrBackToHome}>
                     {back?.text || "Go to back"}
                 </Button>
-                <Title level={title.level || 1}>{title.text}</Title>
+                <div className={b("avatar")}>{avatar}</div>
+                <Title className={b("title")} level={title.level || 1}>
+                    {title.text}
+                </Title>
             </div>
         </div>
     );

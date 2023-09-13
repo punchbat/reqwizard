@@ -9,7 +9,7 @@ import (
 )
 
 type UserRole struct {
-	ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
 	UserID string    `gorm:"not null"`
 	RoleID string    `gorm:"not null"`
 	Status string    `gorm:"not null"`

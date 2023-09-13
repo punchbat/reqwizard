@@ -51,5 +51,6 @@ module.exports = {
         "@typescript-eslint/restrict-template-expressions": 1,
         "react/require-default-props": 1,
         "@typescript-eslint/no-misused-promises": 1,
+        "react/jsx-props-no-spreading": 0,
     },
 };

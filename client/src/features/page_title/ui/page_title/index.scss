@@ -2,11 +2,21 @@
     position: relative;
 
     &__inner {
+        &_widthAvatar {
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            column-gap: 8px;
+            align-items: center;
+        }
     }
 
     &__btn {
         position: absolute;
         top: 8px;
         left: -140px;
+    }
+
+    &__title {
+        margin: 0 !important;
     }
 }

@@ -65,7 +65,9 @@ interface ITicketResponse {
     _id: string;
     applicationId: string;
     userId: string;
+    user: IUser;
     managerId: string;
+    manager: IUser;
     text: string;
     createdAt: string;
     updatedAt: string;

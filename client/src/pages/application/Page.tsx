@@ -1,10 +1,10 @@
-import { FC } from "react";
-import { useParams } from "react-router-dom";
+import { MouseEvent, FC } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Spin, Typography } from "antd";
 
 import { useGetMyProfileQuery } from "@app/services/auth";
 import { useGetByIDQuery, useDownloadFileQuery } from "@app/services/applicaiton";
-import { PageTitle } from "@features/index";
+import { Avatar, PageTitle } from "@features/index";
 import { cn, isManager } from "@utils";
 import moment from "moment";
 import { Cube } from "@components";
@@ -17,6 +17,7 @@ const { Title, Text, Link } = Typography;
 const b = cn("application");
 
 const Application: FC = function () {
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const { data: dataProfile, isLoading: isLoadingProfile } = useGetMyProfileQuery();
@@ -29,6 +30,12 @@ const Application: FC = function () {
     } = useDownloadFileQuery(data?.payload?.fileName || "", {
         skip: !data?.payload?.fileName,
     });
+
+    const handleCreateTicketResponse = (event: MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+
+        navigate(`/create-ticket-response/${id}`);
+    };
 
     if (error || errorFile) {
         const errorMessage = error
@@ -79,6 +86,7 @@ const Application: FC = function () {
                                     </>
                                 ) || "Application Title",
                         }}
+                        avatar={data?.payload.user && <Avatar {...data?.payload.user} />}
                     />
                 </div>
                 <div className={b("content")}>
@@ -103,6 +111,8 @@ const Application: FC = function () {
 
                     {data?.payload.ticketResponseId && (
                         <div className={b("ticketresponse")}>
+                            {data?.payload.manager && <Avatar {...data?.payload.manager} />}
+
                             <Link href={`/ticket-response/${data?.payload.ticketResponseId}`} rel="noopener noreferrer">
                                 Go to Ticket-Response
                             </Link>
@@ -120,7 +130,7 @@ const Application: FC = function () {
 
                     {!data?.payload.ticketResponseId && isManager(dataProfile?.payload.userRoles) && (
                         <div className={b("action")}>
-                            <Button>Create Ticket-Response</Button>
+                            <Button onClick={handleCreateTicketResponse}>Create Ticket-Response</Button>
                         </div>
                     )}
                 </div>

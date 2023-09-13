@@ -260,6 +260,20 @@ const Home: FC = function () {
                                 // eslint-disable-next-line react/no-array-index-key, react/jsx-props-no-spreading
                                 <ApplicationItem key={index} {...i} />
                             ))}
+                            {/* <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} />
+                            <ApplicationItem {...dataApplications?.payload[0]} /> */}
                         </div>
                     ) : (
                         <div>

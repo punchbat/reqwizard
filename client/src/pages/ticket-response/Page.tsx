@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Spin, Typography } from "antd";
 
 import { useGetTicketResponseByIDQuery } from "@app/services/ticket_response";
-import { PageTitle } from "@features/index";
+import { Avatar, PageTitle } from "@features/index";
 import { cn } from "@utils";
 import moment from "moment";
 
@@ -44,7 +44,10 @@ const TicketResponse: FC = function () {
         <div className={b()}>
             <div className={b("inner")}>
                 <div className={b("title")}>
-                    <PageTitle title={{ text: `Ticket-Response: ${data?.payload?._id}` || "Ticket-Response Title" }} />
+                    <PageTitle
+                        title={{ text: `Ticket-Response: ${data?.payload?._id}` || "Ticket-Response Title" }}
+                        avatar={data?.payload.manager && <Avatar {...data?.payload.manager} />}
+                    />
                 </div>
                 <div className={b("content")}>
                     <div className={b("description")}>

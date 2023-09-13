@@ -76,6 +76,8 @@ func (r *Repository) GetTicketResponsesByManagerID(ctx context.Context, inp *tic
 		query = query.Where("updated_at <= ?", toTime)
 	}
 
+	query = query.Preload("User").Preload("Manager")
+
 	var ticketResponsesDTO []*dto.TicketResponse
 	err := query.Find(&ticketResponsesDTO).Error
 	if err != nil {
@@ -95,6 +97,8 @@ func (r *Repository) GetTicketResponseByID(ctx context.Context, id string) (*dom
 
 	uuid := uuid.MustParse(id)
 	var ticketResponseDTO dto.TicketResponse
+
+	query = query.Preload("User").Preload("Manager")
 
 	err := query.Where("id = ?", uuid).First(&ticketResponseDTO).Error
 	if err != nil {
@@ -146,6 +150,8 @@ func (r *Repository) GetTicketResponsesByUserID(ctx context.Context, inp *ticket
 		query = query.Where("updated_at <= ?", toTime)
 	}
 
+	query = query.Preload("User").Preload("Manager")
+
 	var ticketResponsesDTO []*dto.TicketResponse
 	err := query.Find(&ticketResponsesDTO).Error
 	if err != nil {
@@ -162,6 +168,8 @@ func (r *Repository) GetTicketResponsesByUserID(ctx context.Context, inp *ticket
 
 func (r *Repository) GetTicketResponses(ctx context.Context) ([]*domain.TicketResponse, error) {
 	query := r.db.Conn
+
+	query = query.Preload("User").Preload("Manager")
 
 	var ticketResponsesDTO []*dto.TicketResponse
 	err := query.Find(&ticketResponsesDTO).Error
