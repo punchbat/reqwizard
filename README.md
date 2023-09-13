@@ -30,19 +30,21 @@
 
 [![Reqwizard Screen Shot][product-screenshot]]
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+The Reqwizard project was invented by me literally in a few minutes, I tried to fit all my experience in development into this project, I hope it worked out.
 
-Here's why:
+Reqwizard is a platform designed to provide efficient and secure processing of user feedback. There are two key roles represented in this project: users and managers.
 
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should implement DRY principles to the rest of your life :smile:
+Users have the opportunity to create private or public Requests in which they can describe their requests and needs. Applications can be of various types, which allows the user to choose the most appropriate way of presenting information.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+At the same time, managers on the Reqwizard platform are processing Applications and providing responses to them. This functionality creates a unique interaction between users and specialists, ensuring a high degree of accountability and accuracy in servicing requests.
 
-Use the `BLANK_README.md` to get started.
+Particular attention is paid to data confidentiality. Our mechanisms provide reliable protection of Applications and responses from unauthorized access. This ensures that information remains private and accessible only to those who have the right to see it.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Additionally, the notification system in Reqwizard accompanies you at every stage of processing. As soon as a response from the manager appears, you will instantly receive a notification, which provides instant information and facilitates further interaction.
+
+The Reqwizard project was created using advanced technologies and taking care of your comfort and safety. We also pay special attention to authentication and confirmation of roles, so that each participant can enjoy all the benefits of the platform only after successfully completing the approval process.
+
+Welcome to the world of Reqwizard - a place where feedback becomes reliable, convenient and confidential!
 
 ### Built With
 
@@ -182,7 +184,7 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/main.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
@@ -199,3 +201,20 @@ Use this space to list resources you find helpful and would like to give credit 
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com
+
+<img src='https://github.com/keshavsingh4522/keshavsingh4522/blob/master/Assets/Monkey_Kid_Coding.gif' align='left'>
+
+### Hi 👋 ![visitors](https://visitor-badge.glitch.me/badge?page_id=https://github.com/keshavsingh4522)
+
+- :school: I'm [Keshav Singh](https://keshavsingh4522.github.io/), have pursued B.Tech(CSE) from <a href="https://jecrcfoundation.com/">@JECRC </a>
+- 🔭 I’m currently working on **Backend Development**
+- :neutral_face: I have a **love/hate** relationship with **Programming**
+- 🌱 I’m currently Working with tech Microservice,**AWS,.Net Core**
+- 🤔 I’m looking for help with Data Structures and Algorithms 😭
+- 💬 Ask me about anything, I am happy to help
+- 😄 Pronouns: **Coder, Leader** and **Kind Hearted**
+- :bulb: Occasionally I do participate in **Hackathons**
+- 👨 Know more about me at [Sourcerer](https://sourcerer.io/keshavsingh4522)
+- 🌐 Visit my [porfolio website](https://keshavsingh4522.github.io/) for complete background and contact.
+- :boom: awesome octoprofile : [Keshav Singh](https://octoprofile.now.sh/user?id=keshavsingh4522)
+<!-- - ⚡ Languages: **Python3 | SQL | HTML | CSS |** -->
