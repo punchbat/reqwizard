@@ -25,16 +25,14 @@ Welcome to the world of Reqwizard - a place where feedback becomes reliable, con
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
+      <a href="#reqwizard">About The Project</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#starting-the-project">Starting the Project</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -88,7 +86,7 @@ Before you begin, ensure you have met the following requirements:
 
   If you don't have npm installed, you can get it by following these [instructions](https://www.npmjs.com/get-npm).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
 ### Installation
 
@@ -120,7 +118,7 @@ To install and run the project locally, follow these steps:
 
 Now you have successfully installed all the necessary dependencies.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
 ### Starting the Project
 
@@ -140,7 +138,7 @@ Now you have successfully installed all the necessary dependencies.
 
    The server will be running on port <http://localhost:8080>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
@@ -157,7 +155,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
 <!-- CONTACT -->
 
@@ -167,7 +165,7 @@ Kassymov Abat - <kasabat001@gmail.com>
 
 Project Link: [https://github.com/Syqpe/reqwizard](https://github.com/Syqpe/reqwizard)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
 [product-screenshot]: images/main.png
 [Antd]: https://img.shields.io/badge/Ant%20Design-1890FF?style=for-the-badge&logo=antdesign&logoColor=white
