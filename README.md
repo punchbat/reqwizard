@@ -82,9 +82,27 @@ To get a local copy up and running follow these simple example steps.
 
 Before you begin, ensure you have met the following requirements:
 
+- **Node.js**:
+
+  Make sure you have Node.js installed on your system. You can download and install Node.js from the official website: [Node.js Download](https://nodejs.org/)
+
 - **npm**:
 
-  If you don't have npm installed, you can get it by following these [instructions](https://www.npmjs.com/get-npm).
+  npm (Node Package Manager) comes bundled with Node.js. However, it's a good practice to make sure you have the latest version of npm. You can update npm using the following command:
+
+  ```sh
+  npm install -g npm@latest
+  ```
+
+- **Go**:
+
+  You'll need Go (Golang) to run the backend of the Reqwizard project. You can download and install Go from the official website: [Go Downloads](https://go.dev/doc/install)
+
+- **Docker**:
+
+  If you plan to use Docker for containerization, make sure Docker is installed on your system. You can download and install Docker from the official website: [Docker Download](https://www.docker.com/products/docker-desktop/)
+
+Now you have successfully installed all the necessary prerequisites.
 
 <p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
@@ -137,6 +155,11 @@ Now you have successfully installed all the necessary dependencies.
    ```
 
    The server will be running on port <http://localhost:8080>
+
+- Frontend: <http://localhost:8000>
+- Backend: <http://localhost:8080>
+- PostgreSQL Database: <http://localhost:5432>
+- PGAdmin: <http://localhost:5050>
 
 <p align="right">(<a href="#reqwizard">back to top</a>)</p>
 
