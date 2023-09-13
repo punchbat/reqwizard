@@ -26,7 +26,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## Awesome Reqwizard
+## Reqwizard
 
 ![Reqwizard Screen Shot][product-screenshot]
 
